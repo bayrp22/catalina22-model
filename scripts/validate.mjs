@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import * as THREE from '../dist/vendor/three.module.js';
 import {buildBoat,SPEC} from '../dist/model.js';
 import {snapshot} from './snapshot.mjs';
+assert.equal(process.versions.node,'24.19.0','Use Node.js 24.19.0, the runtime used for the accepted geometry signatures. Do not replace the geometry baseline to accommodate a runtime mismatch.');
 const expected=JSON.parse(fs.readFileSync(new URL('../model-data/published-dimensions.json',import.meta.url)));
 for(const [key,record]of Object.entries(expected.dimensions))assert.equal(SPEC[key],record.meters,`Protected published dimension changed: ${key}. Do not adjust principal dimensions to fit provisional parts.`);
 const boat=buildBoat();boat.root.updateMatrixWorld(true);

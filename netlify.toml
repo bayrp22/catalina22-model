@@ -3,7 +3,7 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "22"
+  NODE_VERSION = "24.19.0"
   PYTHON_VERSION = "3.13"
 
 [[headers]]

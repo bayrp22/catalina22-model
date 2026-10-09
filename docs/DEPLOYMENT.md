@@ -2,7 +2,7 @@
 
 ## Prepared configuration
 
-Netlify builds with `npm run build` and publishes `dist`. Node 22 and Python 3.13 are configured in `netlify.toml`. There is no server-side app, database, API key, paid add-on or CDN runtime dependency. Generated GLB/HTML/ZIP files are regenerated from the validated source during every build.
+Netlify builds with `npm run build` and publishes `dist`. Node **24.19.0** and Python 3.13 are configured in `netlify.toml`. GitHub Actions uses the same exact Node version. The accepted baseline was recorded under this runtime; Node 22 produced different procedural geometry hashes in the first remote validation. Keep the original baseline and use the pinned runtime. Runtime upgrades require a separately scoped comparison and review, rather than weakening hashes or automatically accepting new geometry. There is no server-side app, database, API key, paid add-on or CDN runtime dependency. Generated GLB/HTML/ZIP files are regenerated from the validated source during every build.
 
 `.netlify/` is ignored. Never commit its local state or authentication material. `.openai/` is also omitted from this independent repository.
 
@@ -12,10 +12,11 @@ Netlify builds with `npm run build` and publishes `dist`. Node 22 and Python 3.1
 - Netlify project: `catalina22-model-studio`, team `SWS Ops`.
 - Netlify project ID: `dbd9b24c-2337-4d25-89fe-1b3cb17c11fb`.
 - Dashboard: https://app.netlify.com/projects/catalina22-model-studio
-- Netlify deployment: pending Git connection and first successful build.
+- Netlify URL: https://catalina22-model-studio.netlify.app
+- Git continuous deployment: connected; production branch `main`.
 - GitHub repository: https://github.com/bayrp22/catalina22-model, created by the owner as public; default branch `main`.
 
-The owner permits native connector operations only and prohibits browser sign-in by coding agents. Use the native GitHub connector to publish changes. The currently exposed Netlify tools can inspect the project and deployments but cannot attach Git. The owner completes that one-time connection in their own Netlify session. Do not work around this restriction using agent-operated browser sign-in or new credentials.
+The owner permits native connector operations only and prohibits browser sign-in by coding agents. Use the native GitHub connector to publish changes and inspect build results with the native GitHub/Netlify connectors. The owner has completed the one-time Git connection in their own Netlify session. Do not work around the native-only restriction using agent-operated browser sign-in or new credentials.
 
 ## Connect continuous deployment
 
@@ -30,7 +31,7 @@ npm run dev
 
 Coding agents must publish through the owner's authorized native GitHub connector. Owners may use their own authenticated Git workflow. Do not embed a token in a Git URL, command or tracked file. The original handoff bundle remains a separate backup; use this GitHub repository for the current deployment history.
 
-In Netlify's existing project, open **Project configuration → Build & deploy → Continuous deployment** and link the GitHub repository. Select `bayrp22/catalina22-model`, confirm `main` is the production branch, leave the base directory at the repository root, set build command `npm run build`, and publish directory `dist`. These build settings are also in `netlify.toml`. Netlify deploy previews should validate proposed branches before merge. This repository does not itself configure account-level settings.
+The existing project is linked to `bayrp22/catalina22-model`. If restoring the connection, select this repository and `main` as the production branch, leave the base directory at the repository root, set build command `npm run build`, and publish directory `dist`. These build settings are also in `netlify.toml`. Netlify deploy previews should validate proposed branches before merge. This repository does not itself configure account-level settings.
 
 For an owner-managed manual deploy, first run `npm run build`, then upload `dist` or use the Netlify CLI while authenticated in the owner's environment. A manual deploy does not run the build. If Git continuous deployment is connected, its next production-branch push will replace a manual production deployment; prefer publishing the exact reviewed commit through Git.
 

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "description": "Interactive original-design Catalina 22 model with documented geometry guardrails",
-  "engines": {"node": ">=22"},
+  "engines": {"node": "24.19.0"},
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "validate": "node --check dist/model.js && node --check dist/app.js && node scripts/validate.mjs",
