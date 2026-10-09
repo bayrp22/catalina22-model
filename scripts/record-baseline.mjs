@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {snapshot} from './snapshot.mjs';
+const args=process.argv.slice(2),flag=args.indexOf('--change');
+assert(flag>=0&&args[flag+1],'Usage: npm run baseline:record -- --change changes/<reviewed-change>.json');
+const input=path.resolve(args[flag+1]),dir=path.resolve('changes');assert(input.startsWith(dir+path.sep)&&input.endsWith('.json'),'Change record must be under changes/');
+const change=JSON.parse(fs.readFileSync(input)),current=snapshot(),old=JSON.parse(fs.readFileSync('model-data/accepted-geometry.json'));
+assert(change.reviewed===true&&typeof change.reviewer==='string'&&change.reviewer.trim(),'A real reviewer must have inspected and approved the change. Do not invent review.');
+assert(change.summary?.trim()&&change.evidence?.length,'Provide a summary and evidence references');assert(Array.isArray(change.parts)&&change.parts.length,'List exactly the affected parts');
+assert.deepEqual(current.spec,old.spec,'Baseline recording cannot override principal dimensions');assert.deepEqual(Object.keys(current.parts),Object.keys(old.parts),'Changing part IDs requires a separate compatibility review');
+const changed=Object.keys(current.parts).filter(id=>current.parts[id].geometrySha256!==old.parts[id].geometrySha256);
+assert(changed.length>0,'No geometry changes found');assert.deepEqual([...changed].sort(),[...change.parts].sort(),'Change record must list exactly the altered parts. Unrelated geometry must remain identical.');
+assert(change.measurements?.length,'Provide before/after measurements in meters, reference origin, method, and confidence');
+for(const m of change.measurements)assert(m.part&&changed.includes(m.part)&&Number.isFinite(m.beforeMeters)&&Number.isFinite(m.afterMeters)&&m.reference&&m.method&&m.confidence,'Each measurement requires part, numeric before/after meters, reference, method, confidence');
+current.acceptance={changeRecord:path.relative(process.cwd(),input).replaceAll('\\','/'),reviewer:change.reviewer};fs.writeFileSync('model-data/accepted-geometry.json',JSON.stringify(current,null,2)+'\n');console.log('Recorded reviewed baseline for: '+changed.join(', '));

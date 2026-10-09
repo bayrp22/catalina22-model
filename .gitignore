@@ -1,0 +1,11 @@
+.netlify/
+.openai/
+node_modules/
+.env
+.env.*
+!.env.example
+__pycache__/
+.DS_Store
+artifacts/
+geometry-checks.json
+dist/downloads/

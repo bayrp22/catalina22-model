@@ -1,0 +1,37 @@
+{
+  "source": "https://forums.sailboatowners.com/attachments/cat2-jpg.60723/",
+  "sourceDescription": "Scanned 1977 Catalina factory brochure, specifications panel",
+  "scope": "Original-design reference; exact year and configuration of user boat unconfirmed",
+  "dimensions": {
+    "hullLength": {
+      "meters": 6.5532,
+      "imperial": "21 ft 6 in",
+      "confidence": "Published nominal dimension"
+    },
+    "beam": {
+      "meters": 2.3368,
+      "imperial": "7 ft 8 in",
+      "confidence": "Published nominal dimension"
+    },
+    "waterline": {
+      "meters": 5.8928,
+      "imperial": "19 ft 4 in",
+      "confidence": "Published nominal dimension"
+    },
+    "draftUp": {
+      "meters": 0.6096,
+      "imperial": "2 ft 0 in",
+      "confidence": "Published nominal dimension"
+    },
+    "draftDown": {
+      "meters": 1.524,
+      "imperial": "5 ft 0 in",
+      "confidence": "Published nominal dimension"
+    },
+    "mastLength": {
+      "meters": 7.62,
+      "imperial": "25 ft 0 in",
+      "confidence": "Published nominal dimension"
+    }
+  }
+}

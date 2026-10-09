@@ -1,0 +1,20 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import * as THREE from '../dist/vendor/three.module.js';
+import {buildBoat,SPEC} from '../dist/model.js';
+import {snapshot} from './snapshot.mjs';
+const expected=JSON.parse(fs.readFileSync(new URL('../model-data/published-dimensions.json',import.meta.url)));
+for(const [key,record]of Object.entries(expected.dimensions))assert.equal(SPEC[key],record.meters,`Protected published dimension changed: ${key}. Do not adjust principal dimensions to fit provisional parts.`);
+const boat=buildBoat();boat.root.updateMatrixWorld(true);
+const size=new THREE.Box3().setFromObject(boat.parts.hull).getSize(new THREE.Vector3());
+assert(Math.abs(size.x-expected.dimensions.hullLength.meters)<.0005,'Hull length envelope changed');assert(Math.abs(size.z-expected.dimensions.beam.meters)<.0005,'Hull beam envelope changed');
+let last=-Infinity;
+for(let p=0;p<=100;p++){const draft=boat.setKeel(p);assert(Number.isFinite(draft));assert(draft>=last-1e-7,'Keel draft must increase monotonically');last=draft;if(p===0)assert(Math.abs(draft-SPEC.draftUp)<1e-5);if(p===100)assert(Math.abs(draft-SPEC.draftDown)<1e-5);}
+boat.setKeel(100);let meshes=0;
+boat.root.traverse(o=>{if(!o.isMesh)return;meshes++;assert(o.userData.partId in boat.parts,'Mesh has no stable part ID');const p=o.geometry.attributes.position;assert(p.count>0);for(const v of p.array)assert(Number.isFinite(v),'Nonfinite vertex');for(const v of o.geometry.attributes.normal.array)assert(Number.isFinite(v),'Nonfinite normal');const idx=o.geometry.index;if(idx){assert(idx.count%3===0);for(const v of idx.array)assert(v>=0&&v<p.count,'Invalid triangle index');}assert(o.geometry.attributes.position.count<=200000,'Unexpected per-mesh vertex growth');});
+assert(meshes<400,'Unexpected mesh-count growth');
+const actual=snapshot(),baseline=JSON.parse(fs.readFileSync(new URL('../model-data/accepted-geometry.json',import.meta.url)));
+assert.deepEqual(Object.keys(actual.parts),Object.keys(baseline.parts),'Stable component IDs or ordering changed');
+for(const [id,p]of Object.entries(actual.parts))assert.equal(p.geometrySha256,baseline.parts[id].geometrySha256,`Geometry changed for ${id}. Supply measurements and a reviewed change record; inspect the change before intentionally recording a new baseline.`);
+assert(actual.triangles<=150000,'Triangle budget exceeded');
+console.log(`Guardrails passed: ${meshes} meshes, ${actual.triangles} triangles, ${Object.keys(actual.parts).length} stable parts; accepted geometry unchanged.`);

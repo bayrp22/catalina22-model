@@ -1,0 +1,17 @@
+{
+  "summary": "Replace with the exact measured correction",
+  "parts": ["galley"],
+  "evidence": ["Replace with an actual measurement/photo/drawing reference"],
+  "measurements": [
+    {
+      "part": "galley",
+      "beforeMeters": 0,
+      "afterMeters": 0,
+      "reference": "Replace with a real datum and direction",
+      "method": "Replace with actual measurement method",
+      "confidence": "Replace with uncertainty or confidence and reason"
+    }
+  ],
+  "reviewed": false,
+  "reviewer": ""
+}

@@ -1,0 +1,14 @@
+{
+  "name": "catalina22-model-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Interactive original-design Catalina 22 model with documented geometry guardrails",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "validate": "node --check dist/model.js && node --check dist/app.js && node scripts/validate.mjs",
+    "build": "npm run validate && node export-model.mjs && python3 package.py && node scripts/check-artifacts.mjs",
+    "baseline:record": "node scripts/record-baseline.mjs"
+  }
+}
