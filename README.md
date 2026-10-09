@@ -6,7 +6,7 @@ The accepted boat geometry is preserved. This repository adds reproducible build
 
 ## Start locally
 
-Requires Node.js 22+ and Python 3. No npm dependencies need to be downloaded: Three.js r169 and its modules are vendored.
+Requires Node.js **24.19.0** and Python 3. No npm dependencies need to be downloaded: Three.js r169 and its modules are vendored. The exact Node version preserves the accepted procedural geometry signatures across local builds, GitHub Actions and Netlify; do not change the baseline to accommodate another runtime.
 
 ```bash
 npm run build
@@ -57,4 +57,4 @@ The original viewer remains at https://catalina-22-model-studio.bay627037.chatgp
 
 Source repository: [bayrp22/catalina22-model](https://github.com/bayrp22/catalina22-model), default branch `main`. The owner created this repository as public; personal boat media and credentials are excluded.
 
-The Netlify project [catalina22-model-studio](https://app.netlify.com/projects/catalina22-model-studio) exists in `SWS Ops`. Its first deployment is pending the owner's Git connection. Select this repository, production branch `main`, build command `npm run build`, and publish directory `dist`, with the repository root as the base directory. Browser-based sign-in by coding agents is prohibited by the owner; use authorized native connectors for subsequent repository operations.
+Netlify URL: https://catalina22-model-studio.netlify.app . The project [catalina22-model-studio](https://app.netlify.com/projects/catalina22-model-studio) is in `SWS Ops` with Git continuous deployment connected to this repository. Production branch is `main`, build command is `npm run build`, publish directory is `dist`, and the base directory is the repository root. Each build validates the accepted geometry before generating the downloadable exports. Browser-based sign-in by coding agents is prohibited by the owner; use authorized native connectors for subsequent repository operations.
