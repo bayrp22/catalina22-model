@@ -34,11 +34,12 @@ export function mountInventory({scene,boat,renderer,getCamera,controls}) {
   const message=(value,error=false)=>{$('invMessage').textContent=value;$('invMessage').classList.toggle('error',error);};
   const modalOpen=()=>{
     drawer.hidden=false;toolbar.setAttribute('aria-expanded','true');
+    markerGroup.visible=true;labels.hidden=false;
     // Compact viewport conflicts with the original part inspector, so keep it hidden behind inventory.
     drawer.scrollTop=0;
     render();
   };
-  const modalClose=()=>{cancelPlacement();drawer.hidden=true;toolbar.setAttribute('aria-expanded','false');};
+  const modalClose=()=>{cancelPlacement();drawer.hidden=true;toolbar.setAttribute('aria-expanded','false');markerGroup.visible=false;labels.hidden=true;};
   toolbar.addEventListener('click',()=>drawer.hidden?modalOpen():modalClose());
   $('invClose').addEventListener('click',modalClose);
   $('invSearch').addEventListener('input',e=>{search=e.target.value.toLowerCase();renderList();});
@@ -87,8 +88,8 @@ export function mountInventory({scene,boat,renderer,getCamera,controls}) {
     if(saved){documentData=validateInventory(JSON.parse(saved));persistent=true;$('invRemember').checked=true;}
   }catch{message('Could not restore browser copy. Import a backup JSON file.',true);}
 
-  const markerGroup=new THREE.Group();markerGroup.name='Inventory markers (viewer-only)';scene.add(markerGroup);
-  const labels=document.createElement('div');labels.id='inventoryLabels';document.querySelector('#viewport').appendChild(labels);
+  const markerGroup=new THREE.Group();markerGroup.name='Inventory markers (viewer-only)';scene.add(markerGroup);markerGroup.visible=false;
+  const labels=document.createElement('div');labels.id='inventoryLabels';document.querySelector('#viewport').appendChild(labels);labels.hidden=true;
   const markerMeshes=[],labelButtons=[];
   function positionFor(item) {
     const p=item.placement;
