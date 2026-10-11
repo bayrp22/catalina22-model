@@ -1,3 +1,10 @@
+## Unreleased — Private equipment inventory overlay
+
+- Added an optional local-only inventory drawer with JSON import/export, search, record editing and provisional 3D pins.
+- Inventory records and boat-specific evidence are **not** checked into the public GitHub repository or deployed as site assets.
+- Boat model geometry, accepted part IDs, hash baseline and dimensional specifications are unchanged.
+- Added schema round-trip tests and offline viewer bundling support. Requires owner review and browser smoke checks before merging.
+
 # Change log
 
 ## Deployment setup — 2026-10-09
