@@ -61,4 +61,4 @@ Netlify URL: https://catalina22-model-studio.netlify.app . The project [catalina
 
 ## Private equipment intake
 
-Use the Equipment inventory section to import/export private runtime JSON, inspect records, position dimensioned envelope proxies and review explicit equipment load cases. No real inventory is bundled. See [inventory intake and measurement rules](docs/INVENTORY.md).
+Use the Inventory header button to import/export private runtime JSON, edit equipment and distinct proposals, place provisional surface pins, inspect dimensioned envelope proxies and review explicit equipment load cases. Optional device storage is opt-in and unencrypted. No real inventory is bundled. See [inventory intake and measurement rules](docs/INVENTORY.md).

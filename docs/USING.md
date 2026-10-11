@@ -51,4 +51,4 @@ The viewer needs WebGL 2. If it fails to render, use a current browser with hard
 
 ## Equipment inventory
 
-The Equipment inventory section is ready for private JSON intake. Records live only in the current tab; Export JSON before refreshing. It supports unplaced records, dimensioned envelope proxies and an explicit subset mass-center calculation. See [INVENTORY.md](INVENTORY.md) for fields, coordinate conventions, privacy and calculation limits.
+Open Inventory in the header for private JSON intake. Records live in the current tab by default; Export JSON before refreshing or explicitly enable unencrypted device storage. Edit fields preserves unknown quantities; proposals remain distinct. Place provisional pin accepts a visible boat surface; Escape cancels. It supports unplaced records, dimensioned envelope proxies and an explicit subset mass-center calculation. See [INVENTORY.md](INVENTORY.md) for fields, coordinate conventions, privacy and calculation limits.
