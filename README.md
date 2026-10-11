@@ -15,11 +15,16 @@ npm run dev
 
 Open http://localhost:8000 . The server binds to your own computer. For an offline copy, open `dist/downloads/Catalina22_Viewer_Offline.html` directly in a modern WebGL 2 browser.
 
+## Private equipment inventory
+
+Open **Inventory** in the viewer and import your separately stored `catalina22-inventory-layer` JSON. Search, edit, and mark provisional 3D positions without altering the accepted boat geometry. Export JSON to share changes. No personal inventory records are stored in this public repository or uploaded to Netlify; optional local persistence uses unencrypted browser storage. See [Private inventory workflow](docs/INVENTORY.md).
+
 ## Documentation
 
 | Guide | Purpose |
 | --- | --- |
 | [Using the viewer](docs/USING.md) | Camera, layers, selection, moving parts and exports |
+| [Private inventory](docs/INVENTORY.md) | Local-only equipment catalog, provisional pins, import/export and privacy |
 | [Editing carefully](docs/EDITING.md) | Scope, measurement workflow, code locations and release checks |
 | [Accuracy and measurements](docs/ACCURACY.md) | Published dimensions, inferred geometry and measurement records |
 | [Netlify and Git](docs/DEPLOYMENT.md) | Build configuration, review workflow, deployment and recovery |
