@@ -1,0 +1,49 @@
+/* Scoped private inventory layer. The main model design system is unchanged. */
+#inventoryButton{border-color:#94b8ab;color:#2e685a}
+#inventoryDrawer{position:fixed;right:0;top:86px;bottom:40px;width:min(420px,95vw);background:#faf9f4;z-index:50;border-left:1px solid #cbd7cf;box-shadow:-20px 5px 60px #162a2430;display:flex;flex-direction:column;gap:10px;padding:20px 20px 25px;overflow:auto;scrollbar-width:thin;color:#203638;font-size:12px}
+#inventoryDrawer[hidden]{display:none!important}
+#inventoryDrawer *{box-sizing:border-box}
+#inventoryDrawer button{font-size:11px}
+#inventoryDrawer .inv-head{display:flex;justify-content:space-between;align-items:start;gap:16px}
+#inventoryDrawer .inv-head small{font-size:9px;color:#5b7770;letter-spacing:2px}
+#inventoryDrawer .inv-head h2{font-family:Georgia,serif;font-size:27px;font-weight:400;margin:8px 0}
+#inventoryDrawer #invClose{border:none;background:none;font-size:26px;line-height:1;padding:0 6px}
+#inventoryDrawer .inv-privacy{line-height:1.6;padding:10px;background:#eaf0ec;border-radius:7px;color:#386055;font-size:11px}
+#inventoryDrawer .inv-tools{display:flex;gap:7px}
+#inventoryDrawer .inv-tools button{flex:1}
+#inventoryDrawer .inv-persist{display:flex;align-items:center;gap:7px;line-height:1.4;font-size:11px;cursor:pointer;color:#455e56}
+#inventoryDrawer .inv-persist input{accent-color:#376c63}
+#inventoryDrawer .inv-persist small{font-size:9px;color:#8a6351}
+#inventoryDrawer #invMessage{font-size:11px;color:#386055;line-height:1.4;min-height:10px}
+#inventoryDrawer #invMessage.error{color:#a63e3e}
+#inventoryDrawer .inv-lookup{display:flex;gap:6px}
+#inventoryDrawer .inv-lookup input{min-width:0;flex:1}
+#inventoryDrawer .inv-lookup select{width:130px}
+#inventoryDrawer input:not([type=checkbox]):not([type=file]),#inventoryDrawer textarea,#inventoryDrawer select{padding:9px;border:1px solid #d1d9d2;border-radius:5px;background:#fffefa;color:#203638;outline-color:#376c63;font:inherit}
+#inventoryDrawer .inv-summary{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#718078}
+#inventoryDrawer .inv-records{min-height:80px;max-height:215px;overflow:auto;border:1px solid #dde4dd;border-radius:8px;background:white}
+#inventoryDrawer .inv-record{display:block;text-align:left;background:transparent;border:0;border-radius:0;width:100%;padding:12px;border-bottom:1px solid #e8eee8}
+#inventoryDrawer .inv-record:hover,#inventoryDrawer .inv-record.active{background:#edf5ef}
+#inventoryDrawer .inv-record strong{display:block;font-size:12px;font-weight:600}
+#inventoryDrawer .inv-record span,#inventoryDrawer .inv-record small{display:block;font-size:10px;color:#6b7871;margin-top:4px}
+#inventoryDrawer .inv-record .inv-record-status{color:#34766d}
+#inventoryDrawer .inv-empty{padding:12px;color:#788981;font-size:11px}
+#inventoryDrawer .inv-inspector{padding:14px 0 0;border-top:1px solid #d9e2d9}
+#inventoryDrawer .inv-item-title{display:flex;justify-content:space-between;gap:6px;align-items:center;margin-bottom:12px}
+#inventoryDrawer .inv-item-title strong{font-size:15px}
+#inventoryDrawer .inv-item-title span{font-size:9px;letter-spacing:.7px;color:#8d7758}
+#inventoryDrawer .inv-form{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+#inventoryDrawer .inv-field{display:flex;flex-direction:column;gap:5px;min-width:0}
+#inventoryDrawer .inv-field span{font-size:10px;color:#65766b}
+#inventoryDrawer .inv-field:has(textarea),#inventoryDrawer .inv-coords{grid-column:1/-1}
+#inventoryDrawer textarea{min-height:62px;resize:vertical}
+#inventoryDrawer .inv-coords{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#inventoryDrawer .inv-coords input{width:100%}
+#inventoryDrawer .inv-form-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:13px}
+#inventoryDrawer .inv-form-actions button{padding:9px 5px}
+#inventoryDrawer .inv-caveat{font-size:10px;line-height:1.6;color:#8b6c4e;margin-top:11px}
+#inventoryLabels{position:absolute;inset:0;pointer-events:none;z-index:3}
+#inventoryLabels[hidden]{display:none!important}
+#inventoryLabels .inv-marker-label{position:absolute;transform:translate(-50%,-100%);border:1px solid #397669;background:#f8fbf6ec;box-shadow:0 2px 10px #16372920;color:#25594d;border-radius:14px;padding:4px 7px;font-size:9px;font-weight:600;white-space:nowrap;pointer-events:auto;cursor:pointer}
+#inventoryLabels .inv-marker-label:hover{background:#dcece5}
+@media(max-width:720px){#inventoryButton{padding:9px 7px}#inventoryDrawer{top:70px;bottom:36px;width:min(380px,100vw);padding:16px}#inventoryDrawer .inv-records{max-height:160px}}
