@@ -48,3 +48,7 @@ View JSON does not contain geometry edits. Import it through Restore saved view.
 For Blender, import the GLB through File → Import → glTF 2.0. Preserve scale and coordinate conventions. Editing only the GLB does not update the web viewer: durable changes belong in `dist/model.js` and must follow the repository editing rules.
 
 The viewer needs WebGL 2. If it fails to render, use a current browser with hardware acceleration and consult browser console messages. Do not assume that a file download proves the viewer rendered correctly.
+
+## Equipment inventory
+
+The Equipment inventory section is ready for private JSON intake. Records live only in the current tab; Export JSON before refreshing. It supports unplaced records, dimensioned envelope proxies and an explicit subset mass-center calculation. See [INVENTORY.md](INVENTORY.md) for fields, coordinate conventions, privacy and calculation limits.
