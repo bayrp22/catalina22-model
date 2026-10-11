@@ -9,3 +9,7 @@ __pycache__/
 artifacts/
 geometry-checks.json
 dist/downloads/
+private-inventory/
+private-data/
+Catalina22_Private_Inventory*.json
+Catalina22_3D_Inventory_Integration_Seed*.json

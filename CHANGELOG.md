@@ -1,5 +1,12 @@
 # Change log
 
+## 2026-10-11 — Private inventory intake preparation
+
+- Added a separate runtime-only equipment overlay, searchable catalog, record editor and private JSON import/export/template. No actual inventory was published.
+- Added documented dimensions/placement proxies and explicit subset mass moments with unknown/range/quantity guards.
+- Preserved all accepted boat geometry and existing model export behavior; offline packaging includes the new generic modules.
+- Added intake/measurement/privacy documentation and automated inventory validation tests.
+
 ## Deployment setup — 2026-10-09
 
 - Published the documented source to the owner's GitHub repository through the native connector; all 32 uploaded source files matched local Git blob hashes.

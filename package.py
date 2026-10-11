@@ -2,8 +2,8 @@ from pathlib import Path
 import base64,json,zipfile,re
 root=Path(__file__).parent
 p=root/'dist'
-mods={'three':'vendor/three.module.js','orbit-controls':'vendor/OrbitControls.js','gltf-exporter':'vendor/GLTFExporter.js','texture-utils':'vendor/TextureUtils.js','boat-model':'model.js'}
-replace={"'./vendor/three.module.js'":"'three'","'./three.module.js'":"'three'","'./vendor/OrbitControls.js'":"'orbit-controls'","'./vendor/GLTFExporter.js'":"'gltf-exporter'","'./TextureUtils.js'":"'texture-utils'","'./model.js'":"'boat-model'"}
+mods={'three':'vendor/three.module.js','orbit-controls':'vendor/OrbitControls.js','gltf-exporter':'vendor/GLTFExporter.js','texture-utils':'vendor/TextureUtils.js','boat-model':'model.js','inventory':'inventory.js','inventory-data':'inventory-data.js'}
+replace={"'./vendor/three.module.js'":"'three'","'./three.module.js'":"'three'","'./vendor/OrbitControls.js'":"'orbit-controls'","'./vendor/GLTFExporter.js'":"'gltf-exporter'","'./TextureUtils.js'":"'texture-utils'","'./model.js'":"'boat-model'","'./inventory.js'":"'inventory'","'./inventory-data.js'":"'inventory-data'"}
 def norm(s):
  for a,b in replace.items():s=s.replace(a,b)
  return s

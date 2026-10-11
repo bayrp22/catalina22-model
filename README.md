@@ -58,3 +58,7 @@ The original viewer remains at https://catalina-22-model-studio.bay627037.chatgp
 Source repository: [bayrp22/catalina22-model](https://github.com/bayrp22/catalina22-model), default branch `main`. The owner created this repository as public; personal boat media and credentials are excluded.
 
 Netlify URL: https://catalina22-model-studio.netlify.app . The project [catalina22-model-studio](https://app.netlify.com/projects/catalina22-model-studio) is in `SWS Ops` with Git continuous deployment connected to this repository. Production branch is `main`, build command is `npm run build`, publish directory is `dist`, and the base directory is the repository root. Each build validates the accepted geometry before generating the downloadable exports. Browser-based sign-in by coding agents is prohibited by the owner; use authorized native connectors for subsequent repository operations.
+
+## Private equipment intake
+
+Use the Equipment inventory section to import/export private runtime JSON, inspect records, position dimensioned envelope proxies and review explicit equipment load cases. No real inventory is bundled. See [inventory intake and measurement rules](docs/INVENTORY.md).
