@@ -13,3 +13,7 @@
 #inventoryDrawer[hidden]{display:none}#inventoryDrawer .section-title{margin-top:0;display:flex;justify-content:space-between;align-items:center}#inventoryDrawer h2{font-size:20px}#inventoryDrawer details{margin:12px 0}#inventoryDrawer pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px;line-height:1.5;max-height:260px;overflow:auto;background:#fff;padding:10px}
 .inventory-persist{display:block;font-size:12px;line-height:1.6;margin:12px 0}#inventoryFields textarea{width:100%;min-height:70px;border:1px solid #b9c6bc;border-radius:5px;padding:9px;margin-top:5px}#inventoryFieldsError{color:#9d3827}
 @media(max-width:720px){#inventoryDrawer{top:70px;bottom:36px;width:min(410px,100vw);padding:16px}#inventoryButton{padding:8px 7px;font-size:11px}}
+
+.equipment-status{position:absolute;left:16px;bottom:54px;z-index:8;max-width:calc(100% - 32px);padding:10px 14px;border:1px solid #947444;border-radius:8px;background:#fff6dc;color:#503715;font-size:12px;font-weight:600;text-align:left;cursor:pointer}
+#equipmentLabels{position:absolute;inset:0;pointer-events:none;z-index:6}
+.equipment-label{pointer-events:auto;max-width:260px;white-space:normal;line-height:1.35;border-color:#ad873f;background:rgba(255,247,221,.96);color:#503715;font-size:10px}

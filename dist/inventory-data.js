@@ -2,6 +2,7 @@
 export const FORMAT = 'catalina22-inventory-layer';
 export const AXES = '+X bow, +Y up, +Z starboard, Y=0 nominal waterline';
 export const MAX_BYTES = 1000000;
+const EQUIPMENT_KINDS=['battery','outboard','display','radio','switch-panel','dashboard'];
 const object = v => v !== null && typeof v === 'object' && !Array.isArray(v);
 const number = v => typeof v === 'number' && Number.isFinite(v);
 const vector = v => Array.isArray(v) && v.length === 3 && v.every(n => number(n) && Math.abs(n) <= 100);
@@ -46,6 +47,12 @@ export function validateInventory(doc, partIds = null) {
       if (p.localPositionMeters != null && (!p.parentPartId || p.positionMeters == null)) fail(label + ': local anchor requires host part and world-position snapshot.');
       if (p.positionKind != null && !['surface-anchor','envelope-center','location-marker'].includes(p.positionKind)) fail(label + ': invalid positionKind.');
       if (p.reviewed != null && typeof p.reviewed !== 'boolean') fail(label + ': reviewed must be boolean.');
+    }
+    const proxy=item.visualProxy;
+    if(proxy!=null){
+      if(!object(proxy)||!EQUIPMENT_KINDS.includes(proxy.kind))fail(label+': unknown visual proxy type.');
+      if(typeof proxy.basis!=='string'||!proxy.basis.trim())fail(label+': visual proxy needs an explicit basis.');
+      if(!object(proxy.dimensionsMeters)||!['length','width','height'].every(k=>number(proxy.dimensionsMeters[k])&&proxy.dimensionsMeters[k]>0&&proxy.dimensionsMeters[k]<=20))fail(label+': invalid visual proxy dimensions.');
     }
     if (item.centerOfMassMeters != null && !vector(item.centerOfMassMeters)) fail(label + ': invalid centerOfMassMeters.');
     const d = item.dimensionsMeters;
@@ -118,4 +125,23 @@ export function provisionalPosition(doc,id,position,parentPartId=null,localPosit
     p.placementMethod=position ? 'Click on reconstructed model surface; not a physical measurement' : null;
     // Never infer installation state, mass center or a dimensional envelope from a click.
   },partIds);
+}
+
+// Inventory accounting accepts documented ranges, independently of physical CG.
+// Presence at a planned coordinate never claims installed or a measured mass center.
+export function massCoverage(doc) {
+  const result={known:0,unknown:[],min:0,max:0,placed:{known:0,unknown:[],min:0,max:0},sides:{port:{min:0,max:0},starboard:{min:0,max:0},center:{min:0,max:0}}};
+  for(const i of doc.catalog){
+    const m=i.massKg,p=i.modelPlacement||{},placed=vector(p.positionMeters);
+    const quantity=i.massScope==='record-total'?1:i.quantity;
+    const valid=m&&number(m.min)&&number(m.max)&&m.min>=0&&m.max>=m.min&&typeof m.basis==='string'&&m.basis.trim()&&Number.isInteger(quantity)&&quantity>0&&(quantity===1||['per-unit','record-total'].includes(i.massScope));
+    if(!valid){result.unknown.push(i.id);if(placed)result.placed.unknown.push(i.id);continue;}
+    const min=m.min*quantity,max=m.max*quantity;result.known++;result.min+=min;result.max+=max;
+    if(placed){result.placed.known++;result.placed.min+=min;result.placed.max+=max;const side=p.positionMeters[2]<-.01?'port':p.positionMeters[2]>.01?'starboard':'center';result.sides[side].min+=min;result.sides[side].max+=max;}
+  }
+  return result;
+}
+export function massLabel(item) {
+  const doc=emptyInventory();doc.catalog=[item];const c=massCoverage(doc);
+  return c.known?(c.min===c.max?`${c.min.toFixed(3)} kg`:`${c.min.toFixed(3)}–${c.max.toFixed(3)} kg`):'weight unknown';
 }

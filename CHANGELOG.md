@@ -1,5 +1,13 @@
 # Change log
 
+## 2026-10-11 — Visible private planned equipment
+
+- Add recognizable generic device proxies, selectable weight labels and X-ray equipment visibility.
+- Load private projects automatically from a bounded, validated URL fragment; no private inventory in deployment/source.
+- Show documented mass ranges, unknown-weight coverage and planned coordinate allocation separately from physical mass-center calculations.
+- Preserve all accepted boat geometry and observed equipment states; keep illustrative sizes and proposed placements explicit.
+- Document equipment editing, privacy and weight accounting in `docs/EQUIPMENT-LAYOUT.md`.
+
 ## Unreleased — Consolidated private inventory review
 
 - Reconciled PR #2’s proposal editing, surface pins and opt-in device storage with the preparation release’s validation, dimensioned envelopes and explicit subset mass rules.

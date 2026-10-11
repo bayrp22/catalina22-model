@@ -36,7 +36,7 @@ class Element {
   setAttribute(key,value){this.attributes[key]=value;} add(option){this.append(option);}
   showModal(){this.open=true;} close(){this.open=false;}
 }
-const ids=['inventoryMessage','inventoryDetail','inventoryToggle','inventoryList','inventorySearch','inventorySystem','inventoryCount','inventoryMass','inventoryEditor','inventoryEditorError','inventoryEditDialog','inventorySaveRecord','inventoryAdd','inventoryTemplate','inventoryImport','inventoryExport','inventoryClear','inventoryRemember','inventoryCancelPlacement','inventoryAddProposal','inventoryFields','inventoryFieldsDialog','inventoryFieldsError','inventorySaveFields'];
+const ids=['equipmentLabels','equipmentStatus','inventoryXray','inventoryDrawer','inventoryButton','inventoryMessage','inventoryDetail','inventoryToggle','inventoryList','inventorySearch','inventorySystem','inventoryCount','inventoryMass','inventoryEditor','inventoryEditorError','inventoryEditDialog','inventorySaveRecord','inventoryAdd','inventoryTemplate','inventoryImport','inventoryExport','inventoryClear','inventoryRemember','inventoryCancelPlacement','inventoryAddProposal','inventoryFields','inventoryFieldsDialog','inventoryFieldsError','inventorySaveFields'];
 const html=fs.readFileSync('dist/index.html','utf8');for(const id of ids)assert(html.includes(`id="${id}"`),'HTML missing '+id);
 const elements=new Map(ids.map(id=>['#'+id,new Element()]));elements.get('#inventoryToggle').checked=true;
 globalThis.document={querySelector:selector=>elements.get(selector),createElement:tag=>new Element(tag)};
@@ -70,6 +70,10 @@ controller.handleSurfaceClick({intersectObjects:()=>[{object:{userData:{partId:'
 assert.equal(saved.placementProposals[0].status,'concept','Click must not imply installation');assert.equal(saved.placementProposals[0].reviewed,false);assert.equal(saved.placementProposals[0].positionKind,'surface-anchor');assert.equal(saved.placementProposals[0].customEvidence,'preserve me');assert.equal(saved.catalog[0].centerOfMassMeters,null);
 const pin=controller.pickables.find(mesh=>mesh.name===proposal.id),initialX=pin.position.x;parent.position.x+=.4;controller.update();assert(Math.abs(pin.position.x-initialX-.4)<1e-10,'Local anchor follows the host without changing geometry');
 controller.select(unit.id);el('inventoryDetail').children.find(e=>e.textContent==='Place provisional pin').onclick();assert(controller.placing);controller.cancelPlacement();assert.equal(placementMode,false);assert(!controller.placing);
+// A prepared link invokes the same real controller with recognizable proxy groups.
+const linked=emptyInventory();const visible=blankRecord();visible.id='VISIBLE';visible.visualProxy={kind:'battery',basis:'Synthetic illustrative envelope',dimensionsMeters:{length:.3,height:.2,width:.15}};visible.modelPlacement.positionMeters=[-2,.4,-.6];visible.modelPlacement.rotationRadians=[0,0,0];linked.catalog=[visible];el('inventoryXray').checked=true;
+assert(controller.loadDocument(linked));assert(controller.pickables.length>1);assert.equal(scene.getObjectByName('VISIBLE').userData.visualKind,'battery');assert.equal(el('equipmentLabels').children.length,1);assert(el('equipmentStatus').textContent.includes('1 equipment weights missing'));
+controller.select('VISIBLE');el('inventoryExport').onclick();assert.deepEqual(saved,linked,'Prepared project remains exportable without losing unknown mass');
 el('inventoryClear').onclick();assert.equal(device.size,0);assert.equal(controller.pickables.length,0);el('inventoryExport').onclick();assert.equal(saved.catalog.length,0);
 delete globalThis.document;delete globalThis.Option;
 console.log('Consolidated overlay controller passed: HTML contract, actual scene/proxy, private text, import/edit/export, failed-import retention, toggle/clear, null-safe form, proposals, provisional anchoring, cancellation and opt-in storage.');
