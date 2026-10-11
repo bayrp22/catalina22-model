@@ -2,13 +2,14 @@ from pathlib import Path
 import base64,json,zipfile,re
 root=Path(__file__).parent
 p=root/'dist'
-mods={'three':'vendor/three.module.js','orbit-controls':'vendor/OrbitControls.js','gltf-exporter':'vendor/GLTFExporter.js','texture-utils':'vendor/TextureUtils.js','boat-model':'model.js'}
-replace={"'./vendor/three.module.js'":"'three'","'./three.module.js'":"'three'","'./vendor/OrbitControls.js'":"'orbit-controls'","'./vendor/GLTFExporter.js'":"'gltf-exporter'","'./TextureUtils.js'":"'texture-utils'","'./model.js'":"'boat-model'"}
+mods={'three':'vendor/three.module.js','orbit-controls':'vendor/OrbitControls.js','gltf-exporter':'vendor/GLTFExporter.js','texture-utils':'vendor/TextureUtils.js','boat-model':'model.js','inventory-data':'inventory-data.js','inventory-ui':'inventory.js'}
+replace={"'./vendor/three.module.js'":"'three'","'./three.module.js'":"'three'","'./vendor/OrbitControls.js'":"'orbit-controls'","'./vendor/GLTFExporter.js'":"'gltf-exporter'","'./TextureUtils.js'":"'texture-utils'","'./model.js'":"'boat-model'","'./inventory-data.js'":"'inventory-data'","'./inventory.js'":"'inventory-ui'"}
 def norm(s):
  for a,b in replace.items():s=s.replace(a,b)
  return s
 mapping={name:'data:text/javascript;base64,'+base64.b64encode(norm((p/path).read_text()).encode()).decode() for name,path in mods.items()}
 html=(p/'index.html').read_text().replace('<link rel="stylesheet" href="style.css">','<style>'+(p/'style.css').read_text()+'</style>')
+html=html.replace('<link rel="stylesheet" href="inventory.css">','<style>'+(p/'inventory.css').read_text()+'</style>')
 html=html.replace('<script type="module" src="app.js"></script>','<script type="importmap">'+json.dumps({'imports':mapping})+'</script><script type="module">'+norm((p/'app.js').read_text())+'</script>')
 # Standalone export links use embedded bytes so the downloaded file works without the server.
 glb=(p/'downloads/Catalina22_Original.glb').read_bytes();html=html.replace('href="downloads/Catalina22_Original.glb"','href="data:model/gltf-binary;base64,'+base64.b64encode(glb).decode()+'"')
