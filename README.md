@@ -17,7 +17,9 @@ Open http://localhost:8000 . The server binds to your own computer. For an offli
 
 ## Multi-page project library
 
-The owner-facing [Catalina 22 project library](/project/) is an independent multi-page reference site. The home view is now a clean table of contents. **3D Model** navigates directly to the existing full-page viewer at `/`. Separate 2D Plans, Inventory & Manuals, Systems, Mast & Sails and References pages provide the indexed documentation without embedding the 3D model or publishing owner-specific records.
+The owner-facing [Catalina 22 project library](/project/) is an independent multi-page reference site. The home view is now a clean table of contents. **3D Model** navigates directly to the existing full-page viewer at `/`. Separate Inventory & Manuals, Systems & Schematics, Mast & Sails and References pages provide the indexed documentation without embedding the 3D model or publishing owner-specific records.
+
+The retired 2D Plans route and navigation have been deleted. The full 3D viewer now contains a separate provisional bracket, outboard, 12 L tank and illustrative hose; factory geometry and reference GLB remain unchanged. The motor is a 15 HP reference despite the 1977 Catalina recommendation of 3–6 HP. **Structural/installation approval is outstanding.**
 
 The inventory dossiers and outstanding checks are loaded from a separate private owner JSON in the browser only. See [project index notes](docs/PROJECT-INDEX.md) and [inventory documentation](docs/INVENTORY.md).
 
