@@ -1,3 +1,13 @@
+## Unreleased — Multi-page project library and private inventory documentation
+
+- Replaced the previous single-page overview with a concise table of contents and independent pages.
+- Routed **3D Model** directly to the accepted full-page viewer in the same tab, removed the embedded preview and hidden the redundant fullscreen control.
+- Removed the owner-irrelevant Deliverables / Private Files section.
+- Added dedicated 2D Plans, Inventory & Manuals, Systems & Schematics, Mast & Sails, and References routes.
+- Added an in-memory private JSON inventory dossier with 20 recorded devices/assemblies, 4 proposed fit-out elements and 14 owner-only verification checks in the separately supplied private file; no actual boat data committed.
+- Linked verified public manufacturer manual sources and retained the mast-raising/sail-setup video library.
+- Extended CI checks for navigation, privacy boundaries and project-library script syntax. Accepted geometry remains unchanged.
+
 # Change log
 
 ## 2026-10-11 — Private inventory intake preparation
