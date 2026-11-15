@@ -40,7 +40,7 @@ assert(inv.includes('www.globalsuzuki.com/marine/'),'Suzuki model support missin
 assert(inv.includes('www8.garmin.com/manuals'),'Garmin manual missing');
 assert((inv.match(/class="equipment-line"/g)||[]).length>=25,'Too few populated equipment references');
 assert((inv.match(/class="equipment-category"/g)||[]).length===6,'Expected six organized equipment groups');
-assert(!inv.includes('IMG_9079')&&!inv.includes('serial number'),'Owner-only evidence must not be published');
+assert(!inv.includes('IMG_9079')&&!inv.includes('EL-001')&&!inv.includes('PROP-001'),'Owner-only inventory IDs or evidence must not be published');
 
 assert(viewer.includes('href="/project/"'),'3D viewer must link back to contents');
 assert(viewer.includes('id="focusPropulsion"'),'3D propulsion review control missing');
