@@ -1,29 +1,168 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Inventory & Manuals | Catalina 22 Restoration Library</title><meta name="description" content="Private working inventory, equipment documentation, manuals, and outstanding verification checks"><link rel="stylesheet" href="/project/project.css"></head><body>
-<header><div class="shell top"><a href="/project/" class="brand">Catalina <em>22</em><small>Restoration / project library</small></a><nav class="nav" aria-label="Project pages"><a href="/project/" >Contents</a><a href="/" >3D Model</a><a href="/project/inventory/" aria-current="page">Inventory</a><a href="/project/systems/" >Systems</a><a href="/project/rigging/" >Mast & Sails</a><a href="/project/references/" >References</a></nav></div></header>
-<main class="shell" id="inventoryShell">
-<div class="pagehead"><div><div class="eyebrow">03 / Equipment documentation</div><h1>Inventory & manuals.</h1></div><p>Every recorded device, model reference, planned location, manual and outstanding verification in one searchable index.</p></div>
-<div class="card"><div class="eyebrow">Owner-only inventory · loaded locally</div><h3 style="margin:8px 0 6px">Open the boat's inventory file</h3><p>Select the private Catalina 22 JSON. The details remain in your browser; this page does not upload equipment records or save them on a server.</p>
-<div class="inv-toolbar"><label for="inventoryFile" class="button alt">Choose private inventory JSON</label><input type="file" id="inventoryFile" accept=".json,application/json"><button id="inventoryExport" type="button" disabled>Export updated inventory JSON</button><button id="inventoryClear" type="button" disabled style="background:transparent;color:var(--ink);border-color:var(--line)">Clear</button><small id="inventoryMessage" role="status">No inventory loaded. Open the owner JSON to display the 20 photographed records and proposed equipment.</small></div>
-</div>
-<div class="inv-stats"><div class="inv-stat"><strong id="invCount">—</strong><small>Items & proposals</small></div><div class="inv-stat"><strong id="invDocsCount">—</strong><small>Manuals & links</small></div><div class="inv-stat"><strong id="invOpenCount">—</strong><small>Pending checks</small></div></div>
-<section class="section" aria-label="Equipment records"><div class="sectionhead"><div><div class="eyebrow">Inventory register</div><h2>Identified equipment</h2></div><a class="button alt" href="/">Inspect equipment in 3D →</a></div>
-<div class="inv-filters"><input id="inventorySearch" type="search" placeholder="Search equipment, model, system or status…" aria-label="Search equipment"><select id="inventorySystem" aria-label="Filter system"><option value="">All systems</option></select></div>
-<div class="inv-layout"><div class="inv-list" id="inventoryRows"><p class="inv-empty">Import the owner JSON to see the private equipment list. The repository contains only the viewer and documentation interface.</p></div><article class="inv-detail" id="inventoryDetail" aria-live="polite"><div class="eyebrow">Equipment dossier</div><h3>Select an item</h3><p class="muted">Once imported, select any record for identity, observations, placement, mass, sources, documentation and missing information.</p></article></div></section>
-<section class="section" aria-label="Pending inspections" style="border-top:1px solid var(--line);padding-top:32px"><div class="sectionhead"><div><div class="eyebrow">Inspection & verification queue</div><h2>Still to clarify</h2></div><span class="pill warn">Not owner-signed-off</span></div><p class="sub">This is the outstanding-items checklist supplied with the private inventory. Marking a check does not prove inspection; export your updated file for formal review.</p><div class="inv-checks" id="inventoryMissing"><p class="inv-empty">Open the owner JSON to view the missing tank, battery, wiring, motor, rigging and safety questions.</p></div></section>
-<section class="section" style="border-top:1px solid var(--line);padding-top:32px"><div class="sectionhead"><div><div class="eyebrow">Manuals & technical instructions</div><h2>Manufacturer reference desk</h2></div></div>
-<p class="sub">These are general product-documentation sources, not evidence that any specific component is installed. The imported inventory attaches the relevant references to each identified device.</p>
-<div class="grid">
-<div class="card c6"><h3>Navigation and communications</h3>
-<div class="source"><div><strong>Garmin ECHOMAP UHD2</strong><small>Factory installation / transducer wiring</small></div><a target="_blank" rel="noopener" href="https://www8.garmin.com/manuals/webhelp/GUID-B4327979-40C0-487D-8117-A36D7AD0FA51/EN-US/ECHOMAP_UHD2_6_7_9xsv_%28Touch%29_Install_EN-US.pdf">PDF ↗</a></div>
-<div class="source"><div><strong>Uniden UM725 series</strong><small>Factory operating instructions</small></div><a target="_blank" rel="noopener" href="https://www.uniden.info/download/ompdf/UM725om.pdf">PDF ↗</a></div>
-<div class="source"><div><strong>Ritchie compass</strong><small>Model family instructions / installation</small></div><a target="_blank" rel="noopener" href="https://www.ritchienavigation.com/compass-manuals-addendums/">Manuals ↗</a></div></div>
-<div class="card c6"><h3>Electrical and propulsion</h3>
-<div class="source"><div><strong>Renogy Rover Li series</strong><small>20 A MPPT charge-controller manual</small></div><a target="_blank" rel="noopener" href="https://www.renogy.com/content/RNG-CTRL-RVR20/RVR203040-Manual.pdf">PDF ↗</a></div>
-<div class="source"><div><strong>Suzuki Marine</strong><small>Owners/service manuals: select by engine prefix and serial</small></div><a target="_blank" rel="noopener" href="https://www.suzukimarine.com/technical-manual-library/">Library ↗</a></div>
-<div class="source"><div><strong>15 HP outboard class specifications</strong><small>Reference weight, shaft choices and standard external 12 L fuel tank</small></div><a target="_blank" rel="noopener" href="https://www.globalsuzuki.com/marine/lineup/df20a-15a-9_9b/index.html">Suzuki ↗</a></div>
-<div class="source"><div><strong>12 L portable fuel tank</strong><small>OEM-type tank; representative 363 × 265 × 230 mm external dimensions, exact connection must match engine</small></div><a target="_blank" rel="noopener" href="https://www.suzuki.ca/product/fuel-tank/">Tank ↗</a></div>
-<div class="source"><div><strong>BOSS marine audio</strong><small>Receiver manuals and wiring instructions</small></div><a target="_blank" rel="noopener" href="https://bossaudio.com/collections/marine/products/791489124300">Manuals ↗</a></div></div></div>
-<p class="callout" style="margin-top:17px">Reference outboard and 12 L tank are included as provisional objects in the 3D viewer. Their mounting, storage and fuel system are not approved. The 1977 Catalina manual recommends 3–6 HP, not 15 HP: inspect the transom and bracket professionally before operation. Manuals must match the exact engine revision and tank connector.</p></section>
-</main><footer><div class="shell">CATALINA 22 / OWNER INVENTORY · Private source records are opened in-browser, not committed to the public repository. No physical inspection is implied by catalog entry.</div></footer>
-<script src="/project/project.js" defer></script>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Equipment & Manuals | Catalina 22</title><meta name="description" content="Catalina 22 equipment and reference manuals, straightforward device-by-device documentation."><link rel="stylesheet" href="/project/project.css"></head><body>
+<header><div class="shell top"><a href="/project/" class="brand">Catalina <em>22</em><small>Restoration / project library</small></a><nav class="nav" aria-label="Project pages"><a href="/project/">Contents</a><a href="/">3D Model</a><a href="/project/inventory/" aria-current="page">Inventory</a><a href="/project/rigging/">Mast & Sails</a><a href="/project/references/">References</a></nav></div></header>
+<main class="shell">
+<div class="pagehead"><div><div class="eyebrow">Equipment reference / owner library</div><h1>Inventory & manuals.</h1></div><p>A straightforward reference for identified boat equipment and planned additions. Product documents open directly; details still requiring inspection are noted alongside each item.</p></div>
+<div class="equipment-intro"><p>Equipment identified through the restoration review is grouped by function. This page contains general model and manual references only—no private photographs, serial numbers or measured installation coordinates.</p><a href="/">View equipment in 3D <span aria-hidden="true">↗</span></a></div>
+<section class="equipment-category" id="category-01">
+<div class="equipment-category-head"><span class="equipment-index">01</span><h2>Navigation &amp; communication</h2></div>
+<div class="equipment-list">
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Garmin ECHOMAP UHD2 63sv</h3><p>Chartplotter and sonar display</p></div>
+<div class="equipment-context">Installation position and wiring require final confirmation.</div>
+<div class="equipment-links"><a href="https://www8.garmin.com/manuals/webhelp/GUID-B4327979-40C0-487D-8117-A36D7AD0FA51/EN-US/ECHOMAP_UHD2_6_7_9xsv_%28Touch%29_Install_EN-US.pdf" target="_blank" rel="noopener noreferrer">Installation PDF <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Garmin GT54-TM</h3><p>Sonar transducer in chartplotter package</p></div>
+<div class="equipment-context">Confirm the exact transducer is present and determine the mounting point.</div>
+<div class="equipment-links"><a href="https://support.garmin.com/en-GB/?identifier=660816&amp;tab=manuals" target="_blank" rel="noopener noreferrer">Installation guidance <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Uniden UM725G</h3><p>Fixed marine VHF radio with GPS / DSC</p></div>
+<div class="equipment-context">Verify antenna, coax, power supply and MMSI configuration.</div>
+<div class="equipment-links"><a href="https://www.uniden.info/download/ompdf/UM725om.pdf" target="_blank" rel="noopener noreferrer">Owner’s manual <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Ritchie Helmsman HF-743</h3><p>Illuminated magnetic compass</p></div>
+<div class="equipment-context">Mounting position remains unselected; confirm magnetic clearances.</div>
+<div class="equipment-links"><a href="https://www.ritchienavigation.com/compass-manuals-addendums/" target="_blank" rel="noopener noreferrer">Compass instructions <span aria-hidden="true">↗</span></a></div>
+</article>
+</div></section>
+<section class="equipment-category" id="category-02">
+<div class="equipment-category-head"><span class="equipment-index">02</span><h2>Electrical &amp; power</h2></div>
+<div class="equipment-list">
+<article class="equipment-line">
+<div class="equipment-primary"><h3>HIXIMI LiFePO₄ 12 V · 100 Ah</h3><p>Bluetooth lithium house battery</p></div>
+<div class="equipment-context">Exact SKU, BMS specifications and battery instructions have not been confirmed.</div>
+<div class="equipment-links"><span class="no-manual">Manual / model still to identify</span></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Renogy Rover 20 A MPPT</h3><p>Solar charging controller · RNG-CTRL-RVR20</p></div>
+<div class="equipment-context">Solar input hardware and lithium charging parameters need verification.</div>
+<div class="equipment-links"><a href="https://www.renogy.com/content/RNG-CTRL-RVR20/RVR203040-Manual.pdf" target="_blank" rel="noopener noreferrer">Rover manual PDF <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Existing 12 V switch / fuse panel</h3><p>Legacy electrical distribution</p></div>
+<div class="equipment-context">Original circuit routing and replacement design remain undocumented.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1987-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Original Catalina electrical reference <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>New DC distribution panel</h3><p>Replacement electrical panel · proposed</p></div>
+<div class="equipment-context">Model, breakers, cable gauges and circuit schedule are still to be selected.</div>
+<div class="equipment-links"><span class="no-manual">Manual / model still to identify</span></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Solar panel and charging wiring</h3><p>Charging source · not yet documented</p></div>
+<div class="equipment-context">Panel model, output rating, fuses and cable lengths are unknown.</div>
+<div class="equipment-links"><a href="https://www.renogy.com/content/RNG-CTRL-RVR20/RVR203040-Manual.pdf" target="_blank" rel="noopener noreferrer">Renogy controller manual <span aria-hidden="true">↗</span></a></div>
+</article>
+</div></section>
+<section class="equipment-category" id="category-03">
+<div class="equipment-category-head"><span class="equipment-index">03</span><h2>Engine &amp; fuel</h2></div>
+<div class="equipment-list">
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Suzuki DF15A</h3><p>15 HP four-stroke outboard</p></div>
+<div class="equipment-context">Engine was documented off the boat. Exact shaft/start variant and transom compatibility require inspection; the original manual recommends a smaller motor.</div>
+<div class="equipment-links"><a href="https://www.globalsuzuki.com/marine/lineup/df20a-15a-9_9b/index.html" target="_blank" rel="noopener noreferrer">Suzuki engine specifications <span aria-hidden="true">↗</span></a><a href="https://www.suzukimarine.com/technical-manual-library/" target="_blank" rel="noopener noreferrer">Technical manual library <span aria-hidden="true">↗</span></a><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Original Catalina guidance <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>External outboard mounting bracket</h3><p>Transom motor bracket / platform · proposed</p></div>
+<div class="equipment-context">The 3D bracket is illustrative and unrated. Reinforcement, dynamic load capacity and clearance must be verified.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Catalina factory reference <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Suzuki-style 12 L portable fuel tank</h3><p>Representative external gasoline tank · proposed</p></div>
+<div class="equipment-context">Example OEM family 65000-89L10; actual tank, connector, venting and approved storage position have not been established.</div>
+<div class="equipment-links"><a href="https://www.suzuki.ca/product/fuel-tank/" target="_blank" rel="noopener noreferrer">Suzuki tank reference <span aria-hidden="true">↗</span></a><a href="https://www.globalsuzuki.com/marine/lineup/df20a-15a-9_9b/index.html" target="_blank" rel="noopener noreferrer">Suzuki motor specifications <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Fuel hose, primer &amp; connectors</h3><p>Detachable external gasoline supply · proposed</p></div>
+<div class="equipment-context">Physical components, hose routing and leak-safe storage have not been inspected.</div>
+<div class="equipment-links"><a href="https://www.suzukimarine.com/technical-manual-library/" target="_blank" rel="noopener noreferrer">Suzuki reference <span aria-hidden="true">↗</span></a></div>
+</article>
+</div></section>
+<section class="equipment-category" id="category-04">
+<div class="equipment-category-head"><span class="equipment-index">04</span><h2>Audio</h2></div>
+<div class="equipment-list">
+<article class="equipment-line">
+<div class="equipment-primary"><h3>BOSS MR632UAB</h3><p>Marine Bluetooth / AM-FM receiver · MCK632WB.64 kit</p></div>
+<div class="equipment-context">Mounting position and electrical supply protection need confirmation.</div>
+<div class="equipment-links"><a href="https://bossaudio.com/collections/marine/products/791489124300" target="_blank" rel="noopener noreferrer">Manuals and product documents <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>BOSS marine speaker set</h3><p>Speaker set supplied with stereo kit</p></div>
+<div class="equipment-context">Individual speaker SKU, number and mounting locations require confirmation.</div>
+<div class="equipment-links"><a href="https://www.crutchfield.com/p_104M632W4/Boss-MCK632WB-64.html" target="_blank" rel="noopener noreferrer">Kit reference <span aria-hidden="true">↗</span></a></div>
+</article>
+</div></section>
+<section class="equipment-category" id="category-05">
+<div class="equipment-category-head"><span class="equipment-index">05</span><h2>Rigging, sails &amp; deck</h2></div>
+<div class="equipment-list">
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Rudder and tiller hardware</h3><p>Steering assembly and stern attachment fittings</p></div>
+<div class="equipment-context">Inspect blade, pintles, gudgeons, fasteners and retention.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Factory reference <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Stern boarding ladder</h3><p>Transom access and swim ladder</p></div>
+<div class="equipment-context">Check hinges, backing plates and operation from the water.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1987-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Factory reference <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Aluminum spar / boom</h3><p>Loose spar section, tentatively identified as boom</p></div>
+<div class="equipment-context">Check identification, dimensions, gooseneck and fittings.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Mast and boom instructions <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Running rigging and blocks</h3><p>Lines, sheets, halyards and deck leads</p></div>
+<div class="equipment-context">Inventory line sizes, lengths, routing and wear.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Catalina rigging reference <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>White Catalina 22 mainsail</h3><p>Mainsail with original-design class markings</p></div>
+<div class="equipment-context">Measure and inspect cloth, slides, battens and reef points.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Sail setup manual <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>HOOD-branded white sail</h3><p>Additional loose white sail</p></div>
+<div class="equipment-context">Confirm whether jib, genoa or a duplicate sail; dimensions unknown.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1987-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Sail rigging reference <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Multicolored lightweight sail</h3><p>Loose downwind sail, potentially spinnaker</p></div>
+<div class="equipment-context">Identify type, rigging compatibility and condition.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Class sailing reference <span aria-hidden="true">↗</span></a></div>
+</article>
+</div></section>
+<section class="equipment-category" id="category-06">
+<div class="equipment-category-head"><span class="equipment-index">06</span><h2>Interior &amp; fit-out</h2></div>
+<div class="equipment-list">
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Interior wood lining and cabinetry</h3><p>Refurbished joinery and cabin panels</p></div>
+<div class="equipment-context">Materials, attachments and mass additions require inspection.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Factory interior arrangement <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Marine toilet / head</h3><p>Existing toilet fitting</p></div>
+<div class="equipment-context">Manufacturer, waste arrangement and hose routing not identified.</div>
+<div class="equipment-links"><span class="no-manual">Manual / model still to identify</span></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Cockpit and cabin lockers</h3><p>Storage spaces, hatches and covers</p></div>
+<div class="equipment-context">Inspect seals, drainage, fastening and moisture.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Original arrangement reference <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Dual-facing navigation / VHF dashboard</h3><p>Custom dashboard housing · proposed</p></div>
+<div class="equipment-context">Exact enclosure, weather sealing and mounting supports still to be designed.</div>
+<div class="equipment-links"><a href="https://www8.garmin.com/manuals/webhelp/GUID-B4327979-40C0-487D-8117-A36D7AD0FA51/EN-US/ECHOMAP_UHD2_6_7_9xsv_%28Touch%29_Install_EN-US.pdf" target="_blank" rel="noopener noreferrer">Garmin mounting guidance <span aria-hidden="true">↗</span></a><a href="https://www.uniden.info/download/ompdf/UM725om.pdf" target="_blank" rel="noopener noreferrer">Uniden manual <span aria-hidden="true">↗</span></a></div>
+</article>
+<article class="equipment-line">
+<div class="equipment-primary"><h3>Slide-out kitchenette and seating</h3><p>Starboard aft interior layout · proposed</p></div>
+<div class="equipment-context">Design of slide mechanism, restraint, seat structure and clearances remains open.</div>
+<div class="equipment-links"><a href="https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf" target="_blank" rel="noopener noreferrer">Factory interior reference <span aria-hidden="true">↗</span></a></div>
+</article>
+</div></section>
+<p class="equipment-disclaimer">Reference inventory, not an installation certificate. Proposed components are not confirmed aboard. Verify exact revisions, safe loading, fuel handling and electrical installation against the physical boat and manufacturer documentation.</p>
+</main>
+<footer><div class="shell">CATALINA 22 · RESTORATION REFERENCE LIBRARY · Technical documentation should be verified for exact part variant before installation.</div></footer>
 </body></html>
