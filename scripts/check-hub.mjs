@@ -28,7 +28,7 @@ const inv=p('inventory');
 assert(inv.includes('id="inventoryFile"')&&inv.includes('id="inventoryRows"')&&inv.includes('id="inventoryMissing"'),'Inventory dossier sections missing');
 assert(inv.includes('www.uniden.info/download/ompdf/UM725om.pdf'),'Product manuals must be linked');
 assert(js.includes("catalina22-inventory-layer")&&js.includes('docsFor('),'Missing private JSON / manual processing');
-assert(js.includes('URL.createObjectURL(f)')&&js.includes('downloadJSON('),'Local import/export must be present');
+assert(js.includes("inventoryInput.addEventListener('change'")&&js.includes('downloadJSON('),'Private JSON import/export must be present');
 assert(!js.includes('fetch(')&&!js.includes('localStorage'),'Private inventory must not upload or persist on server or browser automatically');
 const rig=p('rigging');
 for(const id of ['C5WdqdlB8Nc','l81rwc6-8SM','eiuZQyS6eXM'])assert(rig.includes('data-video="'+id+'"'),'Rigging video missing: '+id);
