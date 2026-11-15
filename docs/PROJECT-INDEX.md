@@ -21,7 +21,7 @@ Note that Netlify's visitor-password control applies to site visitors but **does
 - 1987 Catalina 22 manual: https://www.catalina22.org/documents/files_pdf/1987-owner_manual.pdf
 - Mast stepping written reference: https://22catalina.com/2012/01/15/55/
 - C22 class technical manual: https://www.catalina22.org/index.php/technical-manual
-- Two independent Catalina 22 mast-raising demonstrations: https://www.youtube.com/watch?v=C5WdqdlB8Nc and https://www.youtube.com/watch?v=l81rwc6-8SM
+- Two independent Catalina 22 mast-raising demonstrations: https://www.youtube.com/watch?v=C5WdqdlB8Nc and https://www.youtube.com/watch?v=l81rwc6-8SM\n- A Catalina 22 mainsail and jib hoist example (observe, do not treat as official instruction): https://www.youtube.com/watch?v=eiuZQyS6eXM
 
 **Factory documents take precedence over informal videos**. Do not use the manual or video in place of inspecting this hull's mast-step/tabernacle, rigging, chainplates, hardware and nearby electrical hazards. The actual year and modifications are unknown. The mast, shrouds, stays, headsail hardware and sail condition must be inspected before setup.
 
