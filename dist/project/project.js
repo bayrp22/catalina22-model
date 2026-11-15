@@ -4,19 +4,6 @@ const $=id=>document.getElementById(id);
 const safeURL=u=>{try{const p=new URL(String(u));return ['https:','http:'].includes(p.protocol)?p.href:null}catch{return null}};
 const make=(tag,value='',className='')=>{const e=document.createElement(tag);e.textContent=String(value??'');if(className)e.className=className;return e;};
 function downloadJSON(data,name){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),15000);}
-function setupLocalPreview(fileId,viewId,acceptPdf){
- const fileInput=$(fileId),view=$(viewId);if(!fileInput||!view)return;
- fileInput.addEventListener('change',()=>{
-  const f=fileInput.files?.[0];if(!f)return;
-  if(f.size>40000000){alert('Local preview limit is 40 MB.');return}
-  const isAllowed=acceptPdf?f.type==='application/pdf'||/\.pdf$/i.test(f.name):f.type.startsWith('image/');
-  if(!isAllowed){alert('Select a supported file.');return}
-  if(view.dataset.objectUrl)URL.revokeObjectURL(view.dataset.objectUrl);
-  const u=URL.createObjectURL(f);view.dataset.objectUrl=u;view.src=u;view.classList.add('on');
- });
-}
-setupLocalPreview('planFile','planImage',false);
-// The former deliverables/private-documents section is intentionally removed.
 const player=$('videoPanel');
 if(player){
  const links=$('youtubeOpen'),buttons=[...document.querySelectorAll('.videoChoice')];
