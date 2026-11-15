@@ -1,3 +1,11 @@
+## Unreleased — Simplified owner inventory and removed Systems page
+
+- Replaced the import-first inventory screen with a populated, static list of 27 equipment/reference topics in six categories, each with manuals and verification notes.
+- Removed all inventory JSON upload/export controls, status widgets, empty inspector panels and obsolete private-data client code.
+- Deleted the Systems & Schematics route and removed its navigation and table-of-contents links.
+- Kept the 3D viewer, its separate provisional propulsion shapes, mast setup and references intact.
+- Protected owner-only photographs, serials, catalog IDs and exact locations from public source. Updated CI checks for simpler owner navigation.
+
 ## Unreleased — 3D auxiliary propulsion and retirement of 2D page
 
 - Deleted `dist/project/plans/index.html` and removed the 2D Plans links, script and drawing preview styles.
