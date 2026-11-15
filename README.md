@@ -15,11 +15,16 @@ npm run dev
 
 Open http://localhost:8000 . The server binds to your own computer. For an offline copy, open `dist/downloads/Catalina22_Viewer_Offline.html` directly in a modern WebGL 2 browser.
 
+## Unified project index
+
+The companion [restoration project index](/project/) is available at `/project/` on the Netlify site. It links the accepted 3D viewer, an illustrative 2D arrangement, system review diagrams, externally hosted factory manuals, mast-raising video player, and local-only import controls for the private owner PDF and annotated layout. See [project index notes](docs/PROJECT-INDEX.md). No owner-specific inventory data or private media is bundled.
+
 ## Documentation
 
 | Guide | Purpose |
 | --- | --- |
 | [Using the viewer](docs/USING.md) | Camera, layers, selection, moving parts and exports |
+| [Project index](docs/PROJECT-INDEX.md) | Unified dashboard, references, rigging research and local document handling |
 | [Editing carefully](docs/EDITING.md) | Scope, measurement workflow, code locations and release checks |
 | [Accuracy and measurements](docs/ACCURACY.md) | Published dimensions, inferred geometry and measurement records |
 | [Netlify and Git](docs/DEPLOYMENT.md) | Build configuration, review workflow, deployment and recovery |
