@@ -2,7 +2,7 @@ import fs from 'node:fs';import assert from 'node:assert/strict';
 const page=fs.readFileSync('dist/project/index.html','utf8'),viewer=fs.readFileSync('dist/index.html','utf8');
 for(const id of ['model','plans','systems','rigging','documents','references']) assert(page.includes('id="'+id+'"'),'Missing section '+id);
 assert(page.includes('https://www.youtube-nocookie.com/embed/'),'Missing deferred YouTube player');
-assert(page.includes('C5WdqdlB8Nc')&&page.includes('l81rwc6-8SM'),'Missing Catalina 22 video options');
+assert(page.includes('C5WdqdlB8Nc')&&page.includes('l81rwc6-8SM')&&page.includes('eiuZQyS6eXM'),'Missing Catalina 22 video options');
 assert(page.includes('type="file"')&&page.includes('URL.createObjectURL(f)'),'Missing browser-local file viewing');
 assert(page.includes('1977-owner_manual.pdf')&&page.includes('1987-owner_manual.pdf'),'Missing factory manuals');
 assert(page.includes('src="/"')&&viewer.includes('href="/project/"'),'Hub and viewer navigation must be connected');
