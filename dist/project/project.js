@@ -47,6 +47,8 @@ const manualFallbacks=[
  [/hf-743|ritchie/i,{title:'Ritchie compass manuals',url:'https://www.ritchienavigation.com/compass-manuals-addendums/'}],
  [/mr632|boss|mck632/i,{title:'BOSS marine receiver manuals',url:'https://bossaudio.com/collections/marine/products/791489124300'}],
  [/df15a|suzuki/i,{title:'Suzuki technical manual library (match engine prefix & serial)',url:'https://www.suzukimarine.com/technical-manual-library/'}],
+ [/portable.*tank|12.?l.*tank|65000-89L10|fuel tank/i,{title:'Suzuki 12 L portable tank specifications (compatibility needs verification)',url:'https://www.suzuki.ca/product/fuel-tank/'}],
+ [/mount.*bracket|transom.*bracket|motor.*platform/i,{title:'1977 Catalina 22 engine/bracket guidance (3–6 HP recommended)',url:'https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf'}],
  [/catalina|mast|boom|mainsail|hood|rigging|spinnaker/i,{title:'1977 Catalina 22 factory manual',url:'https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf'}]
 ];
 const entries=()=>current?[...current.catalog.map(r=>({item:r,proposal:false})),...(current.placementProposals||[]).map(r=>({item:r,proposal:true}))]:[];
