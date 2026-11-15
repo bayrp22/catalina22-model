@@ -15,9 +15,11 @@ npm run dev
 
 Open http://localhost:8000 . The server binds to your own computer. For an offline copy, open `dist/downloads/Catalina22_Viewer_Offline.html` directly in a modern WebGL 2 browser.
 
-## Unified project index
+## Multi-page project library
 
-The companion [restoration project index](/project/) is available at `/project/` on the Netlify site. It links the accepted 3D viewer, an illustrative 2D arrangement, system review diagrams, externally hosted factory manuals, mast-raising video player, and local-only import controls for the private owner PDF and annotated layout. See [project index notes](docs/PROJECT-INDEX.md). No owner-specific inventory data or private media is bundled.
+The owner-facing [Catalina 22 project library](/project/) is an independent multi-page reference site. The home view is now a clean table of contents. **3D Model** navigates directly to the existing full-page viewer at `/`. Separate 2D Plans, Inventory & Manuals, Systems, Mast & Sails and References pages provide the indexed documentation without embedding the 3D model or publishing owner-specific records.
+
+The inventory dossiers and outstanding checks are loaded from a separate private owner JSON in the browser only. See [project index notes](docs/PROJECT-INDEX.md) and [inventory documentation](docs/INVENTORY.md).
 
 ## Documentation
 
