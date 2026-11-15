@@ -1,62 +1,44 @@
-# Catalina 22 — Multi-page project library
+# Catalina 22 — Owner reference library
 
-The owner-facing reference site is an independent multi-page project workspace. Its **table of contents** is at `/project/`. The original accepted Three.js model remains at `/`; clicking **3D Model** in the navigation uses a normal same-tab link directly to the full existing viewer, with no embedded iframe or launch dialog.
+The owner-facing project index is at `/project/`. It contains **four independent destinations**:
 
-| Navigation | URL | Purpose |
+| Destination | Path | Purpose |
 | --- | --- | --- |
-| Contents | `/project/` | Clean, clickable table of contents |
-| 3D Model | `/` | Full-page existing Three.js model |
-| Inventory | `/project/inventory/` | Private catalog importer, equipment dossiers, manufacturer manuals, outstanding checks |
-| Systems | `/project/systems/` | Provisional 12V charging, distribution and fuel/propulsion concepts |
-| Mast & Sails | `/project/rigging/` | Catalina 22 setup guidance, checklists and YouTube demonstrations |
-| References | `/project/references/` | Original Catalina and manufacturer source library |
+| Contents | `/project/` | Clean table of contents |
+| 3D Model | `/` | Existing full-page model, with optional provisional outboard, bracket, hose and tank overlay |
+| Inventory & Manuals | `/project/inventory/` | Simple pre-populated catalogue of 27 equipment and reference topics with documentation links and what still needs checking |
+| Mast & Sails | `/project/rigging/` | Factory rigging guidance, checks, Catalina 22-specific videos |
+| References | `/project/references/` | Original factory and manufacturer source links |
 
-The previous embedded 3D model, the **2D Plans** page (including its route and navigation) and the **Deliverables / Private Files** section have been removed. The existing 3D viewer links back to Contents and its optional fullscreen toggle is hidden; the viewer itself uses its complete standalone page.
+The formerly requested **2D Plans**, **Systems & Schematics** and **Deliverables / Private Files** pages have all been deleted. There are no dead navigation links to them. `3D Model` navigates directly to the existing standalone viewer in the same tab; no embedded preview or extra fullscreen launch control.
 
-## Private inventory and documentation
+## Inventory page design
 
-The Inventory page is deliberately blank until the owner opens the **separate private** `catalina22-inventory-layer` v1 JSON. It displays all catalog records and proposed elements, details, mass/placement information where documented, photo/video evidence labels, manual links and manufacturer references. It also renders the imported `outstanding` unresolved-check list, supports checking issues for further review, and exports the updated JSON locally. The separately updated private owner file has 20 photographed catalog entries, 6 fit-out proposals (including the reference tank and external bracket) and 15 open verification items; **none of these are embedded in Git or Netlify assets**.
+The equipment page intentionally opens already populated. There are **no** user-facing file pickers, JSON import/export actions, blank state, filters, dashboards or private evidence screens. Each item is one compact line with:
+- manufacturer and model where known;
+- the functional description;
+- the main remaining verification issue;
+- one or more externally hosted manuals, product guides or general manufacturer resources where available.
 
-Public code contains general manufacturer manual URLs as a reference desk, but no user-specific record IDs, positions, photographs, file IDs or serials. A manual link is not proof of installation or of compatibility with this hull. The fuel-tank model and Suzuki engine variant must be verified separately.
+Items are organized under navigation/communications, electrical/power, engine/fuel, audio, rigging/sails/deck, and interior/fit-out. All known topics from the photo catalog and subsequent proposal review are represented; some assemblies and replacement candidates are listed separately. A line is a *technical reference*, not evidence of current installation.
 
-Privacy: imported JSON is handled in browser memory; there is no server fetch, storage API, form submission, backend, cloud persistence, or automatic localStorage. Changes must be exported before refresh. A Netlify site password does not protect a public GitHub repository; owner-specific records remain separate.
+Because this GitHub repository is **public**, the page includes public-facing product categories and already-discussed manufacturer references only. It does **not** contain the owner's separate private inventory JSON, photographs, frame timestamps, serials, exact 3D placements, unique IDs or vessel-specific weight records. No server upload or browser local storage is involved. The private detailed inventory still exists separately for restoration work.
 
-## Manuals and method references
+## Propulsion overlay
 
-- Catalina 1977: https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf
-- Catalina 1987: https://www.catalina22.org/documents/files_pdf/1987-owner_manual.pdf
-- Catalina 22 mast stepping: https://22catalina.com/2012/01/15/55/
-- C22 technical manual: https://www.catalina22.org/index.php/technical-manual
-- Mast-raising videos: https://www.youtube.com/watch?v=C5WdqdlB8Nc and https://www.youtube.com/watch?v=l81rwc6-8SM
-- Mainsail and jib example: https://www.youtube.com/watch?v=eiuZQyS6eXM
-- Garmin UHD2 install: https://www8.garmin.com/manuals/webhelp/GUID-B4327979-40C0-487D-8117-A36D7AD0FA51/EN-US/ECHOMAP_UHD2_6_7_9xsv_%28Touch%29_Install_EN-US.pdf
-- Renogy Rover Li: https://www.renogy.com/content/RNG-CTRL-RVR20/RVR203040-Manual.pdf
-- Uniden UM725G: https://www.uniden.info/download/ompdf/UM725om.pdf
-- Ritchie compass: https://www.ritchienavigation.com/compass-manuals-addendums/
-- BOSS MR632UAB: https://bossaudio.com/collections/marine/products/791489124300
-- Suzuki DF15A: https://www.suzukimarine.com/technical-manual-library/
+`dist/propulsion.js` creates a provisional reference-scale outboard, external transom bracket, 12 L portable tank and illustrative fuel hose independent of the accepted hull mesh. The original 19-part model remains geometry-regression protected. The current-view GLB includes visible provisional equipment, while the original factory-layout GLB remains unchanged.
 
-**Sources and videos are references, not a hull-specific engineering approval.** Inspect mast-step, standing rigging, electrical conductors, battery charging hardware, engine/transom bracket and fuel storage before operation.
+**Safety:** The 1977 Catalina 22 manual recommends 3–6 HP, while the reference outboard is Suzuki DF15A (15 HP). A real installation requires professional checking of transom strength, mount/bracket rating, fasteners, shaft height, tilting and rudder clearances. The fuel tank's illustrated staging position is not an approved storage location: confirm safe fuel handling, ventilation, fitting compatibility and leak protection.
 
-## Review / release
+## Rigging references
+- 1977 Catalina factory manual: https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf
+- 1987 Catalina manual: https://www.catalina22.org/documents/files_pdf/1987-owner_manual.pdf
+- Catalina 22 mast stepping write-up: https://22catalina.com/2012/01/15/55/
+- Mast demonstrations: https://www.youtube.com/watch?v=C5WdqdlB8Nc and https://www.youtube.com/watch?v=l81rwc6-8SM
+- Sail setup example: https://www.youtube.com/watch?v=eiuZQyS6eXM
 
-Run `npm run build` using pinned Node 24.19.0 and Python 3.13. `scripts/check-hub.mjs` asserts the page structure, no embedded 3D frame, direct 3D route, documentation links, local-only importer and source privacy. Browser smoke checks remain required:
+Video examples are supplemental and must not replace inspection of the actual mast-step, standing rigging, chainplates or weather/utility clearance.
 
-1. Check home contents and each independent navigation route on desktop and mobile.
-2. Click **3D Model** from any page; ensure full-page view and return via Contents without opening a new tab.
-3. Import private JSON, verify record/proposal counts and per-item manuals and missing items.
-4. Mark an unresolved item and export revised private JSON; confirm upload is not attempted.
-5. Confirm the rigging YouTube player and original manual references, and inspect 2D/system disclaimers.
-6. Confirm accepted boat geometry, slider interactions and original exports unchanged.
+## Review
 
-Do not merge without owner visual review. This is a documentation index, not an as-built, measured installation or a stability calculation.
-
-## Auxiliary propulsion — model and drawing coverage
-
-The 3D model now includes **four independent provisional scene groups** in `dist/propulsion.js`: transom mounting bracket/clamp board, generic 15 HP outboard, an approximately manufacturer-sized 12 L portable fuel tank and an illustrative hose. They are separately selectable and togglable through **Auxiliary propulsion · proposed**. A stern-focus control reveals them from the port side. The original accepted 19-part Catalina hull geometry, accepted hashes, original boat GLB and model-data dimensions are unchanged; the visible-view GLB export now adds the auxiliary groups, and the offline viewer bundles the additional JavaScript module.
-
-The engine family is represented with a documented overall reference envelope of ~662 × 336 × 1,220 mm (long-shaft example), and a **44–49 kg dry-weight range** across starting/shaft variants. No actual engine mass center is claimed. The reference portable tank is 12 L and ~363 × 265 × 230 mm, an OEM-compatible style; its actual presence, connector and safe location are unverified. The tank is shown on the aft port cockpit seat only for scale review, not as an approved stowage arrangement. Bracket plate geometry and hose routing are purely illustrative.
-
-**Important:** the 1977 Catalina 22 manual recommends 3–6 HP; the documented 15 HP engine must not be treated as compatible until the actual transom structure and bracket rating are inspected by a qualified marine professional. Manufacturer instructions and safe fuel storage/ventilation govern. The engine is photographed off-vessel, and this 3D model does not assert installation.
-
-Original sources: https://www.globalsuzuki.com/marine/lineup/df20a-15a-9_9b/index.html ; https://www.suzuki.ca/product/fuel-tank/ ; https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf . The owner-specific manufacturer/part records are maintained in separate exported JSON, not the public repository.
+Pinned Node 24.19.0 / Python 3 validation and Netlify preview checks must pass before release. The project index CI asserts that deleted routes are absent, manual list is present and has no uploads, the 3D model and propulsion overlay remain accessible and the rigging player still works. Browser and mobile visual review remain separate acceptance steps. Do not merge to production without owner review.
