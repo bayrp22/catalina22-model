@@ -15,13 +15,13 @@ npm run dev
 
 Open http://localhost:8000 . The server binds to your own computer. For an offline copy, open `dist/downloads/Catalina22_Viewer_Offline.html` directly in a modern WebGL 2 browser.
 
-## Multi-page project library
+## Owner project library
 
-The owner-facing [Catalina 22 project library](/project/) is an independent multi-page reference site. The home view is now a clean table of contents. **3D Model** navigates directly to the existing full-page viewer at `/`. Separate Inventory & Manuals, Systems & Schematics, Mast & Sails and References pages provide the indexed documentation without embedding the 3D model or publishing owner-specific records.
+The [owner library](/project/) is a concise table of contents leading to the full-page 3D Model, **Inventory & Manuals**, Mast & Sails, and References. The inventory page opens already populated with straightforward equipment listings, manufacturer documentation links and verification notes—no file uploads, private JSON controls, or dashboards.
 
-The retired 2D Plans route and navigation have been deleted. The full 3D viewer now contains a separate provisional bracket, outboard, 12 L tank and illustrative hose; factory geometry and reference GLB remain unchanged. The motor is a 15 HP reference despite the 1977 Catalina recommendation of 3–6 HP. **Structural/installation approval is outstanding.**
+The old **2D Plans**, **Systems & Schematics**, and Deliverables/Private Files pages are completely removed. The 3D viewer includes a provisional Suzuki-class outboard, reference transom mount, 12 L portable tank and hose as optional model objects, separate from the accepted factory hull. The original 1977 Catalina manual recommends 3–6 HP; the 15 HP reference installation is not structurally approved.
 
-The inventory dossiers and outstanding checks are loaded from a separate private owner JSON in the browser only. See [project index notes](docs/PROJECT-INDEX.md) and [inventory documentation](docs/INVENTORY.md).
+Owner-specific inventory JSON, photographs, serial numbers and measured placements remain private and are not included in this public Git repository. See [project library documentation](docs/PROJECT-INDEX.md).
 
 ## Documentation
 
