@@ -1,3 +1,12 @@
+## Unreleased — 3D auxiliary propulsion and retirement of 2D page
+
+- Deleted `dist/project/plans/index.html` and removed the 2D Plans links, script and drawing preview styles.
+- Added a selectable, inspectable, optional 3D propulsion assembly in `dist/propulsion.js`: provisional port stern motor bracket, generic 15 HP four-stroke outboard, manufacturer-reference 12 L portable tank and conceptual detachable fuel hose.
+- Added a one-click port-stern view and included visible propulsion shapes in the current-view GLB export, leaving original boat-only GLB and accepted factory boat meshes unchanged.
+- Updated Systems and Inventory/manuals with reference dimensions, motor/tank documents and explicit structural/fuel-storage warnings.
+- Updated external private owner inventory separately; no private records or media are committed to GitHub.
+- Expanded model and offline artifact CI checks. No physical installation or fuel location has been approved.
+
 ## Unreleased — Multi-page project library and private inventory documentation
 
 - Replaced the previous single-page overview with a concise table of contents and independent pages.
