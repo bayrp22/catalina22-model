@@ -6,17 +6,16 @@ The owner-facing reference site is an independent multi-page project workspace. 
 | --- | --- | --- |
 | Contents | `/project/` | Clean, clickable table of contents |
 | 3D Model | `/` | Full-page existing Three.js model |
-| 2D Plans | `/project/plans/` | Proportional overview and original Catalina manuals |
 | Inventory | `/project/inventory/` | Private catalog importer, equipment dossiers, manufacturer manuals, outstanding checks |
 | Systems | `/project/systems/` | Provisional 12V charging, distribution and fuel/propulsion concepts |
 | Mast & Sails | `/project/rigging/` | Catalina 22 setup guidance, checklists and YouTube demonstrations |
 | References | `/project/references/` | Original Catalina and manufacturer source library |
 
-The previous embedded 3D model and the **Deliverables / Private Files** section have been removed. The existing 3D viewer links back to Contents and its optional fullscreen toggle is hidden; the viewer itself uses its complete standalone page.
+The previous embedded 3D model, the **2D Plans** page (including its route and navigation) and the **Deliverables / Private Files** section have been removed. The existing 3D viewer links back to Contents and its optional fullscreen toggle is hidden; the viewer itself uses its complete standalone page.
 
 ## Private inventory and documentation
 
-The Inventory page is deliberately blank until the owner opens the **separate private** `catalina22-inventory-layer` v1 JSON. It displays all catalog records and proposed elements, details, mass/placement information where documented, photo/video evidence labels, manual links and manufacturer references. It also renders the imported `outstanding` unresolved-check list, supports checking issues for further review, and exports the updated JSON locally. The current prepared private owner file has 20 photographed catalog entries, 4 distinct fit-out proposals and 14 open verification items; **none of these are embedded in Git or Netlify assets**.
+The Inventory page is deliberately blank until the owner opens the **separate private** `catalina22-inventory-layer` v1 JSON. It displays all catalog records and proposed elements, details, mass/placement information where documented, photo/video evidence labels, manual links and manufacturer references. It also renders the imported `outstanding` unresolved-check list, supports checking issues for further review, and exports the updated JSON locally. The separately updated private owner file has 20 photographed catalog entries, 6 fit-out proposals (including the reference tank and external bracket) and 15 open verification items; **none of these are embedded in Git or Netlify assets**.
 
 Public code contains general manufacturer manual URLs as a reference desk, but no user-specific record IDs, positions, photographs, file IDs or serials. A manual link is not proof of installation or of compatibility with this hull. The fuel-tank model and Suzuki engine variant must be verified separately.
 
@@ -51,3 +50,13 @@ Run `npm run build` using pinned Node 24.19.0 and Python 3.13. `scripts/check-hu
 6. Confirm accepted boat geometry, slider interactions and original exports unchanged.
 
 Do not merge without owner visual review. This is a documentation index, not an as-built, measured installation or a stability calculation.
+
+## Auxiliary propulsion — model and drawing coverage
+
+The 3D model now includes **four independent provisional scene groups** in `dist/propulsion.js`: transom mounting bracket/clamp board, generic 15 HP outboard, an approximately manufacturer-sized 12 L portable fuel tank and an illustrative hose. They are separately selectable and togglable through **Auxiliary propulsion · proposed**. A stern-focus control reveals them from the port side. The original accepted 19-part Catalina hull geometry, accepted hashes, original boat GLB and model-data dimensions are unchanged; the visible-view GLB export now adds the auxiliary groups, and the offline viewer bundles the additional JavaScript module.
+
+The engine family is represented with a documented overall reference envelope of ~662 × 336 × 1,220 mm (long-shaft example), and a **44–49 kg dry-weight range** across starting/shaft variants. No actual engine mass center is claimed. The reference portable tank is 12 L and ~363 × 265 × 230 mm, an OEM-compatible style; its actual presence, connector and safe location are unverified. The tank is shown on the aft port cockpit seat only for scale review, not as an approved stowage arrangement. Bracket plate geometry and hose routing are purely illustrative.
+
+**Important:** the 1977 Catalina 22 manual recommends 3–6 HP; the documented 15 HP engine must not be treated as compatible until the actual transom structure and bracket rating are inspected by a qualified marine professional. Manufacturer instructions and safe fuel storage/ventilation govern. The engine is photographed off-vessel, and this 3D model does not assert installation.
+
+Original sources: https://www.globalsuzuki.com/marine/lineup/df20a-15a-9_9b/index.html ; https://www.suzuki.ca/product/fuel-tank/ ; https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf . The owner-specific manufacturer/part records are maintained in separate exported JSON, not the public repository.
