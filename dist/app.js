@@ -126,6 +126,12 @@ function findPart(id){
  controls.target.copy(center);
  // A minimum frame keeps the surrounding mount or compartment visible around small devices.
  fitBounds(subject.union(new THREE.Box3().setFromCenterAndSize(center,new THREE.Vector3(.95,.68,.8))),false);
+ if(matchMedia('(max-width:720px)').matches){
+  camera.updateMatrixWorld();
+  const frameHeight=2*camera.position.distanceTo(controls.target)*Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+  const offset=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,1).multiplyScalar(-.17*frameHeight);
+  camera.position.add(offset);controls.target.add(offset);controls.update();
+ }
  select(id);
 }
 const equipmentPicker=$('#findEquipment');

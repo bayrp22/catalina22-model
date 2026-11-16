@@ -33,6 +33,9 @@ aside{width:280px;flex-shrink:0;padding:24px 23px;background:var(--paper);border
 .inspector-manuals a:hover{text-decoration:underline}
 
 @media(max-width:720px){
+ body>header .top{padding-left:18px;padding-right:18px;gap:10px}
+ body>header .nav{justify-content:flex-start;margin-left:-8px}
+ body>header .nav a{padding:8px}
  #selection{top:auto;right:10px;left:10px;bottom:77px;width:auto;max-height:min(46%,260px)}
  #selection:not([hidden])~.canvas-tools{top:42%;bottom:auto;transform:translateY(-50%)}
 }
