@@ -1,0 +1,10 @@
+{
+  "summary": "Clarify the identifiable VHF face and add an aisle-bound first-person track",
+  "parts": ["vhf", "cabin camera"],
+  "evidence": ["User screenshot shows the light VHF blending into the cabin liner. An equipment photo shows the white fascia, dark display bezel, gray controls, red distress key and speaker grille. Source images are kept private.", "User requested full horizontal turning and forward scroll travel to the V-berth by the toilet, with an aft view toward the galley and companionway."],
+  "measurements": [
+    {"part":"cabin camera","beforeMeters":0,"afterMeters":1.98,"reference":"Fore-and-aft camera travel in model coordinates","method":"Connect the existing cabin viewpoint to the forward aisle between the bulkheads, ending abreast of the toilet","confidence":"Viewer path derived from modeled surfaces"}
+  ],
+  "reviewed": false,
+  "reviewer": ""
+}
