@@ -10,7 +10,6 @@ const refs=read('dist/project/references/index.html');
 const js=read('dist/project/project.js');
 const css=read('dist/project/project.css');
 
-const pages=[home,inv,rig,refs];
 for(const [name,html] of [['home',home],['inventory',inv],['rigging',rig],['references',refs]]){
   assert(html.includes('href="/project/project.css"'),'Stylesheet missing on '+name);
   assert(html.includes('href="/"'),'Full-page 3D route missing on '+name);
@@ -42,7 +41,10 @@ assert((inv.match(/class="equipment-line"/g)||[]).length>=25,'Too few populated 
 assert((inv.match(/class="equipment-category"/g)||[]).length===6,'Expected six organized equipment groups');
 assert(!inv.includes('IMG_9079')&&!inv.includes('EL-001')&&!inv.includes('PROP-001'),'Owner-only inventory IDs or evidence must not be published');
 
-assert(viewer.includes('href="/project/"'),'3D viewer must link back to contents');
+const navigation=html=>html.match(/<header>.*?<\/header>/)?.[0].replaceAll(' aria-current="page"','').replaceAll(' >','>');
+assert.equal(navigation(viewer),navigation(home),'3D viewer must use the project navigation');
+assert(viewer.includes('href="/" aria-current="page"'),'3D navigation must mark the active route');
+assert(viewer.includes('href="/project/project.css"'),'3D viewer must use the project shell styles');
 assert(viewer.includes('id="focusPropulsion"'),'3D propulsion review control missing');
 assert(viewer.includes('id="fullscreen" hidden'),'Fullscreen shortcut must remain hidden');
 const app=read('dist/app.js');

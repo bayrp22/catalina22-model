@@ -5,12 +5,12 @@ The owner-facing project index is at `/project/`. It contains **four independent
 | Destination | Path | Purpose |
 | --- | --- | --- |
 | Contents | `/project/` | Clean table of contents |
-| 3D Model | `/` | Existing full-page model, with optional provisional outboard, bracket, hose and tank overlay |
+| 3D Model | `/` | Full-page viewer with shared project navigation and provisional fit-out details |
 | Inventory & Manuals | `/project/inventory/` | Simple pre-populated catalogue of 27 equipment and reference topics with documentation links and what still needs checking |
 | Mast & Sails | `/project/rigging/` | Factory rigging guidance, checks, Catalina 22-specific videos |
 | References | `/project/references/` | Original factory and manufacturer source links |
 
-The formerly requested **2D Plans**, **Systems & Schematics** and **Deliverables / Private Files** pages have all been deleted. There are no dead navigation links to them. `3D Model` navigates directly to the existing standalone viewer in the same tab; no embedded preview or extra fullscreen launch control.
+The formerly requested **2D Plans**, **Systems & Schematics** and **Deliverables / Private Files** pages have all been deleted. There are no dead navigation links to them. `3D Model` opens the full-page viewer in the same project shell and highlights the active navigation link.
 
 ## Inventory page design
 
@@ -24,11 +24,11 @@ Items are organized under navigation/communications, electrical/power, engine/fu
 
 Because this GitHub repository is **public**, the page includes public-facing product categories and already-discussed manufacturer references only. It does **not** contain the owner's separate private inventory JSON, photographs, frame timestamps, serials, exact 3D placements, unique IDs or vessel-specific weight records. No server upload or browser local storage is involved. The private detailed inventory still exists separately for restoration work.
 
-## Propulsion overlay
+## Viewer fit-out
 
-`dist/propulsion.js` creates a provisional reference-scale outboard, external transom bracket, 12 L portable tank and illustrative fuel hose independent of the accepted hull mesh. The original 19-part model remains geometry-regression protected. The current-view GLB includes visible provisional equipment, while the original factory-layout GLB remains unchanged.
+`dist/propulsion.js` creates a provisional reference-scale outboard, external transom bracket, 12 L portable tank and illustrative fuel hose independent of the accepted hull mesh. The original 19-part model remains geometry-regression protected. The marked port lazarette location informs the new internal tank and hose placement. **Inspect tank & fuel line** hides the cockpit geometry in Cutaway to show the tank, line and short outboard connection. The separate cabin entry cover closes the marked opening below the companionway sill. The current-view GLB includes these parts when visible. The original factory-layout GLB remains unchanged.
 
-**Safety:** The 1977 Catalina 22 manual recommends 3–6 HP, while the reference outboard is Suzuki DF15A (15 HP). A real installation requires professional checking of transom strength, mount/bracket rating, fasteners, shaft height, tilting and rudder clearances. The fuel tank's illustrated staging position is not an approved storage location: confirm safe fuel handling, ventilation, fitting compatibility and leak protection.
+**Safety:** The 1977 Catalina 22 manual recommends 3–6 HP, while the reference outboard is Suzuki DF15A (15 HP). A real installation requires professional checking of transom strength, mount/bracket rating, fasteners, shaft height, tilting and rudder clearances. The illustrated fuel routing and compartment geometry remain provisional, including ventilation, restraint and the transom exit.
 
 ## Rigging references
 - 1977 Catalina factory manual: https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf

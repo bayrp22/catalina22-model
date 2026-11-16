@@ -6,6 +6,12 @@
 - Kept the 3D viewer, its separate provisional propulsion shapes, mast setup and references intact.
 - Protected owner-only photographs, serials, catalog IDs and exact locations from public source. Updated CI checks for simpler owner navigation.
 
+## Unreleased — Port lazarette, cabin entry cover and 3D navigation
+
+- Moved the 12 L reference tank and inboard fuel line beneath the port lazarette. Added a cutaway shortcut to inspect them.
+- Fitted a selectable cover below the companionway sill in the interactive viewer and current-view export.
+- Applied the project navigation to the full-page 3D viewer and kept the standalone download self-contained.
+
 ## Unreleased — 3D auxiliary propulsion and retirement of 2D page
 
 - Deleted `dist/project/plans/index.html` and removed the 2D Plans links, script and drawing preview styles.

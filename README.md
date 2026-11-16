@@ -19,7 +19,7 @@ Open http://localhost:8000 . The server binds to your own computer. For an offli
 
 The [owner library](/project/) is a concise table of contents leading to the full-page 3D Model, **Inventory & Manuals**, Mast & Sails, and References. The inventory page opens already populated with straightforward equipment listings, manufacturer documentation links and verification notes—no file uploads, private JSON controls, or dashboards.
 
-The old **2D Plans**, **Systems & Schematics**, and Deliverables/Private Files pages are completely removed. The 3D viewer includes a provisional Suzuki-class outboard, reference transom mount, 12 L portable tank and hose as optional model objects, separate from the accepted factory hull. The original 1977 Catalina manual recommends 3–6 HP; the 15 HP reference installation is not structurally approved.
+The old **2D Plans**, **Systems & Schematics**, and Deliverables/Private Files pages are completely removed. The 3D viewer includes a provisional Suzuki-class outboard, reference transom mount, 12 L portable tank and fuel line beneath the port lazarette, and a cover below the companionway sill, separate from the accepted factory hull. The original 1977 Catalina manual recommends 3–6 HP; the 15 HP reference installation is not structurally approved.
 
 Owner-specific inventory JSON, photographs, serial numbers and measured placements remain private and are not included in this public Git repository. See [project library documentation](docs/PROJECT-INDEX.md).
 

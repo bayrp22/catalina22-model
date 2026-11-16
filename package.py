@@ -8,7 +8,13 @@ def norm(s):
  for a,b in replace.items():s=s.replace(a,b)
  return s
 mapping={name:'data:text/javascript;base64,'+base64.b64encode(norm((p/path).read_text()).encode()).decode() for name,path in mods.items()}
-html=(p/'index.html').read_text().replace('<link rel="stylesheet" href="style.css">','<style>'+(p/'style.css').read_text()+'</style>')
+html=(p/'index.html').read_text()
+for href,path in [('/project/project.css','project/project.css'),('style.css','style.css')]:
+ html=html.replace(f'<link rel="stylesheet" href="{href}">','<style>'+(p/path).read_text()+'</style>')
+# The offline file has no sibling project pages to navigate to.
+html=re.sub(r'<nav class="nav".*?</nav>','',html)
+html=html.replace('<a href="/project/" class="brand">','<div class="brand">')
+html=html.replace('Restoration / project library</small></a>','Restoration / project library</small></div>')
 html=html.replace('<script type="module" src="app.js"></script>','<script type="importmap">'+json.dumps({'imports':mapping})+'</script><script type="module">'+norm((p/'app.js').read_text())+'</script>')
 # Standalone export links use embedded bytes so the downloaded file works without the server.
 glb=(p/'downloads/Catalina22_Original.glb').read_bytes();html=html.replace('href="downloads/Catalina22_Original.glb"','href="data:model/gltf-binary;base64,'+base64.b64encode(glb).decode()+'"')

@@ -79,33 +79,34 @@ export function buildAuxiliaryPropulsion(){
   rod(motor,[.13,.15,0],[.328,.03,0],.022,darkSteel);
   rod(motor,[.29,.05,0],[.33,.025,0],.030,fuelBlack);
   // Standard 12 L portable tank dimensions: 0.363 × 0.265 × 0.230 m (L × W × H).
-  // Placement on aft port cockpit seat is only a VISIBLE staging position, NOT approved storage.
-  const tank=part('aux-tank','Reference 12 L portable gasoline tank','Size documented • physical tank not verified',
-    'Representative manufacturer 12 L portable tank envelope 363 × 265 × 230 mm; placed temporarily on the aft port cockpit seat for visibility. Actual tank, connector, fuel cap, venting, restraint, spill containment and safe storage location are UNCONFIRMED; this is not an approved fuel-system installation.',
-    [-2.45,.745,-.74]);
-  // Overall outer envelope exactly height .230 including cap. Red body height .165.
+  const tankPosition=[-2.42,.375,-.66]; // Below the aft port cockpit locker lid.
+  const tank=part('aux-tank','Reference 12 L portable gasoline tank','Reference size • owner-indicated location',
+    'Suzuki 12 L reference tank shown inside the hull beneath the port lazarette. The actual tank, locker clearances, restraint and ventilation still need verification.',
+    tankPosition);
   box(tank,[.363,.163,.265],fuelRed,[0,.0815,0]);
   box(tank,[.331,.028,.241],fuelRed,[0,.174,0]);
-  box(tank,[.155,.022,.038],fuelBlack,[.012,.207,0]);
-  for(const x of [-.060,.060])box(tank,[.018,.045,.042],fuelBlack,[x,.184,0]);
+  box(tank,[.155,.022,.038],fuelBlack,[.012,.219,0]);
+  for(const x of [-.060,.060])box(tank,[.018,.045,.042],fuelBlack,[x,.188,0]);
   mesh(tank,new THREE.CylinderGeometry(.035,.035,.025,16),fuelBlack,[-.110,.200,-.045]);
-  // Hose is a conceptual open-deck centerline only, and not an approved route.
-  const fuel=part('aux-fuel-line','Conceptual detachable fuel hose','Illustrative only • routing unverified',
-    'Diagrammatic hose between a temporary above-deck reference tank location and the engine. The actual hose, primer, fittings, fuel-tank vent, chafe protection and safe routing are not identified or tested.',
+
+  const fuel=part('aux-fuel-line','Fuel line under port lazarette','Owner-indicated route • exact path inferred',
+    'The line runs inside the hull beneath the port lazarette, with a short external connection to the outboard. The route, exit fitting and primer location are represented provisionally.',
     [0,0,0]);
-  const curve=new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-2.57,.953,-.79),
-    new THREE.Vector3(-2.79,.94,-.82),
-    new THREE.Vector3(-3.05,.83,-.95),
-    new THREE.Vector3(-3.35,.66,-.98),
-    new THREE.Vector3(-3.64,.53,-.82)
-  ]);
-  mesh(fuel,new THREE.TubeGeometry(curve,32,.011,8,false),hoseRubber);
-  const bulb=mesh(fuel,new THREE.SphereGeometry(.035,12,8),fuelBlack,[-3.05,.83,-.95]);
-  bulb.scale.set(1.7,.75,.85);
+  const [tankX,tankY,tankZ]=tankPosition;
+  const primer=[-2.91,.552,-.69];
+  // Split at the transom so the model does not imply a verified pass-through fitting.
+  const runs=[
+    [[tankX-.11,tankY+.2125,tankZ-.045],[-2.68,.550,-.72],primer,[-3.14,.557,-.66],[-3.27,.56,-.66]],
+    [[-3.287,.56,-.66],[-3.43,.565,-.66],[-3.57,.548,-.68],[-3.64,.53,-.69]]
+  ];
+  for(const points of runs){
+    const curve=new THREE.CatmullRomCurve3(points.map(point=>new THREE.Vector3(...point)));
+    mesh(fuel,new THREE.TubeGeometry(curve,points.length*8,.010,8,false),hoseRubber);
+  }
+  mesh(fuel,new THREE.SphereGeometry(.035,12,8),fuelBlack,primer).scale.set(1.55,.64,.69);
   // Each part remains named, togglable and inspectable independently of the hull model.
   labels.push({id:'aux-outboard',text:'15 HP outboard · proposed',position:new THREE.Vector3(0,.78,0)});
   labels.push({id:'aux-mount',text:'Bracket · unverified',position:new THREE.Vector3(-.23,.36,0)});
-  labels.push({id:'aux-tank',text:'12 L tank · provisional',position:new THREE.Vector3(0,.32,0)});
+  labels.push({id:'aux-tank',text:'12 L tank · provisional',position:new THREE.Vector3(0,.24,0)});
   return {root,parts,pickables,labels,reference:AUX_REFERENCE};
 }

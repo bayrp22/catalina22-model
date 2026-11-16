@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import * as THREE from '../dist/vendor/three.module.js';
-import {buildBoat} from '../dist/model.js';
+import {buildBoat,buildCabinStepCover} from '../dist/model.js';
 import {buildAuxiliaryPropulsion,AUX_REFERENCE} from '../dist/propulsion.js';
 const boat=buildBoat(),aux=buildAuxiliaryPropulsion();
 assert.equal(Object.keys(boat.parts).length,19,'Accepted boat part count remains 19');
@@ -28,5 +28,23 @@ for(const id of ids){
   assert([...p.array].every(Number.isFinite),'NaN in '+id);
  }
 }
+boat.root.updateMatrixWorld(true);
+const lockerLid=boat.parts.cockpit.children.find(mesh=>mesh.geometry.parameters.width===1.32 && mesh.position.z<0);
+const lockerBounds=new THREE.Box3().setFromObject(lockerLid);
+const tankBounds=new THREE.Box3().setFromObject(aux.parts['aux-tank']);
+assert(tankBounds.max.y<lockerBounds.min.y,'Tank must sit beneath the closed port locker lid');
+for(const axis of ['x','z']){
+ assert(tankBounds.min[axis]>=lockerBounds.min[axis] && tankBounds.max[axis]<=lockerBounds.max[axis],
+  'Tank footprint must stay beneath the port locker lid');
+}
+const [internalHose,externalHose,primer]=aux.parts['aux-fuel-line'].children;
+assert(new THREE.Box3().setFromObject(internalHose).max.y<lockerBounds.min.y,'Inboard hose must run below the locker lid');
+assert(new THREE.Box3().setFromObject(externalHose).max.x< -boat.SPEC.hullLength/2,'External hose tail must stay aft of the transom');
+assert(new THREE.Box3().setFromObject(primer).max.y<lockerBounds.min.y,'Primer must remain inboard below the locker lid');
+const cover=buildCabinStepCover(boat.mats.deck);
+const coverBounds=new THREE.Box3().setFromObject(cover);
+assert.equal(cover.children[0].userData.partId,cover.name);
+assert(coverBounds.min.y<.34 && coverBounds.max.y>.64 && coverBounds.max.y<.68,'Cover must span below the cockpit sill');
+assert.equal(boat.root.getObjectByName(cover.name),undefined,'Cover belongs to the viewer fit-out');
 assert.equal(boat.root.getObjectByName('aux-outboard'),undefined,'Do not mutate accepted boat root');
 console.log('Auxiliary propulsion overlay: four selectable models, documented reference envelopes and boat geometry separation passed.');

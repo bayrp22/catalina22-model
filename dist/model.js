@@ -116,3 +116,15 @@ export function buildBoat(){
  setKeel(100);
  return {root,parts,pickables,labels,mats,hullUpper,keelPivot,setKeel,defaults,SPEC};
 }
+
+// A viewer-only panel below the companionway sill, fitted to the drawn cockpit opening.
+export function buildCabinStepCover(material){
+ const id='cabin-step-cover';
+ const part=new THREE.Group();part.name=id;
+ part.userData={id,name:'Cabin entry cover',confidence:'Owner-indicated opening • model-fit dimensions',
+  description:'Cover panel below the companionway sill at the forward end of the cockpit. Its size, finish and angle are inferred from the modeled opening.'};
+ const panel=new THREE.Mesh(new THREE.BoxGeometry(.025,.319,.89),material.clone());
+ panel.position.set(-1.278,.487,0);panel.rotation.z=-.30;
+ panel.castShadow=true;panel.receiveShadow=true;panel.userData.partId=id;part.add(panel);
+ return part;
+}

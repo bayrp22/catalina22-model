@@ -1,0 +1,33 @@
+{
+  "summary": "Place the reference tank and inboard fuel line beneath the port lazarette and cover the opening below the companionway sill in the interactive viewer.",
+  "parts": ["aux-tank", "aux-fuel-line", "cabin-step-cover"],
+  "evidence": ["Owner's marked model view from November 16, 2026: red arrow indicates the under-lazarette fuel location on port, and blue outline marks the opening below the companionway sill. Original markup is retained privately."],
+  "measurements": [
+    {
+      "part": "aux-tank",
+      "beforeMeters": 0.745,
+      "afterMeters": 0.375,
+      "reference": "Tank base height relative to the model's nominal waterline (Y=0).",
+      "method": "Fit the existing reference tank envelope under the modeled port locker lid.",
+      "confidence": "Approximate placement. No physical measurement."
+    },
+    {
+      "part": "aux-fuel-line",
+      "beforeMeters": 0.83,
+      "afterMeters": 0.552,
+      "reference": "Primer center height relative to the model's nominal waterline (Y=0).",
+      "method": "Route the inboard segment below the modeled port cockpit seat and terminate at the transom. Model a short separate external segment to the outboard.",
+      "confidence": "Illustrative path and primer position. The transom exit is unverified."
+    },
+    {
+      "part": "cabin-step-cover",
+      "beforeMeters": null,
+      "afterMeters": 0.89,
+      "reference": "Transverse panel width in model coordinates.",
+      "method": "Fit to the reconstructed cockpit opening below the companionway sill.",
+      "confidence": "Visual fit only. Panel dimensions, angle and finish are inferred."
+    }
+  ],
+  "reviewed": false,
+  "reviewer": ""
+}

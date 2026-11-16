@@ -25,6 +25,8 @@ The arrangement follows the original-design forward V-berth, port dinette, starb
 
 No fabricated electronics, battery installations or personal equipment have been inserted from the earlier proposed equipment drawing. That drawing is a planning reference in diagram units, not a measured installation model.
 
+The owner indicated a fuel tank and line inside the port lazarette and an entry cover below the companionway sill. The live viewer models these as provisional fit-out details. The tank and fuel route use approximate model coordinates, and the cover is fitted to the reconstructed opening.
+
 ## Measurement record
 
 For each proposed correction, retain:

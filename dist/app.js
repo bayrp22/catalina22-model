@@ -1,7 +1,7 @@
 import * as THREE from './vendor/three.module.js';
 import { OrbitControls } from './vendor/OrbitControls.js';
 import { GLTFExporter } from './vendor/GLTFExporter.js';
-import { buildBoat, SPEC, SOURCES } from './model.js';
+import { buildBoat, buildCabinStepCover, SPEC, SOURCES } from './model.js';
 import { createInventory } from './inventory.js';
 import { buildAuxiliaryPropulsion } from './propulsion.js';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -14,19 +14,24 @@ const scene=new THREE.Scene();scene.add(new THREE.HemisphereLight(0xf8faf5,0x94a
 const key=new THREE.DirectionalLight(0xfff8e7,3.6);key.position.set(2,7,5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-7,right:7,top:7,bottom:-7,near:.1,far:30});key.shadow.bias=-.0004;key.shadow.normalBias=.024;scene.add(key);
 const fill=new THREE.DirectionalLight(0xe6f2fa,1.6);fill.position.set(-4,4,-5);scene.add(fill);
 const boat=buildBoat();scene.add(boat.root);
+const cabinStepCover=buildCabinStepCover(boat.mats.deck);
+boat.root.add(cabinStepCover);
+boat.parts[cabinStepCover.name]=cabinStepCover;
+boat.pickables.push(...cabinStepCover.children);
 // Auxiliary fit-out is a separate provisional scene group; accepted hull meshes stay untouched.
 const propulsion=buildAuxiliaryPropulsion();scene.add(propulsion.root);
 Object.assign(boat.parts,propulsion.parts);boat.pickables.push(...propulsion.pickables);boat.labels.push(...propulsion.labels);
 const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0xf2f1eb,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.65;floor.receiveShadow=true;scene.add(floor);
 const grid=new THREE.GridHelper(16,32,0xb6c2b9,0xd7ddd4);grid.position.y=-1.647;grid.material.transparent=true;grid.material.opacity=.46;scene.add(grid);
 const perspective=new THREE.PerspectiveCamera(38,1,.01,100);const ortho=new THREE.OrthographicCamera(-5,5,5,-5,.01,100);let camera=perspective;camera.position.set(6,4.7,8);let controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,.12,0);controls.enableDamping=true;controls.dampingFactor=.085;controls.minDistance=.22;controls.maxDistance=30;controls.minZoom=.35;controls.maxZoom=35;controls.maxPolarAngle=Math.PI*.98;controls.screenSpacePanning=true;controls.update();
-const groups=[{name:'Hull shell',ids:['hull'],color:'#c1c7b9'}, {name:'Deck & hardware',ids:['deck','trim'],color:'#ebe6d9'}, {name:'Cabin & windows',ids:['cabin'],color:'#8ba5a3'}, {name:'Cabin roof',ids:['roof'],color:'#d2d8c9'}, {name:'Cockpit & lockers',ids:['cockpit'],color:'#dedbd1'}, {name:'Interior structure',ids:['sole','vberth','bulkheads','dinette','settee','trunk','companionway'],color:'#b4bfab'}, {name:'Dinette table',ids:['table'],color:'#af8962'}, {name:'Sliding galley',ids:['galley'],color:'#bb9670'}, {name:'Cushions',ids:['cushions'],color:'#688880'}, {name:'Keel & rudder',ids:['keel','rudder'],color:'#57747f'}, {name:'Mast & rigging',ids:['rig'],color:'#9fadb5'}, {name:'Auxiliary propulsion · proposed',ids:['aux-mount','aux-outboard','aux-tank','aux-fuel-line'],color:'#be7b53'}];
+const groups=[{name:'Hull shell',ids:['hull'],color:'#c1c7b9'}, {name:'Deck & hardware',ids:['deck','trim'],color:'#ebe6d9'}, {name:'Cabin & windows',ids:['cabin'],color:'#8ba5a3'}, {name:'Cabin roof',ids:['roof'],color:'#d2d8c9'}, {name:'Cockpit & lockers',ids:['cockpit'],color:'#dedbd1'}, {name:'Cabin entry cover',ids:[cabinStepCover.name],color:'#dedbd1'}, {name:'Interior structure',ids:['sole','vberth','bulkheads','dinette','settee','trunk','companionway'],color:'#b4bfab'}, {name:'Dinette table',ids:['table'],color:'#af8962'}, {name:'Sliding galley',ids:['galley'],color:'#bb9670'}, {name:'Cushions',ids:['cushions'],color:'#688880'}, {name:'Keel & rudder',ids:['keel','rudder'],color:'#57747f'}, {name:'Mast & rigging',ids:['rig'],color:'#9fadb5'}, {name:'Auxiliary propulsion · proposed',ids:['aux-mount','aux-outboard','aux-tank','aux-fuel-line'],color:'#be7b53'}];
 const state={mode:'section',view:'perspective',selected:null,labels:true,dimensions:false,wire:false,keel:100,galley:0,isolated:false};let savedVisibility=null;let anim=null;
 for(const [i,g]of groups.entries()){const label=document.createElement('label');label.className='toggle-row';label.innerHTML=`<span><i class="layer-dot" style="--dot:${g.color}"></i>${g.name}</span><input type="checkbox" data-layer="${i}"><b></b>`;$('#layers').append(label);label.querySelector('input').onchange=e=>{stopIsolation();g.ids.forEach(id=>boat.parts[id].visible=e.target.checked);syncLayers();};}
 function syncLayers(){groups.forEach((g,i)=>{$(`[data-layer="${i}"]`).checked=g.ids.some(id=>boat.parts[id].visible);});}
 function stopIsolation(){if(savedVisibility){Object.entries(savedVisibility).forEach(([id,val])=>boat.parts[id].visible=val);savedVisibility=null;}state.isolated=false;$('#restoreIsolation').hidden=true;}
 function setMode(mode,notify=true){stopIsolation();state.mode=mode;Object.values(boat.parts).forEach(p=>p.visible=true);boat.parts.rig.visible=false;boat.parts.cushions.visible=false;
  if(mode!=='exterior'){for(const id of ['deck','cabin','roof','trim'])boat.parts[id].visible=false;}
+ cabinStepCover.visible=mode!=='interior';
  boat.hullUpper[1].visible=mode!=='section';boat.hullUpper[-1].visible=true;
  $$('.viewbar button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('#footerMode').textContent=mode==='interior'?'OPEN INTERIOR':mode.toUpperCase();$('#modeDescription').textContent=mode==='section'?'Starboard shell cut away · interior dimensions provisional':mode==='interior'?'Deck and cabin removed · original interior arrangement':'Original 1970s · swing-keel configuration';syncLayers();select(null);
  if(notify)toast(mode==='exterior'?'Exterior layers restored':mode==='interior'?'Deck, cabin and roof hidden':'Starboard upper hull removed for access');
@@ -55,7 +60,17 @@ function visibleBounds(){boat.root.updateMatrixWorld(true);const b=new THREE.Box
 function fitBounds(b,smooth=true){if(b.isEmpty())return;const center=b.getCenter(new THREE.Vector3()),size=b.getSize(new THREE.Vector3());const direction=camera.position.clone().sub(controls.target).normalize();if(camera.isPerspectiveCamera){const radius=size.length()/2;const angle=Math.min(THREE.MathUtils.degToRad(camera.fov/2),Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.aspect));const distance=radius/Math.sin(angle)*1.12;const p=center.clone().addScaledVector(direction,distance);if(smooth)transition(p,center);else{camera.position.copy(p);controls.target.copy(center);}}
  else{camera.updateMatrixWorld();const corners=[];for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z])corners.push(new THREE.Vector3(x,y,z).applyMatrix4(camera.matrixWorldInverse));const cb=new THREE.Box3().setFromPoints(corners),s=cb.getSize(new THREE.Vector3());camera.zoom=Math.min((camera.right-camera.left)/Math.max(.01,s.x),(camera.top-camera.bottom)/Math.max(.01,s.y))*.76;camera.updateProjectionMatrix();camera.position.copy(center.clone().addScaledVector(direction,12));controls.target.copy(center);}controls.update();}
 function fitBoat(smooth=true){fitBounds(visibleBounds(),smooth);}$('#fit').onclick=()=>fitBoat();
-$('#focusPropulsion').onclick=()=>{setView('port');fitBounds(new THREE.Box3().setFromObject(propulsion.root),false);toast('Proposed bracket, outboard and tank: verify before installation');};
+$('#focusPropulsion').onclick=()=>{
+ setMode('section',false);
+ boat.parts.cockpit.visible=false;
+ if(matchMedia('(max-width:720px)').matches)toggleSidebar(false);
+ resize();
+ syncLayers();
+ setView('perspective');anim=null;
+ camera.position.set(-6,5,5);controls.target.copy(defaultTarget);
+ fitBounds(new THREE.Box3().setFromObject(propulsion.root),false);
+ select('aux-tank');
+};
 function zoom(f){anim=null;if(camera.isPerspectiveCamera)camera.position.copy(controls.target.clone().add(camera.position.clone().sub(controls.target).multiplyScalar(f)));else{camera.zoom=THREE.MathUtils.clamp(camera.zoom/f,.35,35);camera.updateProjectionMatrix();}controls.update();}
 $('#zoomIn').onclick=()=>zoom(.8);$('#zoomOut').onclick=()=>zoom(1.25);
 $('#fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await view.requestFullscreen();}catch{toast('Fullscreen is not available in this browser');}};
@@ -82,7 +97,7 @@ let lastLabelTime=0;function updateLabels(t){if(t-lastLabelTime<75)return;lastLa
  const project=(p)=>p.clone().project(camera);
  for(const it of labelItems){let visible=state.labels&&boat.parts[it.id].visible&&(allowed.includes(it.id)||state.selected===it.id);const point=it.position.clone().add(boat.parts[it.id].position);const p=project(point);const x=(p.x*.5+.5)*w,y=(-p.y*.5+.5)*h;
  visible=visible&&p.z<1&&p.z>-1&&x>40&&x<w-55&&y>130&&y<h-115;
- if(visible&&!state.isolated){const dir=point.clone().sub(camera.position),distance=dir.length();raycaster.set(camera.position,dir.normalize());const hit=raycaster.intersectObjects(boat.pickables.filter(effectiveVisible),false)[0];if(hit&&hit.distance<distance-.23&&hit.object.userData.partId!==it.id)visible=false;}
+ if(visible&&!state.isolated){const dir=point.clone().sub(camera.position),distance=dir.length();raycaster.set(camera.position,dir.normalize());const hit=raycaster.intersectObjects(boat.pickables.filter(effectiveVisible),false)[0];if(hit&&hit.distance<distance-(it.id==='aux-tank'?.025:.23)&&hit.object.userData.partId!==it.id)visible=false;}
  if(visible){for(const u of used)if(Math.abs(x-u.x)<110&&Math.abs(y-u.y)<31)visible=false;}
  it.element.hidden=!visible;if(visible){it.element.style.left=x+'px';it.element.style.top=y+'px';used.push({x,y});}
  }
