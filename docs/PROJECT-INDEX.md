@@ -34,7 +34,7 @@ Because this GitHub repository is **public**, the page includes public-facing pr
 
 Each bench has one outward-opening lid on its aft half. Click the lid in 3D or use **Port hatch** or **Starboard hatch** in the sidebar. **Inspect port fuel locker** opens the port lid and frames the tank inside the locker. The hatch outline and compartment geometry follow the supplied visual reference, with dimensions inferred.
 
-**In cabin** keeps the camera at a fixed seated position beneath the roof. Drag to look around within the view limits. **Reset view** faces forward again. Saved views retain the look direction and both hatch states.
+**In cabin** starts at a seated viewpoint near the companionway. Scroll down or use the position slider to move forward along the bounded aisle track, ending beside the toilet in the V-berth. Drag for 360° horizontal turning and use **Look aft** to face the galley and companionway. **Reset view** returns to the starting position. Saved views retain both the position and look direction.
 
 ## Stern hardware and motion
 

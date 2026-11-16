@@ -201,3 +201,13 @@ export function buildCabinStepCover(material){
 export function restorationGalleyOffset(percent){
  return THREE.MathUtils.lerp(-.18,-.68,THREE.MathUtils.clamp(percent,0,100)/100);
 }
+
+// Eye positions in the modeled cabin aisle, from the aft seating to the V-berth.
+export function cabinTrackPosition(progress,target=new THREE.Vector3()){
+ const travel=THREE.MathUtils.clamp(progress,0,1);
+ return target.set(
+  THREE.MathUtils.lerp(-.84,1.14,travel),
+  THREE.MathUtils.lerp(.90,.85,travel),
+  THREE.MathUtils.lerp(.22,.025,travel)
+ );
+}

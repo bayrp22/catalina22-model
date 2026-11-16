@@ -6,6 +6,11 @@
 - Kept the 3D viewer, its separate provisional propulsion shapes, mast setup and references intact.
 - Protected owner-only photographs, serials, catalog IDs and exact locations from public source. Updated CI checks for simpler owner navigation.
 
+## Unreleased — Cabin movement and VHF contrast
+
+- Added full horizontal turning and a bounded cabin track from the companionway to the V-berth, with wheel and slider controls.
+- Refined the VHF case, screen bezel, controls and speaker grille for contrast against the light cabin liner.
+
 ## Unreleased — Working lazarettes and cabin viewpoint
 
 - Added one hinged hatch and an opening on the aft half of each cockpit bench. The port hatch reveals the fuel tank.

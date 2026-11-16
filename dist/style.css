@@ -53,5 +53,9 @@ aside{width:280px;flex-shrink:0;padding:24px 23px;background:var(--paper);border
 #viewport[data-mode="cabin"] .inspect-actions{display:none}
 #viewport[data-mode="cabin"] canvas{cursor:grab}
 #viewport[data-mode="cabin"] canvas:active{cursor:grabbing}
-#resetCabinLook{position:absolute;right:20px;bottom:22px;font-size:11px}
+#cabinControls{position:absolute;z-index:3;bottom:20px;left:50%;transform:translateX(-50%);width:min(310px,calc(100% - 24px));padding:10px 13px;border:1px solid var(--line);border-radius:9px;background:var(--paper);font-size:11px}
+.cabin-track-label,.cabin-view-actions{display:flex;justify-content:space-between;gap:10px}
+#cabinTravel{display:block;margin:4px 0 8px}
+.cabin-view-actions button{font-size:11px;padding:5px 9px}
+@media(max-width:720px){#cabinControls{bottom:8px;padding:6px 12px}#viewport[data-mode="cabin"] #selection{bottom:103px}}
 @media(max-width:420px){.viewbar{gap:1px}.viewbar button{padding-left:7px;padding-right:7px}}

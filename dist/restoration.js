@@ -7,6 +7,7 @@ export function buildRestorationEquipment(boat){
  const materials={};
  for(const [name,color,metalness] of [
   ['black',0x233235,0],['screen',0x235654,.12],['chart',0x88bec0,0],
+  ['radio-case',0x657b80,.2],['radio-face',0xe0e5e6,0],['radio-lcd',0x7b9f9a,.08],
   ['white',0xeaeae2,0],['deck',0xf8f5ec,0],['wood',0x967251,0],['steel',0x93a9ae,.65],
   ['red',0xb9503f,0],['yellow',0xb5a970,0],['solar',0x2b3c55,.17],['bag',0x5d7778,0],['canvas',0xaaa696,0]
  ])materials[name]=new THREE.MeshStandardMaterial({color,metalness,roughness:.56,side:THREE.DoubleSide});
@@ -51,11 +52,19 @@ export function buildRestorationEquipment(boat){
  for(const y of [-.026,.004,.034])box(garmin,[.005,.012,.013],'white',[.03,y,-.072]);
 
  const vhf=group('vhf',[-.969,.874,-.515]);
- box(vhf,[.064,.086,.151],'white');
- box(vhf,[.006,.042,.068],'screen',[.034,.005,.01]);
- for(const z of [-.059,.063])cylinder(vhf,.012,.015,'black',[.038,.005,z],[0,0,Math.PI/2]);
- box(vhf,[.047,.086,.051],'white',[.025,-.037,-.129]);
- tube(vhf,[[.030,-.026,-.075],[.049,-.090,-.091],[.049,-.106,-.122],[.030,-.078,-.129]],.005,'black');
+ // The original white radio has a dark display bezel and a pale control fascia.
+ box(vhf,[.064,.086,.151],'radio-case');
+ box(vhf,[.009,.081,.146],'radio-face',[.032,0,0]);
+ box(vhf,[.004,.048,.075],'black',[.0384,.010,-.003]);
+ box(vhf,[.002,.037,.064],'radio-lcd',[.041,.010,-.003]);
+ for(const y of [-.020,.016])cylinder(vhf,.009,.012,'black',[.042,y,.060],[0,0,Math.PI/2]);
+ for(const z of [-.028,-.011,.006,.023])box(vhf,[.003,.008,.011],'radio-case',[.0389,-.027,z]);
+ box(vhf,[.004,.012,.011],'red',[.0389,-.026,-.057]);
+ for(const y of [.031,.023,.015,.007,-.001])box(vhf,[.002,.003,.016],'black',[.0376,y,-.058]);
+ box(vhf,[.047,.086,.051],'radio-case',[.025,-.037,-.129]);
+ box(vhf,[.004,.075,.046],'radio-face',[.050,-.037,-.129]);
+ for(const y of [-.020,-.029,-.038])box(vhf,[.002,.004,.023],'black',[.053,y,-.129]);
+ tube(vhf,[[.037,-.026,-.075],[.054,-.090,-.091],[.054,-.106,-.122],[.042,-.078,-.129]],.005,'black');
 
  const wood=group('cabin-woodwork',[-.51,.72,-.716]);
  box(wood,[.72,.238,.028],'wood');

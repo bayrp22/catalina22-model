@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import * as THREE from '../dist/vendor/three.module.js';
-import {buildBoat,buildCabinStepCover,restorationGalleyOffset} from '../dist/model.js';
+import {buildBoat,buildCabinStepCover,restorationGalleyOffset,cabinTrackPosition} from '../dist/model.js';
 import {buildRestorationEquipment} from '../dist/restoration.js';
 import {buildAuxiliaryPropulsion,AUX_REFERENCE} from '../dist/propulsion.js';
 const boat=buildBoat(),aux=buildAuxiliaryPropulsion();
@@ -119,3 +119,17 @@ restoration.root.updateMatrixWorld(true);
 const aftRay=z=>new THREE.Raycaster(new THREE.Vector3(-3.6,.61,z),new THREE.Vector3(1,0,0),0,.4);
 assert.equal(aftRay(-.08).intersectObjects(restoration.parts.hull.children).length,0,'Transom boarding cutout should be open');
 assert(aftRay(.46).intersectObjects(restoration.parts.hull.children).length>0,'Transom remains beside the cutout');
+
+const route = Array.from({length:101},(_,i)=>cabinTrackPosition(i/100));
+const obstructions=['bulkheads','table','galley','trunk','companionway','vberth','cushions','roof','cabin']
+ .flatMap(id=>restoration.parts[id].children);
+for(const point of route){
+ for(const axis of [[1,0,0],[0,1,0],[0,0,1]]){
+  const direction=new THREE.Vector3(...axis);
+  const origin=point.clone().addScaledVector(direction,-.045);
+  assert.equal(new THREE.Raycaster(origin,direction,0,.09).intersectObjects(obstructions).length,0,'Cabin eye must clear interior surfaces and bulkheads');
+ }
+}
+assert(cabinTrackPosition(-4).equals(route[0]));
+assert(cabinTrackPosition(4).equals(route.at(-1)));
+assert(route.at(-1).x>1 && Math.abs(route.at(-1).z)<.15,'Track ends in the V-berth aisle beside the toilet');
