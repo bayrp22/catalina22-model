@@ -102,13 +102,28 @@ export function buildRestorationEquipment(boat){
  for(let i=-3;i<=3;i++)box(solar,[.003,.002,.398],'steel',[i*.066,.018,0]);
  for(let i=-2;i<=2;i++)box(solar,[.503,.002,.003],'steel',[0,.018,i*.078]);
 
- const ladder=group('boarding-ladder',[-3.275,.25,.49]);
- for(const z of [-.17,.17]){
-  tube(ladder,[[.004,.20,z],[-.16,.145,z],[-.36,.02,z],[-.38,-.10,z],[-.02,-.13,z]],.014,'steel');
-  tube(ladder,[[-.363,-.10,z],[-.40,-.36,z],[-.365,-.45,z]],.013,'steel');
+ // Stainless side loops cradle a slatted wood platform and the single lower tread.
+ const ladder=group('boarding-ladder',[-3.2766,.15,.47]);
+ for(const z of [-.205,.205]){
+  tube(ladder,[[-.012,.23,z],[-.13,.205,z],[-.37,.107,z],[-.438,.012,z],[-.423,-.062,z],[-.335,-.107,z],[-.02,-.107,z]],.015,'steel');
+  cylinder(ladder,.027,.024,'steel',[-.013,.229,z],[0,0,Math.PI/2]);
+  box(ladder,[.03,.069,.052],'steel',[-.015,-.094,z]);
+  box(ladder,[.067,.022,.058],'steel',[-.355,-.055,z]);
  }
- for(const x of [-.065,-.13,-.195,-.26,-.325])box(ladder,[.051,.028,.36],'wood',[x,-.075,0]);
- box(ladder,[.06,.033,.36],'wood',[-.37,-.439,0]);
+ for(const z of [-.138,-.069,0,.069,.138])box(ladder,[.355,.027,.059],'wood',[-.195,-.075,z]);
+ for(const x of [-.042,-.354])box(ladder,[.037,.023,.387],'wood',[x,-.096,0]);
+ tube(ladder,[[-.36,-.049,-.177],[-.389,-.242,-.177],[-.383,-.365,-.177],[-.38,-.385,-.134],[-.38,-.385,.134],[-.383,-.365,.177],[-.389,-.242,.177],[-.36,-.049,.177]],.013,'steel');
+ box(ladder,[.069,.032,.319],'wood',[-.38,-.375,0]);
+
+ const sternBar=group('stern-rail',[-3.267,.70,0]);
+ tube(sternBar,[[.004,0,-.40],[.002,.094,-.40],[-.004,.135,-.376],[-.018,.135,.255],[-.008,.108,.28],[.005,0,.28]],.013,'steel');
+ for(const z of [-.40,.28])box(sternBar,[.051,.009,.054],'steel',[.005,.002,z]);
+ const spring=Array.from({length:49},(_,i)=>{
+  const angle=i*Math.PI/4;
+  return [-.019+.019*Math.cos(angle),.135+.019*Math.sin(angle),.187+i*.0013];
+ });
+ tube(sternBar,spring,.0031,'steel');
+ oval(sternBar,[.012,.017,.015],'steel',[-.018,.155,.227]);
 
  const lines=group('running-rigging',[0,0,0]);
  for(const side of [-1,1]){

@@ -70,7 +70,7 @@ const restoration=buildBoat({restoration:true});
 const fitted=buildRestorationEquipment(restoration);
 const selectable=new Set([...restoration.pickables,...fitted.pickables,...buildAuxiliaryPropulsion().pickables].map(mesh=>mesh.userData.partId));
 const entries=[...inv.matchAll(/<article class="equipment-line" id="([a-z-]+)" data-view="(exterior|interior|section|locker)">([\s\S]*?)<\/article>/g)];
-assert.equal(entries.length,27);
+assert.equal(entries.length,28);
 assert.equal(new Set(entries.map(([,id])=>id)).size,entries.length,'Every equipment entry needs a unique ID');
 const offline=read('dist/downloads/Catalina22_Viewer_Offline.html');
 for(const [entry,id,,content] of entries){
@@ -78,4 +78,4 @@ for(const [entry,id,,content] of entries){
   assert(content.includes(`href="/?part=${id}"`),`No model link for ${id}`);
   assert(offline.includes(entry),`Offline documentation missing for ${id}`);
 }
-console.log('All 27 inventory entries link to unique selectable parts, including in the standalone viewer.');
+console.log('All 28 inventory entries link to unique selectable parts, including in the standalone viewer.');

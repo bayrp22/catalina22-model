@@ -33,7 +33,7 @@ const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStanda
 const grid=new THREE.GridHelper(16,32,0xb6c2b9,0xd7ddd4);grid.position.y=-1.647;grid.material.transparent=true;grid.material.opacity=.46;scene.add(grid);
 const perspective=new THREE.PerspectiveCamera(38,1,.01,100);const ortho=new THREE.OrthographicCamera(-5,5,5,-5,.01,100);let camera=perspective;camera.position.set(6,4.7,8);let controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,.12,0);controls.enableDamping=true;controls.dampingFactor=.085;controls.minDistance=.22;controls.maxDistance=30;controls.minZoom=.35;controls.maxZoom=35;controls.maxPolarAngle=Math.PI*.98;controls.screenSpacePanning=true;controls.update();
 const groups=[{name:'Hull shell',ids:['hull'],color:'#c1c7b9'}, {name:'Deck & hardware',ids:['deck','trim'],color:'#ebe6d9'}, {name:'Cabin & windows',ids:['cabin'],color:'#8ba5a3'}, {name:'Cabin roof',ids:['roof'],color:'#d2d8c9'}, {name:'Cockpit & lockers',ids:['cockpit'],color:'#dedbd1'}, {name:'Cabin entry cover',ids:[cabinStepCover.name],color:'#dedbd1'}, {name:'Interior structure',ids:['sole','vberth','bulkheads','dinette','settee','trunk','companionway'],color:'#b4bfab'}, {name:'Dinette table',ids:['table'],color:'#af8962'}, {name:'Sliding galley',ids:['galley'],color:'#bb9670'}, {name:'Cushions',ids:['cushions'],color:'#688880'}, {name:'Keel & rudder',ids:['keel','rudder'],color:'#57747f'}, {name:'Mast & rigging',ids:['rig','boom'],color:'#9fadb5'}, {name:'Auxiliary propulsion · proposed',ids:['aux-mount','aux-outboard','aux-tank','aux-fuel-line'],color:'#be7b53'}, {name:'Restoration equipment',ids:Object.keys(fitted.parts).filter(id=>id!=='boom'),color:'#648588'}];
-const state={mode:'section',view:'perspective',selected:null,labels:true,dimensions:false,wire:false,keel:100,galley:0,isolated:false};let savedVisibility=null;let anim=null;
+const state={mode:'section',view:'perspective',selected:null,labels:true,dimensions:false,wire:false,keel:100,galley:0,lift:100,isolated:false};let savedVisibility=null;let anim=null;
 for(const [i,g]of groups.entries()){const label=document.createElement('label');label.className='toggle-row';label.innerHTML=`<span><i class="layer-dot" style="--dot:${g.color}"></i>${g.name}</span><input type="checkbox" data-layer="${i}"><b></b>`;$('#layers').append(label);label.querySelector('input').onchange=e=>{stopIsolation();g.ids.forEach(id=>boat.parts[id].visible=e.target.checked);syncLayers();};}
 function syncLayers(){groups.forEach((g,i)=>{$(`[data-layer="${i}"]`).checked=g.ids.some(id=>boat.parts[id].visible);});}
 function stopIsolation(){if(savedVisibility){Object.entries(savedVisibility).forEach(([id,val])=>boat.parts[id].visible=val);savedVisibility=null;}state.isolated=false;$('#restoreIsolation').hidden=true;}
@@ -44,7 +44,7 @@ function setMode(mode,notify=true){stopIsolation();state.mode=mode;Object.values
  $$('.viewbar button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('#footerMode').textContent=mode==='interior'?'OPEN INTERIOR':mode.toUpperCase();$('#modeDescription').textContent=mode==='section'?'Starboard shell cut away · interior dimensions provisional':mode==='interior'?'Deck and cabin hidden · restoration layout':'Original 1970s · swing-keel configuration';syncLayers();select(null);
  if(notify)toast(mode==='exterior'?'Exterior layers restored':mode==='interior'?'Deck, cabin and roof hidden':'Starboard upper hull removed for access');
 }
-$$('[data-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));$('#showAll').onclick=()=>{setMode(state.mode,false);$('#keelRange').value=100;setKeel(100);$('#galleyRange').value=0;setGalley(0);fitBoat();toast('Default layers and positions restored');};
+$$('[data-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));$('#showAll').onclick=()=>{setMode(state.mode,false);$('#keelRange').value=100;setKeel(100);$('#galleyRange').value=0;setGalley(0);setLift(100);fitBoat();toast('Default layers and positions restored');};
 const defaultPosition=new THREE.Vector3(6.2,4.8,8.5),defaultTarget=new THREE.Vector3(0,.12,0);
 function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h);perspective.aspect=w/h;perspective.updateProjectionMatrix();ortho.left=-4.7*w/h;ortho.right=4.7*w/h;ortho.top=4.7;ortho.bottom=-4.7;ortho.updateProjectionMatrix();}
 new ResizeObserver(resize).observe(host);resize();
@@ -79,6 +79,14 @@ $('#focusPropulsion').onclick=()=>{
  fitBounds(new THREE.Box3().setFromObject(propulsion.root),false);
  select('aux-tank');
 };
+$('#focusStern').onclick=()=>{
+ if(matchMedia('(max-width:720px)').matches)toggleSidebar(false);
+ resize();setMode('exterior',false);setView('perspective');anim=null;
+ const sternBox=new THREE.Box3();
+ for(const id of ['stern-rail','boarding-ladder','aux-mount','aux-outboard'])sternBox.expandByObject(boat.parts[id]);
+ camera.position.set(-8,2.5,2.2);controls.target.copy(sternBox.getCenter(new THREE.Vector3()));
+ fitBounds(sternBox,false);select('aux-mount');
+};
 function zoom(f){anim=null;if(camera.isPerspectiveCamera)camera.position.copy(controls.target.clone().add(camera.position.clone().sub(controls.target).multiplyScalar(f)));else{camera.zoom=THREE.MathUtils.clamp(camera.zoom/f,.35,35);camera.updateProjectionMatrix();}controls.update();}
 $('#zoomIn').onclick=()=>zoom(.8);$('#zoomOut').onclick=()=>zoom(1.25);
 $('#fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await view.requestFullscreen();}catch{toast('Fullscreen is not available in this browser');}};
@@ -88,12 +96,21 @@ function feet(m){const inches=Math.round(m/.0254);return `${Math.floor(inches/12
 function setKeel(v){state.keel=Number(v);const d=boat.setKeel(state.keel);$('#keelLabel').textContent=v==100?'Lowered':v==0?'Raised':`${Math.round(v)}% down`;$('#draftStatus').textContent=feet(d);}
 function setGalley(v){state.galley=Number(v);boat.parts.galley.position.x=restorationGalleyOffset(state.galley);$('#galleyLabel').textContent=v==0?'In cabin':v==100?'Stowed aft':`${Math.round(v)}% aft`;}
 $('#keelRange').oninput=e=>setKeel(e.target.value);$('#galleyRange').oninput=e=>setGalley(e.target.value);
+function setLift(percent){
+ state.lift=Number(percent);propulsion.setLift(state.lift);
+ const label=state.lift===0?'Lowered':state.lift===100?'Raised':`${state.lift}% raised`;
+ for(const [range,output] of [['liftRange','liftLabel'],['inspectLiftRange','inspectLiftLabel']]){
+  $('#'+range).value=state.lift;$('#'+output).textContent=label;
+ }
+}
+for(const range of ['liftRange','inspectLiftRange'])$('#'+range).oninput=e=>setLift(e.target.value);
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
 const inventory = createInventory({scene, partIds:Object.keys(boat.parts), download, toast, focus:fitBounds});
 function effectiveVisible(o){while(o){if(!o.visible)return false;o=o.parent;}return true;}
 function select(id){
  state.selected=id;
  $('#selection').hidden=!id;
+ $('#liftInspector').hidden=id!=='aux-mount'&&id!=='aux-outboard';
  boat.pickables.forEach(m=>{m.material.emissive.setHex(m.userData.partId===id?0x244e3b:0x000000);m.material.emissiveIntensity=.28;});
  if(!id)return;
  const part=boat.parts[id],record=equipment.get(relatedEquipment[id]??id);
@@ -120,7 +137,7 @@ function findPart(id){
  const subject=new THREE.Box3().setFromObject(boat.parts[id]);
  const center=subject.getCenter(new THREE.Vector3());
  const direction=id==='vhf'?[2,1.28,1]:record.view==='exterior'?[-2,.95,-1.5]:[1,2,2];
- if(id==='boarding-ladder'||id==='transducer')direction[2]=1.5;
+ if(id==='boarding-ladder'||id==='transducer'||id==='stern-rail')direction[2]=1.5;
  if(id==='rudder')direction[2]=.75;
  camera.position.copy(center).add(new THREE.Vector3(...direction));
  controls.target.copy(center);
@@ -174,9 +191,9 @@ for(const source of SOURCES){const li=document.createElement('li'),a=document.cr
 $('#sourcesBtn').onclick=$('#accuracyBtn').onclick=()=>$('#notesDialog').showModal();$('#downloadBtn').onclick=()=>$('#exportDialog').showModal();$$('[data-close]').forEach(b=>b.onclick=()=>$('#'+b.dataset.close).close());$$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
 function download(data,name,type){const blob=data instanceof Blob?data:new Blob([data],{type});const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),30000);}
 $('#exportCurrent').onclick=async()=>{const btn=$('#exportCurrent');btn.disabled=true;try{select(null);const copy=boat.root.clone(true);copy.add(propulsion.root.clone(true));copy.traverse(o=>{if(o.isMesh){o.material=o.material.clone();o.material.wireframe=false;}});const data=await new GLTFExporter().parseAsync(copy,{binary:true,onlyVisible:true});download(data,'Catalina22_Outfitted_Reference_View.glb','model/gltf-binary');toast('Visible model exported');}catch(e){toast('Export failed: '+e.message);}finally{btn.disabled=false;}};
-function serialize(){return {format:'catalina22-model-view',version:1,mode:state.mode,view:state.view,camera:{position:camera.position.toArray(),target:controls.target.toArray(),zoom:camera.zoom},visible:Object.fromEntries(Object.entries(boat.parts).map(([id,g])=>[id,g.visible])),keel:state.keel,galley:state.galley,labels:state.labels,dimensions:state.dimensions,grid:grid.visible,wire:state.wire};}
+function serialize(){return {format:'catalina22-model-view',version:1,mode:state.mode,view:state.view,camera:{position:camera.position.toArray(),target:controls.target.toArray(),zoom:camera.zoom},visible:Object.fromEntries(Object.entries(boat.parts).map(([id,g])=>[id,g.visible])),keel:state.keel,galley:state.galley,lift:state.lift,labels:state.labels,dimensions:state.dimensions,grid:grid.visible,wire:state.wire};}
 $('#saveView').onclick=()=>{download(JSON.stringify(serialize(),null,2),'Catalina22_View.json','application/json');toast('View settings saved');};
-$('#importView').onchange=async e=>{try{const file=e.target.files[0];if(!file)return;if(file.size>100000)throw Error('File too large');const d=JSON.parse(await file.text());if(d.format!=='catalina22-model-view'||d.version!==1)throw Error('This is not a saved 3D viewer file');if(!['exterior','interior','section'].includes(d.mode)||!['perspective','top','port','starboard','bow','stern'].includes(d.view))throw Error('Invalid view mode');const vec=v=>Array.isArray(v)&&v.length===3&&v.every(n=>Number.isFinite(n)&&Math.abs(n)<1000);if(!vec(d.camera?.position)||!vec(d.camera?.target)||!Number.isFinite(d.camera.zoom)||d.camera.zoom<=0||d.camera.zoom>100)throw Error('Invalid camera');for(const n of ['keel','galley'])if(!Number.isFinite(d[n])||d[n]<0||d[n]>100)throw Error('Invalid moving-part setting');setMode(d.mode,false);setView(d.view);anim=null;camera.position.fromArray(d.camera.position);controls.target.fromArray(d.camera.target);camera.zoom=d.camera.zoom;camera.updateProjectionMatrix();controls.update();Object.entries(d.visible||{}).forEach(([id,v])=>{if(boat.parts[id]&&typeof v==='boolean')boat.parts[id].visible=v;});setKeel(d.keel);setGalley(d.galley);$('#keelRange').value=d.keel;$('#galleyRange').value=d.galley;for(const [key,id]of [['labels','labelsToggle'],['dimensions','dimsToggle'],['grid','gridToggle'],['wire','wireToggle']]){if(typeof d[key]==='boolean'){const input=$('#'+id);input.checked=d[key];input.dispatchEvent(new Event('change'));}}syncLayers();$('#exportDialog').close();toast('View restored');}catch(err){toast(err.message);}finally{e.target.value='';}};
+$('#importView').onchange=async e=>{try{const file=e.target.files[0];if(!file)return;if(file.size>100000)throw Error('File too large');const d=JSON.parse(await file.text());if(d.format!=='catalina22-model-view'||d.version!==1)throw Error('This is not a saved 3D viewer file');if(!['exterior','interior','section'].includes(d.mode)||!['perspective','top','port','starboard','bow','stern'].includes(d.view))throw Error('Invalid view mode');const vec=v=>Array.isArray(v)&&v.length===3&&v.every(n=>Number.isFinite(n)&&Math.abs(n)<1000);if(!vec(d.camera?.position)||!vec(d.camera?.target)||!Number.isFinite(d.camera.zoom)||d.camera.zoom<=0||d.camera.zoom>100)throw Error('Invalid camera');for(const v of [d.keel,d.galley,d.lift??100])if(!Number.isFinite(v)||v<0||v>100)throw Error('Invalid moving-part setting');setMode(d.mode,false);setView(d.view);anim=null;camera.position.fromArray(d.camera.position);controls.target.fromArray(d.camera.target);camera.zoom=d.camera.zoom;camera.updateProjectionMatrix();controls.update();Object.entries(d.visible||{}).forEach(([id,v])=>{if(boat.parts[id]&&typeof v==='boolean')boat.parts[id].visible=v;});setKeel(d.keel);setGalley(d.galley);setLift(d.lift??100);$('#keelRange').value=d.keel;$('#galleyRange').value=d.galley;for(const [key,id]of [['labels','labelsToggle'],['dimensions','dimsToggle'],['grid','gridToggle'],['wire','wireToggle']]){if(typeof d[key]==='boolean'){const input=$('#'+id);input.checked=d[key];input.dispatchEvent(new Event('change'));}}syncLayers();$('#exportDialog').close();toast('View restored');}catch(err){toast(err.message);}finally{e.target.value='';}};
 window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)||$('dialog[open]'))return;if(e.key.toLowerCase()==='f')fitBoat();if(e.key==='Escape'){stopIsolation();syncLayers();select(null);}if(e.key==='1')setMode('exterior');if(e.key==='2')setMode('interior');if(e.key==='3')setMode('section');});
 setMode('section',false);setKeel(100);setGalley(0);resize();fitBoat(false);$('#loader').hidden=true;
 function animate(t){if(anim){const a=Math.min(1,(t-anim.start)/anim.duration),k=1-Math.pow(1-a,3);camera.position.lerpVectors(anim.from,anim.to,k);controls.target.lerpVectors(anim.targetFrom,anim.targetTo,k);if(a>=1)anim=null;}controls.update();updateLabels(t);renderer.render(scene,camera);requestAnimationFrame(animate);}requestAnimationFrame(animate);

@@ -6,6 +6,12 @@
 - Kept the 3D viewer, its separate provisional propulsion shapes, mast setup and references intact.
 - Protected owner-only photographs, serials, catalog IDs and exact locations from public source. Updated CI checks for simpler owner navigation.
 
+## Unreleased — Photo-based stern hardware
+
+- Added the stern cutout and transverse stainless bar, provisionally identified as a mainsheet traveler.
+- Rebuilt the starboard boarding platform with slatted wood, stainless side rails and a lower tread.
+- Modeled the port motor-board linkage and its range of motion, with synchronized motor and external fuel hose.
+
 ## Unreleased — Onboard restoration layout and equipment documentation
 
 - Recessed the port forward cabin liner for the compact toilet and adjusted the galley stop so it stays partly under the cockpit.

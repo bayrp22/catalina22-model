@@ -48,6 +48,24 @@ assert.equal(cover.children[0].userData.partId,cover.name);
 assert(coverBounds.min.y<.34 && coverBounds.max.y>.64 && coverBounds.max.y<.68,'Cover must span below the cockpit sill');
 assert.equal(boat.root.getObjectByName(cover.name),undefined,'Cover belongs to the viewer fit-out');
 assert.equal(boat.root.getObjectByName('aux-outboard'),undefined,'Do not mutate accepted boat root');
+const bracket=aux.parts['aux-mount'];
+const board=bracket.getObjectByName('outboard-clamp-board');
+const motor=aux.parts['aux-outboard'];
+const boardToMotor=motor.position.clone().sub(board.getWorldPosition(new THREE.Vector3()));
+const motorUp=motor.position.clone();
+for(const lift of [0,25,50,75,100]){
+ aux.setLift(lift);
+ const fixedToBoard=motor.position.clone().sub(board.getWorldPosition(new THREE.Vector3()));
+ assert(fixedToBoard.distanceTo(boardToMotor)<1e-9,'The motor must translate with the upright board');
+ assert.equal(board.rotation.z,0,'The parallelogram must keep the board upright');
+ const engineInlet=motor.position.clone().add(new THREE.Vector3(.142,.291,-.091));
+ assert(externalHose.geometry.parameters.path.getPoint(1).distanceTo(engineInlet)<1e-8,'Hose must end at the moving motor');
+ assert(new THREE.Box3().setFromObject(externalHose).max.x< -boat.SPEC.hullLength/2,'External hose must stay aft of the transom');
+}
+aux.setLift(0);
+assert(motor.position.y<motorUp.y-.25 && motor.position.x<motorUp.x,'The lowered motor travels down and out');
+assert(motorUp.y-.445>0 && motor.position.y-.445<0,'Propeller hub should cross the nominal model waterline');
+aux.setLift(100);
 console.log('Auxiliary propulsion overlay: four selectable models, documented reference envelopes and boat geometry separation passed.');
 
 const restoration=buildBoat({restoration:true});
@@ -77,3 +95,12 @@ for(const percent of [0,25,50,75,100]){
 assert(restoration.parts.deck.children.length>boat.parts.deck.children.length,'Restoration deck must include seam closures');
 assert(restoration.parts.cockpit.children.length>boat.parts.cockpit.children.length,'Restoration cockpit must include the forward returns');
 console.log('Restoration coordinates, toilet recess, galley travel and cockpit closure checks passed.');
+
+const rail=new THREE.Box3().setFromObject(fittings['stern-rail']);
+const boardingStep=new THREE.Box3().setFromObject(fittings['boarding-ladder']);
+assert(rail.min.z<0 && rail.max.z>0 && rail.max.y>.8,'Transverse rail spans the stern above the opening');
+assert(boardingStep.min.z>0 && boardingStep.min.y<0 && boardingStep.min.x<-3.65,'Boarding platform and lower step belong on the starboard stern');
+restoration.root.updateMatrixWorld(true);
+const aftRay=z=>new THREE.Raycaster(new THREE.Vector3(-3.6,.61,z),new THREE.Vector3(1,0,0),0,.4);
+assert.equal(aftRay(-.08).intersectObjects(restoration.parts.hull.children).length,0,'Transom boarding cutout should be open');
+assert(aftRay(.46).intersectObjects(restoration.parts.hull.children).length>0,'Transom remains beside the cutout');

@@ -1,6 +1,6 @@
 import * as THREE from './vendor/three.module.js';
 
-// Generic optional auxiliary-propulsion study — not part of accepted factory boat mesh.
+// Photo-based lift bracket with reference outboard and fuel hardware.
 // This is a reference-scale external outboard plus a portable tank. Actual equipment
 // identification, mounting approval, fuel storage and measured placement remain private.
 export const AUX_REFERENCE = Object.freeze({
@@ -29,7 +29,7 @@ export function buildAuxiliaryPropulsion(){
     group.position.set(...position);root.add(group);parts[id]=group;return group;
   }
   function mesh(group,geometry,material,xyz=[0,0,0],rotation=null){
-    const m=new THREE.Mesh(geometry,material);m.position.set(...xyz);if(rotation)m.rotation.set(...rotation);
+    const m=new THREE.Mesh(geometry,material.clone());m.position.set(...xyz);if(rotation)m.rotation.set(...rotation);
     m.castShadow=true;m.receiveShadow=true;group.add(m);m.userData.partId=group.userData.id;pickables.push(m);return m;
   }
   const box=(group,dim,material,xyz,rotation=null)=>mesh(group,new THREE.BoxGeometry(...dim),material,xyz,rotation);
@@ -39,22 +39,35 @@ export function buildAuxiliaryPropulsion(){
     m.position.copy(new THREE.Vector3(...a).add(new THREE.Vector3(...b)).multiplyScalar(.5));
     m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),v.normalize());return m;
   }
-  const bracket=part('aux-mount','Proposed transom motor bracket','Not surveyed • reinforcement and load rating unknown',
-    'Illustrative adjustable-style external mounting bracket at the port aft transom. No bracket model, fastener design, reinforcement, dynamic-load rating, shaft height or transom capacity has been verified. DO NOT build or mount to this geometry.',
-    [-3.265,.50,-.77]);
-  // Small backplate, 2 struts and isolated outer wooden clamp board.
-  box(bracket,[.040,.32,.32],steel,[.012,0,0]);
-  box(bracket,[.068,.28,.31],wood,[-.405,-.025,0]);
-  for(const z of [-.112,.112]){
-    rod(bracket,[-.015,.118,z],[-.385,.075,z],.022,steel);
-    rod(bracket,[-.015,-.110,z],[-.385,-.100,z],.022,darkSteel);
-    rod(bracket,[-.015,-.110,z],[-.385,.075,z],.014,steel);
-    for(const y of [-.102,.105])mesh(bracket,new THREE.SphereGeometry(.025,12,8),darkSteel,[.032,y,z]);
+  const bracket=part('aux-mount','Adjustable outboard lift bracket','Photo-based • travel inferred',
+    'Port transom lift bracket with twin pivoting links, a locking plate and a vertical wood motor board. The photos show the raised position. Lowered travel, detents and load rating are unverified.',
+    [-3.2766,.23,-.61]);
+  const board=new THREE.Group();board.name='outboard-clamp-board';board.userData.id=bracket.name;bracket.add(board);
+  box(board,[.061,.385,.263],wood,[0,.115,0]);
+  box(board,[.023,.275,.217],steel,[.036,.064,0]);
+  const pivots=[0,.175];
+  const armLength=.36;
+  const arms=[];
+  for(const z of [-.088,.088]){
+    box(bracket,[.024,.257,.045],steel,[-.012,.074,z]);
+    box(bracket,[.13,.229,.019],steel,[-.062,.077,z]);
+    for(const y of [-.027,.203])rod(bracket,[-.047,y,z],[.001,y,z],.014,darkSteel);
+    for(const y of pivots){
+      const arm=box(bracket,[armLength,.048,.021],steel,[-.072,y,z]);
+      arms.push({arm,y,z});
+      rod(bracket,[-.072,y,z-.024],[-.072,y,z+.024],.026,darkSteel);
+      rod(board,[.027,y,z-.019],[.027,y,z+.019],.018,steel);
+    }
+    for(const y of [.032,.146])rod(board,[-.041,y,z],[-.023,y,z],.014,darkSteel);
+    // The small bent steel retainers wrap over the top of the wood board.
+    const retainer=new THREE.CatmullRomCurve3([[.037,.236,z],[.037,.313,z],[-.032,.313,z],[-.037,.267,z]].map(p=>new THREE.Vector3(...p)));
+    mesh(board,new THREE.TubeGeometry(retainer,16,.008,8,false),steel);
   }
-  // Separate visible motor; shaft variant and attachment geometry are illustrative.
+  const lock=new THREE.CatmullRomCurve3([[-.079,-.018,.102],[-.137,.012,.102],[-.158,.075,.102],[-.147,.116,.102]].map(p=>new THREE.Vector3(...p)));
+  mesh(bracket,new THREE.TubeGeometry(lock,20,.010,8,false),darkSteel);
+  // Motor remains independently selectable. Its pose follows the moving board.
   const motor=part('aux-outboard','Reference 15 HP four-stroke outboard','Envelope reference • actual variant unverified',
-    '15 HP external outboard represented by a generic mesh. Published model family overall dimensions approx. 0.662 L × 0.336 W × 1.220 H m (long-shaft example), dry mass 44–49 kg across variants excluding fluids/accessories. Actual shaft, electric/manual start, motor mass center, tilt travel, prop/rudder clearance and mounting location require inspection.',
-    [-3.685,.14,-.77]);
+    'Generic Suzuki DF15A-family model carried by the lift bracket. Shaft length and installed clearance remain unverified.',[0,0,0]);
   // Mesh fits the reference class envelope but is not original manufacturer CAD.
   const cowl=mesh(motor,new THREE.SphereGeometry(1,20,12),cowling,[-.02,.425,0]);
   cowl.scale.set(.270,.175,.163);
@@ -70,10 +83,10 @@ export function buildAuxiliaryPropulsion(){
   gear.scale.set(.171,.067,.082);
   const skeg=mesh(motor,new THREE.ConeGeometry(.075,.16,3),shaft,[-.030,-.535,0]);
   skeg.rotation.set(0,0,Math.PI); // illustrative fin, not an OEM shape
-  const hub=mesh(motor,new THREE.CylinderGeometry(.035,.035,.11,12),propMetal,[-.225,-.445,0],[0,0,Math.PI/2]);
+  mesh(motor,new THREE.CylinderGeometry(.035,.035,.11,12),propMetal,[-.225,-.445,0],[0,0,Math.PI/2]);
   for(let i=0;i<3;i++){
     const a=i*2*Math.PI/3;
-    const blade=box(motor,[.018,.124,.048],propMetal,[-.259,-.445+Math.cos(a)*.070,Math.sin(a)*.070],[a,0,0]);
+    box(motor,[.018,.124,.048],propMetal,[-.259,-.445+Math.cos(a)*.070,Math.sin(a)*.070],[a,0,0]);
   }
   // Tiller points into the cockpit; check real steering swing clearance.
   rod(motor,[.13,.15,0],[.328,.03,0],.022,darkSteel);
@@ -95,18 +108,33 @@ export function buildAuxiliaryPropulsion(){
   const [tankX,tankY,tankZ]=tankPosition;
   const primer=[-2.91,.552,-.69];
   // Split at the transom so the model does not imply a verified pass-through fitting.
-  const runs=[
-    [[tankX-.11,tankY+.2125,tankZ-.045],[-2.68,.550,-.72],primer,[-3.14,.557,-.66],[-3.27,.56,-.66]],
-    [[-3.287,.56,-.66],[-3.43,.565,-.66],[-3.57,.548,-.68],[-3.64,.53,-.69]]
-  ];
-  for(const points of runs){
-    const curve=new THREE.CatmullRomCurve3(points.map(point=>new THREE.Vector3(...point)));
-    mesh(fuel,new THREE.TubeGeometry(curve,points.length*8,.010,8,false),hoseRubber);
-  }
+  const inboardPoints=[[tankX-.11,tankY+.2125,tankZ-.045],[-2.68,.550,-.72],primer,[-3.14,.557,-.66],[-3.27,.56,-.66]];
+  const hoseGeometry=points=>new THREE.TubeGeometry(
+    new THREE.CatmullRomCurve3(points.map(point=>new THREE.Vector3(...point))),32,.010,8,false
+  );
+  mesh(fuel,hoseGeometry(inboardPoints),hoseRubber);
+  const exit=[-3.292,.56,-.66];
+  const externalHose=mesh(fuel,new THREE.BufferGeometry(),hoseRubber);
   mesh(fuel,new THREE.SphereGeometry(.035,12,8),fuelBlack,primer).scale.set(1.55,.64,.69);
+
+  function setLift(percent){
+    const angle=THREE.MathUtils.lerp(-.23,1.02,THREE.MathUtils.clamp(percent,0,100)/100);
+    const dx=-armLength*Math.cos(angle),dy=armLength*Math.sin(angle);
+    for(const {arm,y,z} of arms){
+      arm.position.set(-.072+dx/2,y+dy/2,z);
+      arm.rotation.z=-angle;
+    }
+    board.position.set(-.099+dx,dy,0);
+    motor.position.copy(bracket.position).add(board.position).add(new THREE.Vector3(-.115,.082,0));
+    const connector=motor.position.clone().add(new THREE.Vector3(.142,.291,-.091));
+    const points=[exit,[-3.355,.520,-.731],[connector.x+.036,connector.y-.135,connector.z-.049],connector.toArray()];
+    externalHose.geometry.dispose();
+    externalHose.geometry=hoseGeometry(points);
+  }
+  setLift(100);
   // Each part remains named, togglable and inspectable independently of the hull model.
   labels.push({id:'aux-outboard',text:'15 HP outboard · proposed',position:new THREE.Vector3(0,.78,0)});
-  labels.push({id:'aux-mount',text:'Bracket · unverified',position:new THREE.Vector3(-.23,.36,0)});
+  labels.push({id:'aux-mount',text:'Outboard lift bracket',position:new THREE.Vector3(-.12,.27,-.12)});
   labels.push({id:'aux-tank',text:'12 L tank · provisional',position:new THREE.Vector3(0,.24,0)});
-  return {root,parts,pickables,labels,reference:AUX_REFERENCE};
+  return {root,parts,pickables,labels,setLift,reference:AUX_REFERENCE};
 }

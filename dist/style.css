@@ -39,3 +39,7 @@ aside{width:280px;flex-shrink:0;padding:24px 23px;background:var(--paper);border
  #selection{top:auto;right:10px;left:10px;bottom:77px;width:auto;max-height:min(46%,260px)}
  #selection:not([hidden])~.canvas-tools{top:42%;bottom:auto;transform:translateY(-50%)}
 }
+
+.stern-view-button{width:100%;font-size:11px;margin-top:7px}
+.stern-lift-controls{margin-bottom:12px}
+.stern-lift-controls input{display:block}

@@ -6,7 +6,7 @@ The owner-facing project index is at `/project/`. It contains **four independent
 | --- | --- | --- |
 | Contents | `/project/` | Clean table of contents |
 | 3D Model | `/` | Full-page viewer with shared project navigation and provisional fit-out details |
-| Inventory & Manuals | `/project/inventory/` | Simple pre-populated catalogue of 27 equipment and reference topics with documentation links and what still needs checking |
+| Inventory & Manuals | `/project/inventory/` | Simple pre-populated catalogue of 28 equipment and reference topics with documentation links and what still needs checking |
 | Mast & Sails | `/project/rigging/` | Factory rigging guidance, checks, Catalina 22-specific videos |
 | References | `/project/references/` | Original factory and manufacturer source links |
 
@@ -30,9 +30,13 @@ Because this GitHub repository is **public**, the page includes public-facing pr
 
 **Safety:** The 1977 Catalina 22 manual recommends 3–6 HP, while the reference outboard is Suzuki DF15A (15 HP). A real installation requires professional checking of transom strength, mount/bracket rating, fasteners, shaft height, tilting and rudder clearances. The illustrated fuel routing and compartment geometry remain provisional, including ventilation, restraint and the transom exit.
 
+## Stern hardware and motion
+
+The stern photos guide the boarding cutout, transverse rail and coiled fitting, starboard slatted boarding platform and port outboard bracket. The transverse bar resembles the original Catalina 22 mainsheet traveler. The backstay attachment on this boat is unconfirmed. **Inspect stern hardware** frames these parts. **Outboard lift** moves the paired links, keeps the wooden clamp board upright and carries the Suzuki model along with the external fuel connection. The photos show the raised pose. Lowered travel and hardware dimensions are inferred in model coordinates.
+
 ## Restoration equipment in 3D
 
-Each of the 27 inventory rows links to its onboard item. Click on the model or use **Find onboard equipment** to inspect placement, available size and weight references, and manuals. Below-deck entries switch the viewer into the relevant interior or locker view. Loose equipment and unconfirmed mounting points use labeled illustrative placements. Published device masses and comparable listings are reference values and do not contribute to the private equipment load case.
+Each of the 28 inventory rows links to its onboard item. Click on the model or use **Find onboard equipment** to inspect placement, available size and weight references, and manuals. Below-deck entries switch the viewer into the relevant interior or locker view. Loose equipment and unconfirmed mounting points use labeled illustrative placements. Published device masses and comparable listings are reference values and do not contribute to the private equipment load case.
 
 The current-view export includes the restoration geometry and visible equipment. The factory-layout export remains the protected reference. The standalone viewer carries a copy of the same public documentation. Private inventory data and media remain outside both packages.
 

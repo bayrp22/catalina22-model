@@ -35,9 +35,14 @@ export function buildBoat({restoration=false}={}){
  for(const side of [-1,1]){shell(side,0,.52);hullUpper[side]=shell(side,.52,1);}
  // The transom follows the same curved cross-section as the hull, without sealing its top.
  const transV=[];for(let i=0;i<=40;i++){const t=i/40;transV.push(hullPoint(-3.2766,t,-1));}for(let i=40;i>=0;i--)transV.push(hullPoint(-3.2766,i/40,1));
+ if(restoration)transV.splice(41,0,[-3.2766,.70,-.296],[-3.2766,.52,-.27],[-3.2766,.505,-.247],[-3.2766,.505,.10],[-3.2766,.52,.127],[-3.2766,.70,.15]);
  const ts=new THREE.Shape();transV.forEach((p,i)=>i?ts.lineTo(p[2],p[1]):ts.moveTo(p[2],p[1]));const tg=new THREE.ShapeGeometry(ts);const ta=tg.attributes.position;for(let i=0;i<ta.count;i++){const z=ta.getX(i),y=ta.getY(i);ta.setXYZ(i,-3.2766,y,z);}tg.computeVertexNormals();mesh(hull,tg,mats.hull);
  const trim=part('trim','Rub rails & deck hardware','Exterior','Simplified rub rails, cleats, bow pulpit, handrails and cockpit winches. Hardware sizes are illustrative.',null);
  for(const side of [-1,1]){const pts=[];for(let i=0;i<=64;i++){const x=-3.2766+SPEC.hullLength*i/64;const [w,b,s]=section(x);pts.push([x,s+.012,side*(w+.01)]);}tube(trim,pts,.018,mats.stripe);}
+ if(restoration){
+  for(const [edge,side] of [[-.296,-1],[.15,1]])tube(trim,[[-3.2766,.712,edge],[-3.2766,.712,side*.59],[-3.2766,.712,side*.89]],.015,mats.stripe);
+  tube(trim,[[-3.283,.694,-.296],[-3.283,.537,-.274],[-3.283,.506,-.247],[-3.283,.506,.10],[-3.283,.528,.13],[-3.283,.695,.15]],.011,mats.deck);
+ }
  const deck=part('deck','Deck & side decks','Exterior','Foredeck and narrow side decks, with openings around the cabin trunk and cockpit.',[2.4,.95,0]);
  const outline=(a,b,sgn,inset=0)=>{const pts=[];for(let i=0;i<=28;i++){const x=a+(b-a)*i/28;pts.push([x,sgn*Math.max(0,section(x)[0]-inset)]);}return pts;};
  polygon(deck,[...outline(1.48,3.2766,1),...outline(3.2766,1.48,-1)],.78,.045,mats.deck);
@@ -67,7 +72,11 @@ export function buildBoat({restoration=false}={}){
   box(cockpit,[.1,.1,.15],[-1.36,.76,s*.99],mats.wood);
   const winch=mesh(trim,new THREE.CylinderGeometry(.062,.074,.085,24),mats.metal);winch.position.set(-1.36,.84,s*.99);
  }
- box(cockpit,[.075,.33,.93],[-3.18,.47,0],mats.deck);box(cockpit,[.13,.08,.92],[-1.17,.68,0],mats.deck);
+ if(restoration){
+  box(cockpit,[.075,.193,.93],[-3.18,.403,0],mats.deck);
+  box(cockpit,[.075,.134,.318],[-3.18,.567,.306],mats.deck);
+  box(cockpit,[.075,.134,.155],[-3.18,.567,-.3875],mats.deck);
+ }else box(cockpit,[.075,.33,.93],[-3.18,.47,0],mats.deck);box(cockpit,[.13,.08,.92],[-1.17,.68,0],mats.deck);
  if(restoration){
   // Close the reconstructed deck-to-sheer seam around the cockpit and cabin sides.
   for(const side of [-1,1]){
