@@ -59,3 +59,6 @@ aside{width:280px;flex-shrink:0;padding:24px 23px;background:var(--paper);border
 .cabin-view-actions button{font-size:11px;padding:5px 9px}
 @media(max-width:720px){#cabinControls{bottom:8px;padding:6px 12px}#viewport[data-mode="cabin"] #selection{bottom:103px}}
 @media(max-width:420px){.viewbar{gap:1px}.viewbar button{padding-left:7px;padding-right:7px}}
+
+.compatibility-canvas{position:absolute;inset:0;pointer-events:none}
+#renderStatus{font-size:11px;color:var(--muted)}

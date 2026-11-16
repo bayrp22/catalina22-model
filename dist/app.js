@@ -5,13 +5,58 @@ import { buildBoat, buildCabinStepCover, restorationGalleyOffset, cabinTrackPosi
 import { createInventory } from './inventory.js';
 import { buildAuxiliaryPropulsion } from './propulsion.js';
 import { buildRestorationEquipment } from './restoration.js';
+import { createCanvasRenderer } from './canvas-renderer.js';
 import { readEquipmentCatalog, showEquipmentDetails } from './equipment-inspector.js';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const host=$('#canvasHost'),view=$('#viewport');
-let renderer;
-try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:false});}
-catch(e){$('#loader').hidden=true;$('#error').hidden=false;throw e;}
-renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setClearColor(0xf2f1eb);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;host.appendChild(renderer.domElement);
+const compatibility=new URLSearchParams(window.location.search).get('renderer')==='canvas';
+const backgroundColor=0xf2f1eb;
+const canvas=document.createElement('canvas');
+let renderer,software,renderedAt=-Infinity;
+
+function showCompatibility(surface) {
+ const fallback=createCanvasRenderer(surface);
+ fallback.setClearColor(backgroundColor);
+ $('#renderStatus').hidden=false;
+ return fallback;
+}
+if(!compatibility) {
+ for(const antialias of [true,false]) {
+  // A new canvas is needed when the first one has already acquired a context.
+  const surface=document.createElement('canvas');
+  try {
+   renderer=new THREE.WebGLRenderer({canvas:surface,antialias,alpha:false});
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,antialias?2:1));
+   renderer.setClearColor(backgroundColor);
+   renderer.shadowMap.enabled=antialias;
+   renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+   renderer.outputColorSpace=THREE.SRGBColorSpace;
+   renderer.toneMapping=THREE.ACESFilmicToneMapping;
+   renderer.toneMappingExposure=1.35;
+   break;
+  }catch(error){renderer?.dispose();renderer=undefined;console.warn('WebGL startup failed',error);}
+ }
+}
+const inputCanvas=renderer?.domElement??canvas;
+if(!renderer) {
+ try{software=showCompatibility(inputCanvas);}
+ catch(error){
+  $('#loader').hidden=true;$('#error').hidden=false;
+  throw error;
+ }
+}
+host.appendChild(inputCanvas);
+inputCanvas.addEventListener('webglcontextlost',event=>{
+ event.preventDefault();
+ if(software)return;
+ try{
+  software=showCompatibility(canvas);
+  canvas.className='compatibility-canvas';
+  host.appendChild(canvas);
+  inputCanvas.style.opacity='0';
+  resize();
+ }catch(error){$('#error').hidden=false;console.warn('Canvas fallback failed',error);}
+});
 const scene=new THREE.Scene();scene.add(new THREE.HemisphereLight(0xf8faf5,0x94a89b,2.6));
 const key=new THREE.DirectionalLight(0xfff8e7,3.6);key.position.set(2,7,5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-7,right:7,top:7,bottom:-7,near:.1,far:30});key.shadow.bias=-.0004;key.shadow.normalBias=.024;scene.add(key);
 const fill=new THREE.DirectionalLight(0xe6f2fa,1.6);fill.position.set(-4,4,-5);scene.add(fill);
@@ -31,7 +76,7 @@ let equipment=new Map();
 const relatedEquipment={settee:'galley','port-lazarette':'cockpit','starboard-lazarette':'cockpit'};
 const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0xf2f1eb,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.65;floor.receiveShadow=true;scene.add(floor);
 const grid=new THREE.GridHelper(16,32,0xb6c2b9,0xd7ddd4);grid.position.y=-1.647;grid.material.transparent=true;grid.material.opacity=.46;scene.add(grid);
-const perspective=new THREE.PerspectiveCamera(38,1,.01,100);const ortho=new THREE.OrthographicCamera(-5,5,5,-5,.01,100);let camera=perspective;camera.position.set(6,4.7,8);let controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,.12,0);controls.enableDamping=true;controls.dampingFactor=.085;controls.minDistance=.22;controls.maxDistance=30;controls.minZoom=.35;controls.maxZoom=35;controls.maxPolarAngle=Math.PI*.98;controls.screenSpacePanning=true;controls.update();
+const perspective=new THREE.PerspectiveCamera(38,1,.01,100);const ortho=new THREE.OrthographicCamera(-5,5,5,-5,.01,100);let camera=perspective;camera.position.set(6,4.7,8);let controls=new OrbitControls(camera,inputCanvas);controls.target.set(0,.12,0);controls.enableDamping=true;controls.dampingFactor=.085;controls.minDistance=.22;controls.maxDistance=30;controls.minZoom=.35;controls.maxZoom=35;controls.maxPolarAngle=Math.PI*.98;controls.screenSpacePanning=true;controls.update();
 const cabinCamera=new THREE.PerspectiveCamera(62,1,.025,100);
 const cabinLook={yaw:0,pitch:-.10,travel:0};
 const cabinTarget=new THREE.Vector3();
@@ -67,7 +112,7 @@ function setMode(mode,notify=true){
 }
 $$('[data-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));$('#showAll').onclick=()=>{setMode(state.mode,false);$('#keelRange').value=100;setKeel(100);$('#galleyRange').value=0;setGalley(0);setLift(100);for(const side of Object.keys(hatches))setHatch(side,false);fitBoat();toast('Default layers and positions restored');};
 const defaultPosition=new THREE.Vector3(6.2,4.8,8.5),defaultTarget=new THREE.Vector3(0,.12,0);
-function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h);perspective.aspect=w/h;perspective.updateProjectionMatrix();cabinCamera.aspect=w/h;cabinCamera.updateProjectionMatrix();ortho.left=-4.7*w/h;ortho.right=4.7*w/h;ortho.top=4.7;ortho.bottom=-4.7;ortho.updateProjectionMatrix();}
+function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;(software??renderer).setSize(w,h);if(software&&renderer){inputCanvas.style.width=w+'px';inputCanvas.style.height=h+'px';}perspective.aspect=w/h;perspective.updateProjectionMatrix();cabinCamera.aspect=w/h;cabinCamera.updateProjectionMatrix();ortho.left=-4.7*w/h;ortho.right=4.7*w/h;ortho.top=4.7;ortho.bottom=-4.7;ortho.updateProjectionMatrix();}
 new ResizeObserver(resize).observe(host);resize();
 function switchCamera(next){if(next!==camera){const pos=camera.position.clone(),target=controls.target.clone();camera=next;camera.position.copy(pos);camera.up.set(0,1,0);controls.object=camera;controls.target.copy(target);controls.update();}resize();}
 function transition(pos,target,duration=650){anim={start:performance.now(),duration,from:camera.position.clone(),to:pos.clone(),targetFrom:controls.target.clone(),targetTo:target.clone()};}
@@ -221,29 +266,28 @@ readEquipmentCatalog().then(records=>{
  const requested=new URLSearchParams(window.location.search).get('part');
  if(requested)findPart(requested);
 }).catch(()=>{equipmentPicker.options[0].textContent='Equipment details unavailable';});
-const canvas=renderer.domElement;
 let drag=null;
-canvas.addEventListener('wheel',e=>{
+inputCanvas.addEventListener('wheel',e=>{
  if(state.mode!=='cabin'||e.ctrlKey)return;
  e.preventDefault();
  const units=e.deltaMode===1?16:e.deltaMode===2?host.clientHeight:1;
  setCabinTravel(cabinLook.travel+e.deltaY*units/950);
 },{passive:false});
-canvas.addEventListener('pointerdown',e=>{
+inputCanvas.addEventListener('pointerdown',e=>{
  if(!e.isPrimary||e.button!==0)return;
  drag={id:e.pointerId,x:e.clientX,y:e.clientY,yaw:cabinLook.yaw,pitch:cabinLook.pitch};
- if(state.mode==='cabin')canvas.setPointerCapture(e.pointerId);
+ if(state.mode==='cabin')inputCanvas.setPointerCapture(e.pointerId);
 });
-canvas.addEventListener('pointermove',e=>{
+inputCanvas.addEventListener('pointermove',e=>{
  if(state.mode!=='cabin'||drag?.id!==e.pointerId)return;
  updateCabinLook(drag.yaw-(e.clientX-drag.x)*.005,drag.pitch+(e.clientY-drag.y)*.005);
 });
-canvas.addEventListener('pointercancel',e=>{if(drag?.id===e.pointerId)drag=null;});
-canvas.addEventListener('pointerup',e=>{
+inputCanvas.addEventListener('pointercancel',e=>{if(drag?.id===e.pointerId)drag=null;});
+inputCanvas.addEventListener('pointerup',e=>{
  if(!drag||drag.id!==e.pointerId)return;
  const start=drag;drag=null;
  if(Math.hypot(e.clientX-start.x,e.clientY-start.y)>5||e.button!==0)return;
- const rect=canvas.getBoundingClientRect();
+ const rect=inputCanvas.getBoundingClientRect();
  pointer.set((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1);
  raycaster.setFromCamera(pointer,camera);
  const hit=raycaster.intersectObjects([...boat.pickables,...inventory.pickables].filter(effectiveVisible),false)[0];
@@ -297,4 +341,9 @@ function animate(t){if(anim){const a=Math.min(1,(t-anim.start)/anim.duration),k=
   const delta=target-lid.rotation.x;
   lid.rotation.x=Math.abs(delta)<.003?target:lid.rotation.x+delta*.20;
  }
- updateLabels(t);renderer.render(scene,camera);requestAnimationFrame(animate);}requestAnimationFrame(animate);
+ updateLabels(t);
+ if(!software||t-renderedAt>=100){
+  (software??renderer).render(scene,camera);
+  renderedAt=t;
+ }
+ requestAnimationFrame(animate);}requestAnimationFrame(animate);

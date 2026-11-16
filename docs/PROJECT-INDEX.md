@@ -60,3 +60,7 @@ Video examples are supplemental and must not replace inspection of the actual ma
 ## Review
 
 Pinned Node 24.19.0 / Python 3 validation and Netlify preview checks must pass before release. The project index CI asserts that deleted routes are absent, manual list is present and has no uploads, the 3D model and propulsion overlay remain accessible and the rigging player still works. Browser and mobile visual review remain separate acceptance steps. Do not merge to production without owner review.
+
+## Viewer compatibility
+
+The viewer switches to a software Canvas renderer when WebGL cannot start or its context is lost. The compatibility renderer draws the same boat geometry and responds to the same camera and part controls with simpler shading. Add `?renderer=canvas` to open it directly.
