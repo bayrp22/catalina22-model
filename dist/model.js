@@ -9,7 +9,7 @@ export const SOURCES = [
  {title:'1977 factory brochure — interior photographs',url:'https://forums.sailboatowners.com/attachments/cat4-jpg.60725/'},
  {title:'1977 Catalina 22 owner’s manual',url:'https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf'}
 ];
-export function buildBoat(){
+export function buildBoat({restoration=false}={}){
  const root=new THREE.Group();root.name='Catalina_22_Original_1970s';
  root.userData={units:'meters',axes:'+X bow, +Y up, +Z starboard; Y=0 reference waterline',accuracy:'Published principal dimensions; reconstructed hull surfaces and provisional interior dimensions',source:SOURCES[0].url};
  const parts={},pickables=[],labels=[];
@@ -68,11 +68,40 @@ export function buildBoat(){
   const winch=mesh(trim,new THREE.CylinderGeometry(.062,.074,.085,24),mats.metal);winch.position.set(-1.36,.84,s*.99);
  }
  box(cockpit,[.075,.33,.93],[-3.18,.47,0],mats.deck);box(cockpit,[.13,.08,.92],[-1.17,.68,0],mats.deck);
+ if(restoration){
+  // Close the reconstructed deck-to-sheer seam around the cockpit and cabin sides.
+  for(const side of [-1,1]){
+   const vertices=[],indices=[];
+   for(let i=0;i<=60;i++){
+    const x=-3.2766+i*(1.48+3.2766)/60;
+    const [beam,,sheer]=section(x);
+    vertices.push(x,sheer,side*beam,x,.686,side*(beam-.024));
+    if(i){const index=2*i;indices.push(index-2,index,index-1,index-1,index,index+1);}
+   }
+   const seam=new THREE.BufferGeometry();
+   seam.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));
+   seam.setIndex(indices);seam.computeVertexNormals();mesh(deck,seam,mats.deck);
+  }
+  // Molded returns connect the forward ends of the seats to the cabin bulkhead.
+  // Leave the center entry and space below the starboard seat clear for the galley.
+  for(const side of [-1,1]){
+   const top=[[-1.205,.67,side*.445],[-1.205,.67,side*.84],[-1.058,.695,side*.818],[-1.058,.695,side*.34]];
+   panel(cockpit,top,mats.deck);
+   panel(cockpit,[top[0],top[3],[-1.058,.607,side*.34],[-1.205,.607,side*.445]],mats.deck);
+  }
+ }
  const sole=part('sole','Cabin sole','Interior','Central walking surface. Floor height is inferred from the interior photographs.',[-.12,-.02,.12]);
  polygon(sole,[[-1.12,-.32],[.88,-.33],[1.32,-.2],[1.32,.2],[.88,.38],[-1.12,.38]],-.10,.04,mats.wood);
  const vberth=part('vberth','Forward V-berth','Interior','Forward double-berth platform with a center footwell and removable infill. Precise dimensions need measurement.',[1.82,.38,0]);
- const vb=[ [.78,-.77],[1.35,-.78],[1.95,-.57],[2.65,-.23],[2.88,0],[2.65,.23],[1.95,.57],[1.35,.78],[.78,.77],[.78,.30],[1.38,.23],[1.65,0],[1.38,-.23],[.78,-.30] ];
- polygon(vberth,vb,.25,.13);box(vberth,[.045,.28,.45],[.79,.065,-.53]);box(vberth,[.045,.28,.45],[.79,.065,.53]);
+ const factoryBerth=[ [.78,-.77],[1.35,-.78],[1.95,-.57],[2.65,-.23],[2.88,0],[2.65,.23],[1.95,.57],[1.35,.78],[.78,.77],[.78,.30],[1.38,.23],[1.65,0],[1.38,-.23],[.78,-.30] ];
+ // Owner's toilet is forward of the port bulkhead. Remove the liner/infill locally.
+ const vb=restoration?[...factoryBerth.slice(0,12),[1.53,-.25],[1.53,-.72],[.78,-.72]]:factoryBerth;
+ polygon(vberth,vb,.25,.13);
+ if(restoration){
+  polygon(vberth,[[.80,-.68],[1.46,-.68],[1.46,-.29],[.80,-.29]],.045,.025,mats.liner);
+  vberth.userData.description='Forward berth with a recessed toilet compartment on the port side, immediately forward of the bulkhead.';
+ }else box(vberth,[.045,.28,.45],[.79,.065,-.53]);
+ box(vberth,[.045,.28,.45],[.79,.065,.53]);
  const bulkhead=part('bulkheads','Forward bulkheads','Interior','Partial teak bulkheads frame the V-berth opening. Reconstructed positions; not a measured structural drawing.',[.77,.90,-.48]);
  for(const s of [-1,1])box(bulkhead,[.028,.86,.36],[.77,.68,s*.49],mats.wood);
  const dinette=part('dinette','Port dinette bases','Interior','Two facing seats on the port side. The table lowers to make a berth; seat positions reconstructed from the brochure.',[-.19,.31,-.77]);
@@ -84,7 +113,10 @@ export function buildBoat(){
  box(galley,[.67,.27,.53],[-.89,.40,.73],mats.wood);box(galley,[.71,.04,.56],[-.89,.56,.73],mats.deck);
  box(galley,[.27,.008,.38],[-.71,.586,.73],mats.metal);for(const z of [.64,.82]){const m=mesh(galley,new THREE.TorusGeometry(.055,.01,6,24),mats.black);m.rotation.x=Math.PI/2;m.position.set(-.71,.60,z);}
  box(galley,[.22,.013,.31],[-1.07,.588,.73],mats.metal);box(galley,[.17,.009,.25],[-1.07,.598,.73],mats.glass);
- tube(galley,[[-1.18,.60,.88],[-1.18,.72,.88],[-1.09,.74,.85],[-1.07,.68,.81]],.009,mats.metal);
+ tube(galley,restoration?
+  [[-1.18,.586,.88],[-1.18,.599,.88],[-1.09,.601,.85],[-1.07,.600,.81]]:
+  [[-1.18,.60,.88],[-1.18,.72,.88],[-1.09,.74,.85],[-1.07,.68,.81]],.009,mats.metal);
+ if(restoration)galley.userData.description='Aft starboard galley. The forward stop leaves part of the unit tucked under the cockpit seat.';
  const trunk=part('trunk','Swing-keel trunk','Structure','Central keel housing. The original manual places the locking bolt under the forward port dinette seat. Shape and pivot location are provisional.',[.08,.21,-.13]);
  polygon(trunk,[[-.84,-.10],[.53,-.10],[.64,0],[.53,.10],[-.84,.10]],.18,.48,mats.liner);tube(trunk,[[-.78,.13,0],[-1.05,.53,0]],.025,mats.metal);
  const companion=part('companionway','Companionway & step','Interior','Aft cabin entry and step; main interior access from the cockpit.',[-1.05,.60,0]);box(companion,[.27,.075,.58],[-1.03,.24,0],mats.wood);box(companion,[.05,.30,.55],[-1.13,.09,0],mats.liner);
@@ -102,7 +134,9 @@ export function buildBoat(){
  const rudder=part('rudder','Rudder & tiller','Appendages','Transom-hung rudder and wooden tiller. Profile inferred from the 1977 drawing.',[-3.45,.52,0]);
  const rs=new THREE.Shape();[[-3.31,.49],[-3.52,.48],[-3.69,-.80],[-3.26,-.80],[-3.22,-.64],[-3.29,.0]].forEach(([x,y],i)=>i?rs.lineTo(x,y):rs.moveTo(x,y));rs.closePath();const rg=new THREE.ExtrudeGeometry(rs,{depth:.042,bevelEnabled:false});rg.translate(0,0,-.021);mesh(rudder,rg,mats.deck);tube(rudder,[[-3.40,.51,0],[-3.03,.73,0],[-2.27,.79,0]],.028,mats.wood);for(const y of [.18,.49])box(rudder,[.16,.045,.065],[-3.29,y,0],mats.metal);
  const rig=part('rig','Mast, boom & standing rigging','Rig','Optional simplified masthead rig. Mast length: 25 ft in the 1977 brochure. Shroud positions and fittings inferred.',null,'Published mast length • rig layout inferred');
- box(rig,[.11,SPEC.mastLength,.075],[.59,1.285+SPEC.mastLength/2,0],mats.metal);tube(rig,[[.59,2.05,0],[-2.36,2.05,0]],.047,mats.metal);
+ box(rig,[.11,SPEC.mastLength,.075],[.59,1.285+SPEC.mastLength/2,0],mats.metal);
+ const boom=tube(rig,[[.59,2.05,0],[-2.36,2.05,0]],.047,mats.metal);
+ if(restoration)boom.name='boom-mesh';
  for(const s of [-1,1]){tube(rig,[[.59,5.0,0],[.59,5.0,s*.68]],.016,mats.metal);tube(rig,[[.59,8.89,0],[.59,5,s*.68],[.45,.74,s*1.04]],.003,mats.metal);for(const x of [-.1,1.04])tube(rig,[[.59,5,0],[x,.74,s*1.03]],.003,mats.metal);}
  tube(rig,[[3.12,.86,0],[.59,8.89,0],[-3.22,.76,0]],.004,mats.metal);
  tube(trim,[[2.30,.80,-.52],[2.35,1.30,-.50],[3.16,1.30,-.10],[3.22,1.29,0],[3.16,1.30,.10],[2.35,1.30,.50],[2.30,.80,.52]],.014,mats.metal);
@@ -127,4 +161,9 @@ export function buildCabinStepCover(material){
  panel.position.set(-1.278,.487,0);panel.rotation.z=-.30;
  panel.castShadow=true;panel.receiveShadow=true;panel.userData.partId=id;part.add(panel);
  return part;
+}
+
+// Slider percentages preserve saved views. Meter offsets are provisional visual stops.
+export function restorationGalleyOffset(percent){
+ return THREE.MathUtils.lerp(-.18,-.68,THREE.MathUtils.clamp(percent,0,100)/100);
 }

@@ -6,6 +6,12 @@
 - Kept the 3D viewer, its separate provisional propulsion shapes, mast setup and references intact.
 - Protected owner-only photographs, serials, catalog IDs and exact locations from public source. Updated CI checks for simpler owner navigation.
 
+## Unreleased — Onboard restoration layout and equipment documentation
+
+- Recessed the port forward cabin liner for the compact toilet and adjusted the galley stop so it stays partly under the cockpit.
+- Closed modeled exterior seams at the forward cockpit and deck-to-sheer junctions.
+- Linked all 27 inventory rows to selectable onboard geometry with placement notes, available specifications and manuals.
+
 ## Unreleased — Port lazarette, cabin entry cover and 3D navigation
 
 - Moved the 12 L reference tank and inboard fuel line beneath the port lazarette. Added a cutaway shortcut to inspect them.

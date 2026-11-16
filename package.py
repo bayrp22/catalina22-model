@@ -2,8 +2,8 @@ from pathlib import Path
 import base64,json,zipfile,re
 root=Path(__file__).parent
 p=root/'dist'
-mods={'three':'vendor/three.module.js','orbit-controls':'vendor/OrbitControls.js','gltf-exporter':'vendor/GLTFExporter.js','texture-utils':'vendor/TextureUtils.js','boat-model':'model.js','inventory':'inventory.js','inventory-data':'inventory-data.js','aux-propulsion':'propulsion.js'}
-replace={"'./vendor/three.module.js'":"'three'","'./three.module.js'":"'three'","'./vendor/OrbitControls.js'":"'orbit-controls'","'./vendor/GLTFExporter.js'":"'gltf-exporter'","'./TextureUtils.js'":"'texture-utils'","'./model.js'":"'boat-model'","'./inventory.js'":"'inventory'","'./inventory-data.js'":"'inventory-data'","'./propulsion.js'":"'aux-propulsion'"}
+mods={'three':'vendor/three.module.js','orbit-controls':'vendor/OrbitControls.js','gltf-exporter':'vendor/GLTFExporter.js','texture-utils':'vendor/TextureUtils.js','boat-model':'model.js','inventory':'inventory.js','inventory-data':'inventory-data.js','aux-propulsion':'propulsion.js','restoration':'restoration.js','equipment-inspector':'equipment-inspector.js'}
+replace={"'./vendor/three.module.js'":"'three'","'./three.module.js'":"'three'","'./vendor/OrbitControls.js'":"'orbit-controls'","'./vendor/GLTFExporter.js'":"'gltf-exporter'","'./TextureUtils.js'":"'texture-utils'","'./model.js'":"'boat-model'","'./inventory.js'":"'inventory'","'./inventory-data.js'":"'inventory-data'","'./propulsion.js'":"'aux-propulsion'","'./restoration.js'":"'restoration'","'./equipment-inspector.js'":"'equipment-inspector'"}
 def norm(s):
  for a,b in replace.items():s=s.replace(a,b)
  return s
@@ -15,6 +15,9 @@ for href,path in [('/project/project.css','project/project.css'),('style.css','s
 html=re.sub(r'<nav class="nav".*?</nav>','',html)
 html=html.replace('<a href="/project/" class="brand">','<div class="brand">')
 html=html.replace('Restoration / project library</small></a>','Restoration / project library</small></div>')
+inventory=(p/'project/inventory/index.html').read_text()
+equipment=''.join(re.findall(r'<article class="equipment-line".*?</article>',inventory,flags=re.S))
+html=html.replace('</body>',f'<template id="offlineEquipment">{equipment}</template></body>')
 html=html.replace('<script type="module" src="app.js"></script>','<script type="importmap">'+json.dumps({'imports':mapping})+'</script><script type="module">'+norm((p/'app.js').read_text())+'</script>')
 # Standalone export links use embedded bytes so the downloaded file works without the server.
 glb=(p/'downloads/Catalina22_Original.glb').read_bytes();html=html.replace('href="downloads/Catalina22_Original.glb"','href="data:model/gltf-binary;base64,'+base64.b64encode(glb).decode()+'"')

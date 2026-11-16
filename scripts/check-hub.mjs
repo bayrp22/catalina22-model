@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {buildBoat} from '../dist/model.js';
+import {buildAuxiliaryPropulsion} from '../dist/propulsion.js';
+import {buildRestorationEquipment} from '../dist/restoration.js';
 
 const read=p=>fs.readFileSync(p,'utf8');
 const home=read('dist/project/index.html');
@@ -62,3 +65,17 @@ for(const [name,html] of [['home',home],['inventory',inv],['rigging',rig],['refe
     assert(!html.includes(bad),'Private project data leaked into '+name);
 }
 console.log('Owner library tests passed: pre-populated manual list, no upload workflow, Systems/2D fully deleted, original 3D and rigging retained.');
+
+const restoration=buildBoat({restoration:true});
+const fitted=buildRestorationEquipment(restoration);
+const selectable=new Set([...restoration.pickables,...fitted.pickables,...buildAuxiliaryPropulsion().pickables].map(mesh=>mesh.userData.partId));
+const entries=[...inv.matchAll(/<article class="equipment-line" id="([a-z-]+)" data-view="(exterior|interior|section|locker)">([\s\S]*?)<\/article>/g)];
+assert.equal(entries.length,27);
+assert.equal(new Set(entries.map(([,id])=>id)).size,entries.length,'Every equipment entry needs a unique ID');
+const offline=read('dist/downloads/Catalina22_Viewer_Offline.html');
+for(const [entry,id,,content] of entries){
+  assert(selectable.has(id),`No selectable 3D geometry for ${id}`);
+  assert(content.includes(`href="/?part=${id}"`),`No model link for ${id}`);
+  assert(offline.includes(entry),`Offline documentation missing for ${id}`);
+}
+console.log('All 27 inventory entries link to unique selectable parts, including in the standalone viewer.');

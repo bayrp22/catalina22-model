@@ -17,3 +17,22 @@ aside{width:280px;flex-shrink:0;padding:24px 23px;background:var(--paper);border
 .inventory-field{display:block;font-size:12px;margin:10px 0}.inventory-field input,.inventory-field select{display:block;width:100%;margin-top:5px;padding:9px;border:1px solid #b9c6bc;border-radius:5px;background:#fff;color:#263e33}
 #inventoryList{max-height:260px;overflow:auto;margin:10px 0}.inventory-item{display:block;width:100%;text-align:left;border:1px solid #d4ded5;border-radius:5px;padding:10px;margin:6px 0;background:#fff;font-size:12px;line-height:1.5}.inventory-item[aria-pressed=true]{border-color:#367b6b;background:#e6efe8}.inventory-item small{display:block;color:#586b60}
 #inventoryDetail p{overflow-wrap:anywhere}#inventoryDetail button{margin:8px 5px 8px 0}#inventoryMass{border-top:1px solid #c7d2c9;margin-top:15px;padding-top:15px;font-size:12px}#inventoryMass strong{display:block}#inventoryEditor{display:block;width:100%;height:42vh;resize:vertical;font-family:monospace;font-size:12px;padding:12px;margin-top:8px;border:1px solid #b9c6bc;border-radius:6px;background:#fafcf9}#inventoryEditorError{color:#9d3827}#inventoryMessage:empty{display:none}
+
+.find-equipment{margin:0 0 18px;font-size:11px}
+.find-equipment label{display:block;margin-bottom:6px;font-weight:650}
+.find-equipment select{width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font:inherit}
+#selection{z-index:2;max-height:calc(100% - 155px);overflow:auto;scrollbar-width:thin}
+#selection:not([hidden])~.canvas-tools{top:auto;bottom:120px;transform:none}
+#equipmentDetails{margin-bottom:13px;font-size:10px;color:var(--ink)}
+#selection #equipmentDetails p{color:var(--accent);margin:0 0 8px}
+#equipmentDetails dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:5px 8px;margin:0 0 10px}
+#equipmentDetails dt{font-weight:650}
+#equipmentDetails dd{margin:0}
+.inspector-manuals{display:flex;flex-wrap:wrap;gap:5px;color:var(--muted)}
+.inspector-manuals a{display:inline-block;padding:4px 6px;border:1px solid var(--line);border-radius:5px;color:var(--accent);text-decoration:none}
+.inspector-manuals a:hover{text-decoration:underline}
+
+@media(max-width:720px){
+ #selection{top:auto;right:10px;left:10px;bottom:77px;width:auto;max-height:min(46%,260px)}
+ #selection:not([hidden])~.canvas-tools{top:42%;bottom:auto;transform:translateY(-50%)}
+}

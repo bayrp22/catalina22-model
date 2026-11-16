@@ -30,6 +30,12 @@ Because this GitHub repository is **public**, the page includes public-facing pr
 
 **Safety:** The 1977 Catalina 22 manual recommends 3–6 HP, while the reference outboard is Suzuki DF15A (15 HP). A real installation requires professional checking of transom strength, mount/bracket rating, fasteners, shaft height, tilting and rudder clearances. The illustrated fuel routing and compartment geometry remain provisional, including ventilation, restraint and the transom exit.
 
+## Restoration equipment in 3D
+
+Each of the 27 inventory rows links to its onboard item. Click on the model or use **Find onboard equipment** to inspect placement, available size and weight references, and manuals. Below-deck entries switch the viewer into the relevant interior or locker view. Loose equipment and unconfirmed mounting points use labeled illustrative placements. Published device masses and comparable listings are reference values and do not contribute to the private equipment load case.
+
+The current-view export includes the restoration geometry and visible equipment. The factory-layout export remains the protected reference. The standalone viewer carries a copy of the same public documentation. Private inventory data and media remain outside both packages.
+
 ## Rigging references
 - 1977 Catalina factory manual: https://www.catalina22.org/documents/files_pdf/1977-owner_manual.pdf
 - 1987 Catalina manual: https://www.catalina22.org/documents/files_pdf/1987-owner_manual.pdf
