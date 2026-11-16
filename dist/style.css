@@ -43,3 +43,15 @@ aside{width:280px;flex-shrink:0;padding:24px 23px;background:var(--paper);border
 .stern-view-button{width:100%;font-size:11px;margin-top:7px}
 .stern-lift-controls{margin-bottom:12px}
 .stern-lift-controls input{display:block}
+
+.lazarette-controls{display:flex;gap:6px;margin:0 0 17px}
+.lazarette-controls button{flex:1;white-space:nowrap;font-size:11px;padding:6px}
+.lazarette-controls button[aria-pressed="true"]{background:var(--teal);border-color:var(--accent)}
+#toggleSelectedHatch{margin-bottom:8px;font-size:11px}
+#viewport[data-mode="cabin"] .canvas-tools,
+#viewport[data-mode="cabin"] .bottom-area,
+#viewport[data-mode="cabin"] .inspect-actions{display:none}
+#viewport[data-mode="cabin"] canvas{cursor:grab}
+#viewport[data-mode="cabin"] canvas:active{cursor:grabbing}
+#resetCabinLook{position:absolute;right:20px;bottom:22px;font-size:11px}
+@media(max-width:420px){.viewbar{gap:1px}.viewbar button{padding-left:7px;padding-right:7px}}

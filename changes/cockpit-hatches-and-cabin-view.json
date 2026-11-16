@@ -1,0 +1,10 @@
+{
+  "summary": "Model one operational lazarette hatch on the aft half of each cockpit bench and add a fixed interior camera.",
+  "parts": ["cockpit (restoration)", "port-lazarette", "starboard-lazarette"],
+  "evidence": ["Owner supplied an aft-facing view of two opened cockpit hatches and specified one per bench, covering roughly the aft half. Owner confirmed the port fuel locker. The source image remains private."],
+  "measurements": [
+    {"part":"cockpit (restoration)","beforeMeters":1.32,"afterMeters":1.09,"reference":"Fore-and-aft length of the previous lid and new cockpit bench opening, +X forward","method":"Fit a rectangular opening over roughly half the existing aft bench length","confidence":"Visual reconstruction. The opening size, locker liner and hinge travel have no field measurements."}
+  ],
+  "reviewed": false,
+  "reviewer": ""
+}

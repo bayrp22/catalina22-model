@@ -26,9 +26,15 @@ Because this GitHub repository is **public**, the page includes public-facing pr
 
 ## Viewer fit-out
 
-`dist/propulsion.js` creates a provisional reference-scale outboard, external transom bracket, 12 L portable tank and illustrative fuel hose independent of the accepted hull mesh. The original 19-part model remains geometry-regression protected. The marked port lazarette location informs the new internal tank and hose placement. **Inspect tank & fuel line** hides the cockpit geometry in Cutaway to show the tank, line and short outboard connection. The separate cabin entry cover closes the marked opening below the companionway sill. The current-view GLB includes these parts when visible. The original factory-layout GLB remains unchanged.
+`dist/propulsion.js` creates a provisional reference-scale outboard, external transom bracket, 12 L portable tank and illustrative fuel hose independent of the accepted hull mesh. The original 19-part model remains geometry-regression protected. The marked port lazarette location informs the new internal tank and hose placement. **Inspect port fuel locker** opens the port hatch to show the tank and inboard hose. The fuel hose inventory entry opens a cutaway of the route to the motor. The separate cabin entry cover closes the marked opening below the companionway sill. The current-view GLB includes these parts when visible. The original factory-layout GLB remains unchanged.
 
 **Safety:** The 1977 Catalina 22 manual recommends 3–6 HP, while the reference outboard is Suzuki DF15A (15 HP). A real installation requires professional checking of transom strength, mount/bracket rating, fasteners, shaft height, tilting and rudder clearances. The illustrated fuel routing and compartment geometry remain provisional, including ventilation, restraint and the transom exit.
+
+## Cockpit lazarettes and cabin viewpoint
+
+Each bench has one outward-opening lid on its aft half. Click the lid in 3D or use **Port hatch** or **Starboard hatch** in the sidebar. **Inspect port fuel locker** opens the port lid and frames the tank inside the locker. The hatch outline and compartment geometry follow the supplied visual reference, with dimensions inferred.
+
+**In cabin** keeps the camera at a fixed seated position beneath the roof. Drag to look around within the view limits. **Reset view** faces forward again. Saved views retain the look direction and both hatch states.
 
 ## Stern hardware and motion
 

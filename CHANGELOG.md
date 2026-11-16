@@ -6,6 +6,11 @@
 - Kept the 3D viewer, its separate provisional propulsion shapes, mast setup and references intact.
 - Protected owner-only photographs, serials, catalog IDs and exact locations from public source. Updated CI checks for simpler owner navigation.
 
+## Unreleased — Working lazarettes and cabin viewpoint
+
+- Added one hinged hatch and an opening on the aft half of each cockpit bench. The port hatch reveals the fuel tank.
+- Added a fixed seated **In cabin** viewpoint with limited drag-to-look. Saved views retain hatch states and cabin look direction.
+
 ## Unreleased — Photo-based stern hardware
 
 - Added the stern cutout and transverse stainless bar, provisionally identified as a mainsheet traveler.

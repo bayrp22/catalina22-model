@@ -70,9 +70,24 @@ console.log('Auxiliary propulsion overlay: four selectable models, documented re
 
 const restoration=buildBoat({restoration:true});
 const {parts:fittings}=buildRestorationEquipment(restoration);
-const locker=new THREE.Box3().setFromObject(restoration.parts.cockpit.children.find(mesh=>mesh.geometry.parameters.width===1.32 && mesh.position.z<0));
+assert.deepEqual(Object.keys(restoration.lazaretteLids),['port','starboard']);
+for(const [side,lid] of Object.entries(restoration.lazaretteLids)){
+ const b=new THREE.Box3().setFromObject(lid);
+ assert(b.min.x<-3 && b.max.x<=-2.04,'Each hatch should cover roughly the aft half of its bench');
+ const point=new THREE.Vector3(lid.position.x,.9,(side==='port'?-1:1)*.625);
+ restoration.root.updateMatrixWorld(true);
+ const ray=new THREE.Raycaster(point,new THREE.Vector3(0,-1,0),0,.29);
+ assert.equal(ray.intersectObjects(restoration.parts.cockpit.children).length,0,'Bench must have a real opening below the lid');
+ assert(ray.intersectObjects(lid.children).length>0,'Closed lid should intercept the ray through the opening');
+ lid.rotation.x=(side==='port'?-1:1)*1.42;
+ lid.updateMatrixWorld(true);
+ assert.equal(ray.intersectObjects(lid.children).length,0,'The lid should swing out of the opening');
+ lid.rotation.x=0;
+}
+const portLid=new THREE.Box3().setFromObject(restoration.lazaretteLids.port);
+assert(tankBounds.min.x>portLid.min.x && tankBounds.max.x<portLid.max.x && tankBounds.max.y<portLid.min.y,'Tank stays under the revised port hatch');
 const battery=new THREE.Box3().setFromObject(fittings['house-battery']);
-assert(battery.max.y<locker.min.y && battery.max.x<=locker.max.x && battery.min.z>=locker.min.z && battery.max.z<=locker.max.z);
+assert(battery.max.y<portLid.min.y && battery.min.x>portLid.max.x,'Port battery remains forward of the fuel locker');
 assert(battery.min.x>tankBounds.max.x,'Battery and tank envelopes should be separated fore-and-aft in the study');
 const facing=part=>new THREE.Vector3(1,0,0).applyQuaternion(part.quaternion).x;
 assert(facing(fittings.chartplotter)<-.98 && facing(fittings.vhf)>.98,'The instruments must face opposite directions');

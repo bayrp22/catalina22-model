@@ -62,13 +62,38 @@ export function buildBoat({restoration=false}={}){
  polygon(roof,[[-1.03,-.66],[1.18,-.59],[1.18,.59],[-1.03,.66]],1.25,.055,mats.deck);
  box(roof,[1.35,.045,1.03],[-.25,1.287,0],mats.deck);box(roof,[.58,.036,.58],[.80,1.29,0],mats.metal);box(roof,[.52,.026,.52],[.80,1.313,0],mats.glass);
  for(const s of [-1,1]){tube(roof,[[-.80,1.32,s*.52],[-.74,1.38,s*.52],[.30,1.38,s*.49],[.36,1.32,s*.49]],.016,mats.wood);}
+ const lazaretteLids={};
  const cockpit=part('cockpit','Cockpit & lockers','Exterior','Self-draining footwell between two molded seats; cockpit seats cover storage lockers.',[-2.05,.83,0]);
  box(cockpit,[2.02,.05,.90],[-2.17,.31,0],mats.deck);
  for(const s of [-1,1]){
-  polygon(cockpit,[[-3.23,s*.45],[-1.16,s*.45],[-1.16,s*.93],[-3.23,s*.78]],.67,.055,mats.deck);
-  box(cockpit,[2.05,.33,.035],[-2.20,.48,s*.45],mats.liner);
-  box(cockpit,[1.32,.018,.33],[-2.03,.709,s*.69],mats.liner);
-  for(const xx of [-2.47,-1.57])box(cockpit,[.06,.018,.035],[xx,.727,s*.83],mats.metal);
+  const seat=[[-3.23,s*.45],[-1.16,s*.45],[-1.16,s*.93],[-3.23,s*.78]];
+  if(restoration){
+   const aft=-3.13,forward=-2.04,inside=.482,hinge=.777;
+   const top=.67;
+   const contour=new THREE.Shape(seat.map(([x,z])=>new THREE.Vector2(x,-z)));
+   contour.holes.push(new THREE.Path([[aft,inside],[aft,hinge],[forward,hinge],[forward,inside]].map(([x,z])=>new THREE.Vector2(x,-s*z))));
+   const seatGeometry=new THREE.ExtrudeGeometry(contour,{depth:.055,bevelEnabled:false});
+   seatGeometry.rotateX(-Math.PI/2);seatGeometry.translate(0,top-.055,0);
+   mesh(cockpit,seatGeometry,mats.deck);
+   box(cockpit,[2.05,.33,.035],[-2.20,.48,s*.45],mats.liner);
+   const length=forward-aft,width=hinge-inside,x=(aft+forward)/2,z=s*(inside+hinge)/2;
+   // Use the existing hull sides as the outboard walls of the lockers.
+   for(const end of [aft,forward])box(cockpit,[.022,.235,width],[end,.502,z],mats.liner);
+   box(cockpit,[length,.027,width],[x,.265,z],mats.liner);
+   const side=s<0?'port':'starboard';
+   const hatch=part(`${side}-lazarette`,`${side==='port'?'Port':'Starboard'} lazarette hatch`,'Cockpit',
+    side==='port'?'Aft cockpit locker with the portable fuel tank beneath this lid.':'Aft storage locker beneath the starboard cockpit bench.',null,'Photo-based layout • dimensions inferred');
+   hatch.position.set(x,top+.014,s*hinge);
+   box(hatch,[length-.011,.028,width-.009],[0,0,-s*width/2],mats.deck);
+   box(hatch,[.085,.015,.027],[.29,.018,-s*(width-.036)],mats.metal);
+   for(const dx of [-.37,.37])box(cockpit,[.062,.02,.044],[x+dx,top+.006,s*(hinge+.005)],mats.metal);
+   lazaretteLids[side]=hatch;
+  }else{
+   polygon(cockpit,seat,.67,.055,mats.deck);
+   box(cockpit,[2.05,.33,.035],[-2.20,.48,s*.45],mats.liner);
+   box(cockpit,[1.32,.018,.33],[-2.03,.709,s*.69],mats.liner);
+   for(const xx of [-2.47,-1.57])box(cockpit,[.06,.018,.035],[xx,.727,s*.83],mats.metal);
+  }
   box(cockpit,[.1,.1,.15],[-1.36,.76,s*.99],mats.wood);
   const winch=mesh(trim,new THREE.CylinderGeometry(.062,.074,.085,24),mats.metal);winch.position.set(-1.36,.84,s*.99);
  }
@@ -157,7 +182,7 @@ export function buildBoat({restoration=false}={}){
  const defaults={};for(const [id,g]of Object.entries(parts)){defaults[id]=g.position.clone();g.userData.originalPosition=g.position.toArray();}
  function setKeel(percent){keelPivot.rotation.z=raisedAngle*(1-percent/100);return -minY(keelPivot.rotation.z);}
  setKeel(100);
- return {root,parts,pickables,labels,mats,hullUpper,keelPivot,setKeel,defaults,SPEC};
+ return {root,parts,pickables,labels,mats,hullUpper,keelPivot,setKeel,defaults,lazaretteLids,SPEC};
 }
 
 // A viewer-only panel below the companionway sill, fitted to the drawn cockpit opening.
