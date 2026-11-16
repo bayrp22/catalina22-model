@@ -1,0 +1,10 @@
+{
+  "summary": "Remove visible V-berth, glazing, speaker and galley intersections in the restoration view",
+  "parts": ["vberth", "cushions", "cabin", "speakers", "galley", "stereo"],
+  "evidence": ["Owner screenshots identify the V-berth protrusion under the bow, clipped cabin-side windows and speakers, and the sink still under the cockpit return. The full screenshots remain private."],
+  "measurements": [
+    {"part":"galley","beforeMeters":-0.18,"afterMeters":0.24,"reference":"Fully deployed fore-and-aft translation in the model, positive toward the bow","method":"Extend the slider stop until the whole unit clears the forward cockpit return","confidence":"Model-only clearance. No physical stop measurement."}
+  ],
+  "reviewed": false,
+  "reviewer": ""
+}

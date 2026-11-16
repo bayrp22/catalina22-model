@@ -48,11 +48,37 @@ export function buildBoat({restoration=false}={}){
  polygon(deck,[...outline(1.48,3.2766,1),...outline(3.2766,1.48,-1)],.78,.045,mats.deck);
  for(const s of [-1,1])polygon(deck,[...outline(-3.2766,1.48,s),[1.48,s*.66],[-1.07,s*.77],[-1.20,s*.82],[-3.2766,s*.78]],.695,.045,mats.deck);
  const cabin=part('cabin','Cabin trunk & windows','Exterior','Original low cabin trunk with two framed lights per side. Exact window shapes and pop-top details vary by year.',[.15,1.29,.73]);
- for(const s of [-1,1]){panel(cabin,[[-1.07,.695,s*.79],[1.48,.78,s*.69],[1.18,1.23,s*.59],[-1.03,1.18,s*.66]],mats.deck);
-  // Two similar elongated framed ports per side, following the sloped cabin side.
-  for(const [a,b] of [[-.92,-.04],[.06,1.03]]){
-   const plane=(expand)=>[[a-expand,.83,s*.757],[b+expand,.855,s*.716],[b+expand,1.075,s*.667],[a-expand,1.065,s*.703]];
-   panel(cabin,plane(.035),mats.metal);const pg=plane(0);pg.forEach(p=>{p[1]+=.012;p[2]+=s*.004;});panel(cabin,pg,mats.glass);
+ if(restoration){
+  // Use a shared surface for the wall, frames and glazing on the tapered cabin sides.
+  for(const side of [-1,1]){
+   const surface=(u,v)=>{
+    const lower=new THREE.Vector3(-1.07,.695,side*.79).lerp(new THREE.Vector3(1.48,.78,side*.69),u);
+    const upper=new THREE.Vector3(-1.03,1.18,side*.66).lerp(new THREE.Vector3(1.18,1.23,side*.59),u);
+    return lower.lerp(upper,v).toArray();
+   };
+   const patch=(left,right,bottom,top,material)=>panel(cabin,[surface(left,bottom),surface(right,bottom),surface(right,top),surface(left,top)],material);
+   const edges=[0,.062,.436,.481,.864,1];
+   for(let i=0;i<edges.length-1;i++){
+    const left=edges[i],right=edges[i+1];
+    patch(left,right,0,.25,mats.deck);
+    patch(left,right,.75,1,mats.deck);
+    if(i%2===0){patch(left,right,.25,.75,mats.deck);continue;}
+    const innerLeft=left+.010,innerRight=right-.010;
+    patch(left,innerLeft,.25,.75,mats.metal);
+    patch(innerRight,right,.25,.75,mats.metal);
+    patch(innerLeft,innerRight,.25,.296,mats.metal);
+    patch(innerLeft,innerRight,.704,.75,mats.metal);
+    const pane=patch(innerLeft,innerRight,.296,.704,mats.glass);
+    pane.name=side<0?'port-cabin-window':'starboard-cabin-window';
+   }
+  }
+ }else{
+  for(const s of [-1,1]){panel(cabin,[[-1.07,.695,s*.79],[1.48,.78,s*.69],[1.18,1.23,s*.59],[-1.03,1.18,s*.66]],mats.deck);
+   // Two similar elongated framed ports per side, following the sloped cabin side.
+   for(const [a,b] of [[-.92,-.04],[.06,1.03]]){
+    const plane=(expand)=>[[a-expand,.83,s*.757],[b+expand,.855,s*.716],[b+expand,1.075,s*.667],[a-expand,1.065,s*.703]];
+    panel(cabin,plane(.035),mats.metal);const pg=plane(0);pg.forEach(p=>{p[1]+=.012;p[2]+=s*.004;});panel(cabin,pg,mats.glass);
+   }
   }
  }
  panel(cabin,[[1.48,.78,-.69],[1.48,.78,.69],[1.18,1.23,.59],[1.18,1.23,-.59]],mats.deck);
@@ -129,7 +155,38 @@ export function buildBoat({restoration=false}={}){
  const vberth=part('vberth','Forward V-berth','Interior','Forward double-berth platform with a center footwell and removable infill. Precise dimensions need measurement.',[1.82,.38,0]);
  const factoryBerth=[ [.78,-.77],[1.35,-.78],[1.95,-.57],[2.65,-.23],[2.88,0],[2.65,.23],[1.95,.57],[1.35,.78],[.78,.77],[.78,.30],[1.38,.23],[1.65,0],[1.38,-.23],[.78,-.30] ];
  // Owner's toilet is forward of the port bulkhead. Remove the liner/infill locally.
- const vb=restoration?[...factoryBerth.slice(0,12),[1.53,-.25],[1.53,-.72],[.78,-.72]]:factoryBerth;
+ const berthRay=new THREE.Raycaster(new THREE.Vector3(),new THREE.Vector3(0,0,1));
+ const berthWidths=new Map();
+ function berthHalfWidth(x,y){
+  const key=`${x.toFixed(5)},${y.toFixed(5)}`;
+  if(!berthWidths.has(key)){
+   berthRay.ray.origin.set(x,y,0);
+   const hit=berthRay.intersectObjects(hull.children)[0];
+   berthWidths.set(key,hit?Math.max(.001,hit.point.z-.018):.001);
+  }
+  return berthWidths.get(key);
+ }
+ function fitBerthToHull(mesh){
+  const positions=mesh.geometry.attributes.position;
+  for(let i=0;i<positions.count;i++){
+   const x=positions.getX(i)+mesh.position.x,y=positions.getY(i)+mesh.position.y;
+   const z=positions.getZ(i)+mesh.position.z;
+   const limit=berthHalfWidth(x,y);
+   positions.setZ(i,THREE.MathUtils.clamp(z,-limit,limit)-mesh.position.z);
+  }
+  positions.needsUpdate=true;
+  mesh.geometry.computeVertexNormals();
+ }
+ let vb=factoryBerth;
+ if(restoration){
+  // Sample the raked bow so the platform cannot bridge outside the shell between stations.
+  const perimeter=Array.from({length:25},(_,i)=>{
+   const x=THREE.MathUtils.lerp(.78,2.225,i/24);
+   return [x,Math.min(.77,berthHalfWidth(x,.12))];
+  });
+  vb=[...perimeter.map(([x,z])=>[x,-z]),...perimeter.slice().reverse(),
+   [.78,.30],[1.38,.23],[1.65,0],[1.53,-.25],[1.53,-.55],[.78,-.72]];
+ }
  polygon(vberth,vb,.25,.13);
  if(restoration){
   polygon(vberth,[[.80,-.68],[1.46,-.68],[1.46,-.29],[.80,-.29]],.045,.025,mats.liner);
@@ -150,12 +207,15 @@ export function buildBoat({restoration=false}={}){
  tube(galley,restoration?
   [[-1.18,.586,.88],[-1.18,.599,.88],[-1.09,.601,.85],[-1.07,.600,.81]]:
   [[-1.18,.60,.88],[-1.18,.72,.88],[-1.09,.74,.85],[-1.07,.68,.81]],.009,mats.metal);
- if(restoration)galley.userData.description='Aft starboard galley. The forward stop leaves part of the unit tucked under the cockpit seat.';
+ if(restoration){
+  for(const item of galley.children)item.position.z-=.047;
+  galley.userData.description='Starboard galley slides fully forward of the cockpit, exposing the sink and cooktop.';
+ }
  const trunk=part('trunk','Swing-keel trunk','Structure','Central keel housing. The original manual places the locking bolt under the forward port dinette seat. Shape and pivot location are provisional.',[.08,.21,-.13]);
  polygon(trunk,[[-.84,-.10],[.53,-.10],[.64,0],[.53,.10],[-.84,.10]],.18,.48,mats.liner);tube(trunk,[[-.78,.13,0],[-1.05,.53,0]],.025,mats.metal);
  const companion=part('companionway','Companionway & step','Interior','Aft cabin entry and step; main interior access from the cockpit.',[-1.05,.60,0]);box(companion,[.27,.075,.58],[-1.03,.24,0],mats.wood);box(companion,[.05,.30,.55],[-1.13,.09,0],mats.liner);
  const cushions=part('cushions','Berth cushions','Fit-out','Optional soft furnishings to make the original arrangement easier to read. Hide for the bare structure.',null);
- polygon(cushions,vb,.31,.055,mats.teal);for(const x of [-.96,.48])box(cushions,[.405,.07,.70],[x,.30,-.65],mats.teal);box(cushions,[1.0,.065,.50],[.22,.286,.70],mats.teal);
+ const berthCushion=polygon(cushions,vb,.31,.055,mats.teal);for(const x of [-.96,.48])box(cushions,[.405,.07,.70],[x,.30,-.65],mats.teal);box(cushions,[1.0,.065,.50],[.22,.286,.70],mats.teal);
  const keel=part('keel','Swing keel','Appendages','Animated pivoting keel. End positions match the 1977 nominal drafts; blade outline and pivot are inferred.',[-.45,-.98,.09],'Published end drafts • mechanism inferred');
  const keelPivot=new THREE.Group();keel.add(keelPivot);keelPivot.position.set(.43,-.23,0);
  const blade=[[.04,0],[.21,-.06],[.12,-.32],[-.63,-1.294],[-1.08,-1.294],[-1.14,-1.19],[-.29,-.08]];
@@ -176,7 +236,11 @@ export function buildBoat({restoration=false}={}){
  tube(trim,[[2.30,.80,-.52],[2.35,1.30,-.50],[3.16,1.30,-.10],[3.22,1.29,0],[3.16,1.30,.10],[2.35,1.30,.50],[2.30,.80,.52]],.014,mats.metal);
  for(const s of [-1,1]){tube(trim,[[2.93,.85,s*.17],[2.98,1.30,s*.20]],.013,mats.metal);for(const x of [-2.9,2.2]){const z=s*(section(x)[0]-.14);box(trim,[.09,.035,.045],[x,.75,z],mats.metal);tube(trim,[[x-.08,.79,z],[x+.08,.79,z]],.012,mats.metal);}}
  // Taper molded berth bases to the hull envelope instead of letting rectangular bases protrude.
- for(const id of ['vberth','dinette','settee'])parts[id].traverse(o=>{if(!o.isMesh)return;const p=o.geometry.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i)+o.position.x,y=p.getY(i)+o.position.y,z=p.getZ(i)+o.position.z;const [w,b,sh]=section(x);const ratio=THREE.MathUtils.clamp((y-b)/(sh-b),0,1);const limit=Math.max(.01,w*Math.pow(Math.sqrt(Math.max(0,1-(1-ratio)**2)),.90)-.028);if(Math.abs(z)>limit)p.setZ(i,Math.sign(z)*limit-o.position.z);}o.geometry.computeVertexNormals();});
+ for(const id of restoration?['dinette','settee']:['vberth','dinette','settee'])parts[id].traverse(o=>{if(!o.isMesh)return;const p=o.geometry.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i)+o.position.x,y=p.getY(i)+o.position.y,z=p.getZ(i)+o.position.z;const [w,b,sh]=section(x);const ratio=THREE.MathUtils.clamp((y-b)/(sh-b),0,1);const limit=Math.max(.01,w*Math.pow(Math.sqrt(Math.max(0,1-(1-ratio)**2)),.90)-.028);if(Math.abs(z)>limit)p.setZ(i,Math.sign(z)*limit-o.position.z);}o.geometry.computeVertexNormals();});
+ if(restoration){
+  vberth.children.forEach(fitBerthToHull);
+  fitBerthToHull(berthCushion);
+ }
  function partOf(o){while(o&&o!==root){if(o.userData.id)return o.userData.id;o=o.parent;}return null;}
  pickables.forEach(o=>o.userData.partId=partOf(o));
  const defaults={};for(const [id,g]of Object.entries(parts)){defaults[id]=g.position.clone();g.userData.originalPosition=g.position.toArray();}
@@ -199,7 +263,7 @@ export function buildCabinStepCover(material){
 
 // Slider percentages preserve saved views. Meter offsets are provisional visual stops.
 export function restorationGalleyOffset(percent){
- return THREE.MathUtils.lerp(-.18,-.68,THREE.MathUtils.clamp(percent,0,100)/100);
+ return THREE.MathUtils.lerp(.24,-.68,THREE.MathUtils.clamp(percent,0,100)/100);
 }
 
 // Eye positions in the modeled cabin aisle, from the aft seating to the V-berth.

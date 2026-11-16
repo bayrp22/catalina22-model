@@ -30,6 +30,8 @@ Because this GitHub repository is **public**, the page includes public-facing pr
 
 **Safety:** The 1977 Catalina 22 manual recommends 3–6 HP, while the reference outboard is Suzuki DF15A (15 HP). A real installation requires professional checking of transom strength, mount/bracket rating, fasteners, shaft height, tilting and rudder clearances. The illustrated fuel routing and compartment geometry remain provisional, including ventilation, restraint and the transom exit.
 
+The restoration cabin uses the modeled inner shell to fit the V-berth perimeter. The cabin windows are framed surfaces visible from both inside and outside, and the speakers sit inboard of the deck liner. The galley’s **Fully deployed** stop clears the cockpit return. Travel and fit are based on the model envelope.
+
 ## Cockpit lazarettes and cabin viewpoint
 
 Each bench has one outward-opening lid on its aft half. Click the lid in 3D or use **Port hatch** or **Starboard hatch** in the sidebar. **Inspect port fuel locker** opens the port lid and frames the tank inside the locker. The hatch outline and compartment geometry follow the supplied visual reference, with dimensions inferred.

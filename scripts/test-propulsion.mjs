@@ -104,8 +104,49 @@ const seatBounds=new THREE.Box3().setFromObject(seat);
 for(const percent of [0,25,50,75,100]){
  galley.position.x=restorationGalleyOffset(percent);
  const b=new THREE.Box3().setFromObject(galley);
- assert(b.min.x<seatBounds.max.x && b.max.y<seatBounds.min.y,'Galley must slide below the seat');
- assert(percent===100?b.max.x<seatBounds.max.x:b.max.x>seatBounds.max.x,'Forward stop partly exposes the galley, aft stop stows it');
+ assert(b.max.y<seatBounds.min.y,'Galley must slide below the seat');
+ if(percent===0)assert(b.min.x> -1.058,'Entire galley must clear the forward cockpit return');
+ if(percent===100)assert(b.max.x<seatBounds.max.x,'Aft stop must still stow the galley');
+}
+// Test glazing from both sides of each patch and the full diameter of each speaker face.
+const cabinWalls=restoration.parts.cabin.children;
+for(const side of ['port','starboard']){
+ const windows=cabinWalls.filter(mesh=>mesh.name===`${side}-cabin-window`);
+ assert.equal(windows.length,2);
+ for(const pane of windows){
+  const positions=pane.geometry.attributes.position;
+  const center=new THREE.Vector3().fromBufferAttribute(positions,0)
+   .lerp(new THREE.Vector3().fromBufferAttribute(positions,2),.5);
+  for(const offset of [-.22,0,.22])for(const sign of [-1,1]){
+   const aim=center.clone().add(new THREE.Vector3(offset,.035,0));
+   const direction=new THREE.Vector3(0,0,sign);
+   const ray=new THREE.Raycaster(aim.clone().addScaledVector(direction,-.16),direction,0,.26);
+   assert(ray.intersectObjects(cabinWalls)[0]?.object===pane,'Cabin walls must not obscure either face of the window');
+  }
+ }
+}
+const speakers=fittings.speakers;
+const cabinSurfaces=['deck','hull','cabin','settee','bulkheads'].flatMap(id=>restoration.parts[id].children);
+for(const grille of speakers.children.filter(mesh=>mesh.geometry.parameters.radiusTop===.067)){
+ const center=grille.getWorldPosition(new THREE.Vector3());
+ for(const [dx,dy] of [[0,0],[.058,0],[-.058,0],[0,.058],[0,-.058]]){
+  const ray=new THREE.Raycaster(new THREE.Vector3(center.x+dx,center.y+dy,0),new THREE.Vector3(0,0,Math.sign(center.z)));
+  assert(ray.intersectObjects([...cabinSurfaces,...speakers.children])[0]?.object.parent===speakers,`Speaker face at ${center.toArray()} must be visible at ${dx}, ${dy}`);
+ }
+}
+const checkedBerthVertices=new Set();
+for(const mesh of [...restoration.parts.vberth.children,restoration.parts.cushions.children[0]]){
+ const positions=mesh.geometry.attributes.position;
+ for(let i=0;i<positions.count;i++){
+  const point=new THREE.Vector3().fromBufferAttribute(positions,i).applyMatrix4(mesh.matrixWorld);
+  if(Math.abs(point.z)<1e-5)continue;
+  const key=point.toArray().map(value=>value.toFixed(5)).join(',');
+  if(checkedBerthVertices.has(key))continue;
+  checkedBerthVertices.add(key);
+  const ray=new THREE.Raycaster(new THREE.Vector3(point.x,point.y,0),new THREE.Vector3(0,0,Math.sign(point.z)));
+  const innerHull=ray.intersectObjects(restoration.parts.hull.children)[0];
+  assert(innerHull&&Math.abs(point.z)<innerHull.distance-.009,`Berth geometry near ${key} must stay inside the shell`);
+ }
 }
 assert(restoration.parts.deck.children.length>boat.parts.deck.children.length,'Restoration deck must include seam closures');
 assert(restoration.parts.cockpit.children.length>boat.parts.cockpit.children.length,'Restoration cockpit must include the forward returns');

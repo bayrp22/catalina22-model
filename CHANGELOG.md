@@ -6,6 +6,11 @@
 - Kept the 3D viewer, its separate provisional propulsion shapes, mast setup and references intact.
 - Protected owner-only photographs, serials, catalog IDs and exact locations from public source. Updated CI checks for simpler owner navigation.
 
+## Unreleased — Cabin clearances
+
+- Fitted the V-berth liner and cushions to the raked bow, rebuilt the cabin windows as framed openings visible from both sides, and cleared the speaker faces from the deck liner.
+- Extended the galley’s forward stop so the sink and cooktop fully clear the cockpit.
+
 ## Unreleased — Cabin movement and VHF contrast
 
 - Added full horizontal turning and a bounded cabin track from the companionway to the V-berth, with wheel and slider controls.

@@ -105,7 +105,7 @@ function toggleSidebar(open){$('#sidebar').classList.toggle('collapsed',!open);$
 $('#collapse').onclick=()=>toggleSidebar(false);$('#expand').onclick=()=>toggleSidebar(true);if(matchMedia('(max-width:720px)').matches)toggleSidebar(false);
 function feet(m){const inches=Math.round(m/.0254);return `${Math.floor(inches/12)}′${inches%12}″`;}
 function setKeel(v){state.keel=Number(v);const d=boat.setKeel(state.keel);$('#keelLabel').textContent=v==100?'Lowered':v==0?'Raised':`${Math.round(v)}% down`;$('#draftStatus').textContent=feet(d);}
-function setGalley(v){state.galley=Number(v);boat.parts.galley.position.x=restorationGalleyOffset(state.galley);$('#galleyLabel').textContent=v==0?'In cabin':v==100?'Stowed aft':`${Math.round(v)}% aft`;}
+function setGalley(v){state.galley=Number(v);boat.parts.galley.position.x=restorationGalleyOffset(state.galley);$('#galleyLabel').textContent=v==0?'Fully deployed':v==100?'Stowed aft':`${Math.round(v)}% aft`;}
 $('#keelRange').oninput=e=>setKeel(e.target.value);$('#galleyRange').oninput=e=>setGalley(e.target.value);
 function setLift(percent){
  state.lift=Number(percent);propulsion.setLift(state.lift);

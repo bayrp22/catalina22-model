@@ -94,12 +94,12 @@ export function buildRestorationEquipment(boat){
  oval(compass,[.038,.054,.054],'screen',[.014,0,0]);
  box(compass,[.002,.023,.003],'yellow',[.053,0,0]);
 
- const radio=group('stereo',[-.379,.576,.74],Math.PI/2);
+ const radio=group('stereo',[-.132,.576,.74],Math.PI/2);
  box(radio,[.094,.054,.18],'black');
  box(radio,[.004,.026,.095],'screen',[.049,.004,.012]);
  cylinder(radio,.016,.01,'steel',[.051,0,-.066],[0,0,Math.PI/2]);
- const speakers=group('speakers',[0,.62,0]);
- for(const [x,z] of [[.46,-.89],[.53,.88]]){
+ const speakers=group('speakers',[0,.55,0]);
+ for(const [x,z] of [[.46,-.698],[.53,.698]]){
   cylinder(speakers,.087,.045,'white',[x,0,z],[Math.PI/2,0,0]);
   cylinder(speakers,.067,.009,'black',[x,0,z-Math.sign(z)*.027],[Math.PI/2,0,0]);
   cylinder(speakers,.026,.014,'steel',[x,0,z-Math.sign(z)*.036],[Math.PI/2,0,0]);
