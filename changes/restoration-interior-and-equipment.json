@@ -1,0 +1,15 @@
+{
+  "summary": "Preview the owner-indicated forward toilet recess, limited galley travel, exterior cockpit returns and onboard equipment documentation.",
+  "parts": ["vberth", "cushions", "galley", "deck", "cockpit", "toilet", "restoration equipment"],
+  "evidence": [
+    "Owner-marked Open interior views indicate the toilet recess forward of the port bulkhead and the galley staying partly under the starboard cockpit even at the forward stop.",
+    "Owner identified open seams around the exterior cabin-to-cockpit junction. The molded returns and sheer closures follow the reconstructed surface geometry.",
+    "Restoration placement notes identify the port dashboard, opposing GPS/VHF faces, the aft port DC board and the port battery hatch. Stern ladder location follows the photographed transom. The original records and media are private."
+  ],
+  "measurements": [
+    {"part":"vberth","beforeMeters":0.25,"afterMeters":0.045,"reference":"Nominal model waterline to surface at the localized port toilet recess","method":"Approximate fit beneath the indicated position","confidence":"Visual reconstruction"},
+    {"part":"galley","beforeMeters":0,"afterMeters":-0.18,"reference":"Model X translation at the fully in-cabin slider position; negative is aft","method":"Fit the aft portion of the envelope under the cockpit seat; preserve the aft stop at -0.68 m","confidence":"Visual reconstruction"}
+  ],
+  "reviewed": false,
+  "reviewer": ""
+}

@@ -1,0 +1,11 @@
+{
+  "summary": "Photo-based restoration-view stern, boarding hardware and adjustable motor lift",
+  "parts": ["hull (restoration transom cutout)", "cockpit (aft lip)", "trim (stern)", "stern-rail", "boarding-ladder", "aux-mount", "aux-outboard", "aux-fuel-line (outboard end)"],
+  "evidence": ["Owner-supplied oblique stern overview shows the recessed boarding opening, transverse stainless bar and coil, slatted landing, side rails and lower tread. Close-up shows the raised wooden motor board, paired links and lock plate. Original images remain private.", "Owner reports that the bracket lifts and lowers the motor. The raised pose is photographed. The lowered pose and rail function were not independently verified."],
+  "measurements": [
+    {"part":"hull (restoration transom cutout)","beforeMeters":0.70,"afterMeters":0.505,"reference":"Lowest top edge of the boarding recess relative to nominal model waterline","method":"Fit the opening proportionally at the existing aft station","confidence":"Visual only"},
+    {"part":"aux-mount","beforeMeters":null,"afterMeters":0.389,"reference":"Vertical difference between modeled fully lowered and raised board positions","method":"Sweep paired equal-length links about the fixed transom pivots","confidence":"Illustrative travel; no measured end stops or hardware rating"}
+  ],
+  "reviewed": false,
+  "reviewer": ""
+}

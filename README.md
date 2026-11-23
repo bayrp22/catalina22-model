@@ -15,11 +15,20 @@ npm run dev
 
 Open http://localhost:8000 . The server binds to your own computer. For an offline copy, open `dist/downloads/Catalina22_Viewer_Offline.html` directly in a modern WebGL 2 browser.
 
+## Owner project library
+
+The [owner library](/project/) is a concise table of contents leading to the full-page 3D Model, **Inventory & Manuals**, Mast & Sails, and References. The inventory page opens already populated with straightforward equipment listings, manufacturer documentation links and verification notes—no file uploads, private JSON controls, or dashboards.
+
+The old **2D Plans**, **Systems & Schematics**, and Deliverables/Private Files pages are completely removed. The 3D viewer includes a provisional Suzuki-class outboard, reference transom mount, 12 L portable tank and fuel line beneath the port lazarette, and a cover below the companionway sill, separate from the accepted factory hull. The original 1977 Catalina manual recommends 3–6 HP; the 15 HP reference installation is not structurally approved.
+
+Owner-specific inventory JSON, photographs, serial numbers and measured placements remain private and are not included in this public Git repository. See [project library documentation](docs/PROJECT-INDEX.md).
+
 ## Documentation
 
 | Guide | Purpose |
 | --- | --- |
 | [Using the viewer](docs/USING.md) | Camera, layers, selection, moving parts and exports |
+| [Project index](docs/PROJECT-INDEX.md) | Unified dashboard, references, rigging research and local document handling |
 | [Editing carefully](docs/EDITING.md) | Scope, measurement workflow, code locations and release checks |
 | [Accuracy and measurements](docs/ACCURACY.md) | Published dimensions, inferred geometry and measurement records |
 | [Netlify and Git](docs/DEPLOYMENT.md) | Build configuration, review workflow, deployment and recovery |

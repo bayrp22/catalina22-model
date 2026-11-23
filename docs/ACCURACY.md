@@ -25,6 +25,10 @@ The arrangement follows the original-design forward V-berth, port dinette, starb
 
 No fabricated electronics, battery installations or personal equipment have been inserted from the earlier proposed equipment drawing. That drawing is a planning reference in diagram units, not a measured installation model.
 
+The owner indicated a fuel tank and line inside the port lazarette and an entry cover below the companionway sill. The live viewer models these as provisional fit-out details. The tank and fuel route use approximate model coordinates, and the cover is fitted to the reconstructed opening.
+
+The restoration viewer recesses the liner directly forward of the port bulkhead for the compact toilet, limits the forward travel of the galley and closes exterior cockpit-to-cabin and deck-to-sheer seams. These are visual model changes based on owner direction and the existing surfaces. The exterior hull geometry, keel endpoints and factory-layout export retain the original model. Equipment marked as a candidate or illustrated storage needs owner confirmation.
+
 ## Measurement record
 
 For each proposed correction, retain:
